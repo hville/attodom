@@ -14,9 +14,10 @@ export function CNode(node) {
 CNode.prototype = {
 	constructor: CNode,
 	foot: null,
-	getParent: CElementProto.getParent,
+	get parent() { return this.node.parentNode[attoKey] },
 	prop: CElementProto.prop,
-	extra: CElementProto.extra,
+	wrap: CElementProto.wrap,
+	set: CElementProto.set,
 	moveTo: CElementProto.moveTo,
 	remove: CElementProto.remove,
 	destroy: CElementProto.remove,

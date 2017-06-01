@@ -2,7 +2,7 @@
 
 # attodom
 
-*yet another small DOM component library*
+*yet another small DOM component library, <2kb*
 
 • [Example](#example) • [Why](#why) • [API](#api) • [License](#license)
 
@@ -41,7 +41,7 @@ var table = el('table',
 							function() {
 								this.i = i; this.j = j
 								this.update = function(v) { this.node.value = v }
-								this.event('change', function() {
+								this.on('change', function() {
 									this.root.store.set(this.node.value, [this.i, this.j])
 								})
 							}
@@ -57,7 +57,7 @@ var table = el('table',
 			)
 		)
 	)
-).extra('store', store)
+).set('store', store)
 .moveTo(D.body)
 
 store.onchange = function() { table.update( store.get() ) }
@@ -110,10 +110,10 @@ List
 
 Components have a number of chainable methods:
 * element attributes: `.attr(key, val)`
-* element children: `.append(node | number | string)`
-* element event listeners: `.event(name, callback)`
+* element children: `.child(node | number | string | Array)`
+* element event listeners: `.on(name, callback)`
 * node properties: `.prop(key, val)`
-* component properties: `.extra(key, val)`
+* component properties: `.set(key, val)`
 
 
 ### List
@@ -122,10 +122,10 @@ List are special components representing a group of multiple nodes.
 
 Resizable lists take a single factory that will be used to generate list of varying sizes
 * `list(factory)` to create dynamic indexed set of nodes based on the size of the array upon updates
-* `list(factory, factory arguments).extra('getKey', function(v) {return v.id}})` for a keyed list
+* `list(factory, factory arguments).set('getKey', function(v) {return v.id}})` for a keyed list
 
 Select lists have predefined components or factories that are used to conditionally display subsets on updates
-* `list({a: factoryA, b: componentB}).extra('select', function(v) {return [v.id]}})` created a conditional list
+* `list({a: factoryA, b: componentB}).set('select', function(v) {return [v.id]}})` created a conditional list
 
 lists can be stacked and nested.
 

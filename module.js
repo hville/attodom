@@ -1,7 +1,7 @@
 // @ts-check
 
 // create template
-export {text, element, svg, elementNS, list} from './src/create'
+export {text, element, svg, elementNS, list, select} from './src/create'
 
 // utils
 export {setDocument, D} from './src/document'

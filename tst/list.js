@@ -11,6 +11,7 @@ if (!P.D) {
 
 var el = P.element,
 		list = P.list,
+		select = P.select,
 		text = P.text
 
 function toString(nodes) {
@@ -20,8 +21,8 @@ function toString(nodes) {
 }
 
 ct('list static', function() {
-	var childFactory = function() { return el('p').append(text('x')) },
-			co = el('div').append(list(childFactory)),
+	var childFactory = function() { return el('p').child(text('x')) },
+			co = el('div').child(list(childFactory)),
 			elem = co.node
 
 	ct('===', toString(elem.childNodes), '^$')
@@ -41,8 +42,8 @@ ct('list static', function() {
 
 ct('list stacked', function() {
 	var tFactory = function () { return text('') },
-			co = el('div').append([
-				list(tFactory, {}),
+			co = el('div').child([
+				list(tFactory),
 				list(tFactory),
 				list(tFactory)
 			])
@@ -63,11 +64,11 @@ ct('list stacked', function() {
 })
 
 ct('list stacked and grouped', function() {
-	var co = el('div').append(
-		list([
-			function() { return list(text) },
-			function () { return list(text, 'x') },
-			function() { return list(function() { return text('y') }) }
+	var co = el('div').child(
+		select([
+			list(text),
+			list(text.bind(text,'x')),
+			list(function() { return text('y') })
 		])
 	)
 	var elem = co.node
@@ -86,8 +87,8 @@ ct('list stacked and grouped', function() {
 })
 
 ct('list nested', function() {
-	var co = el('div').append(
-		list(list, function() { return el('h0').append(text('')) })
+	var co = el('div').child(
+		list(list.bind(null, function() { return el('h0').child(text('')) }))
 	)
 	var elem = co.node
 
@@ -104,10 +105,10 @@ ct('list nested', function() {
 })
 
 ct('list keyed', function() {
-	var co = el('h0').append(
+	var co = el('h0').child(
 		list(function() {
-			return text('x').extra('update', function(v) { this.text(v.v); this.update = null })
-		}).extra('getKey', v => v.k)
+			return text('x').set('update', function(v) { this.text(v.v); this.update = null })
+		}).set('getKey', v => v.k)
 	)
 	var elem = co.node
 
@@ -127,11 +128,11 @@ ct('list keyed', function() {
 })
 
 ct('list select', function() {
-	var co = el('h0').append(
-		list({
-			a: function() { return text('').extra('update', function(v) { this.text('a'+v) }) },
-			b: text('').extra('update', function(v) { this.text('b'+v) })
-		}).extra('select', v => v)
+	var co = el('h0').child(
+		select({
+			a: text('').set('update', function(v) { this.text('a'+v) }),
+			b: text('').set('update', function(v) { this.text('b'+v) })
+		}).set('select', v => v)
 	)
 	var elem = co.node
 

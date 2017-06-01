@@ -18,7 +18,7 @@ ct('text - static', function() {
 })
 
 ct('text - dynamic', function() {
-	var co = text('abc').extra('update', function(v) { this.text(v+v) })
+	var co = text('abc').set('update', function(v) { this.text(v+v) })
 	ct('===', co.node.nodeValue, 'abc')
 	co.update('def')
 	ct('===', co.node.nodeValue, 'defdef')

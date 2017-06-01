@@ -12,9 +12,48 @@ export function CElement(node) {
 
 export var CElementProto = CElement.prototype = {
 	constructor: CElement,
-	_events: null,
+	_handlers: null,
 	foot: null,
-	getParent: function() { return this.node.parentNode[attoKey] },
+	get parent() { return this.node.parentNode[attoKey] },
+
+	wrap: function(name, action) {
+		var method = this[name],
+				arity = method.length
+
+		var async = false
+		if (action.length === arity + 1) async = true
+		else if (action.length !== arity) throw Error(name + 'wrapper arity mimatch')
+
+		this[name] = function() {
+			var len = arguments.length,
+					args = Array(arity)
+			for (var i = 0; i < arity; ++i) args[i] = i < len ? arguments[i] : null
+			if (async) {
+				args.push(method.bind(this))
+				action.apply(this, args)
+			}
+			else {
+				action.apply(this, args)
+				method.apply(this, args)
+			}
+			return this
+		}
+		return this
+	},
+
+	wrapAsync: function (name, action) {
+		var method = this[name],
+				arity = method.length
+		if (action.length !== arity + 1) throw Error(name + 'async wrapper arity mimatch')
+		this[name] = function () {
+			var len = arguments.length,
+					args = Array(arity)
+			for (var i = 0; i < arity; ++i) args[i] = i < len ? arguments[i] : null
+			action.apply(this, args)
+			return method.apply(this, args)
+		}
+		return this
+	},
 
 	/**
 	* @function
@@ -46,7 +85,7 @@ export var CElementProto = CElement.prototype = {
 
 	destroy: function() {
 		this.remove()
-		if (this._events) for (var i=0, ks=Object.keys(this._events); i<ks.length; ++i) this.event(ks[i], false)
+		if (this._handlers) for (var i=0, ks=Object.keys(this._handlers); i<ks.length; ++i) this.on(ks[i], false)
 		return this
 	},
 
@@ -56,7 +95,7 @@ export var CElementProto = CElement.prototype = {
 	 * @param {*} val value
 	 * @returns {!Object} this
 	 */
-	extra: function(key, val) {
+	set: function(key, val) {
 		this[key] = val
 		return this
 	},
@@ -82,10 +121,10 @@ export var CElementProto = CElement.prototype = {
 		return this
 	},
 
-	append: function(child) {
+	child: function(child) {
 		var node = this.node
 		if (child != null) {
-			if (Array.isArray(child)) child.forEach(this.append, this)
+			if (Array.isArray(child)) child.forEach(this.child, this)
 			else if (child.moveTo) child.moveTo(node)
 			else node.appendChild(
 				child.cloneNode ? child.cloneNode(true) : D.createTextNode(''+child)
@@ -96,21 +135,21 @@ export var CElementProto = CElement.prototype = {
 
 	// EVENT LISTENERS
 	handleEvent: function(event) {
-		var handlers = this._events,
+		var handlers = this._handlers,
 				handler = handlers && handlers[event.type]
 		if (handler) handler.call(this, event)
 	},
 
-	event: function(type, handler) {
+	on: function(type, handler) {
 		if (!handler) {
-			if (this._events && this._events[type]) {
-				delete this._events[type]
+			if (this._handlers && this._handlers[type]) {
+				delete this._handlers[type]
 				this.node.removeEventListener(type, this, false)
 			}
 		}
 		else {
-			if (!this._events) this._events = {}
-			this._events[type] = handler
+			if (!this._handlers) this._handlers = {}
+			this._handlers[type] = handler
 			this.node.addEventListener(type, this, false)
 		}
 		return this

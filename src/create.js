@@ -1,7 +1,8 @@
 import {D} from './document'
 import {CElement} from './_c-element'
 import {CNode} from './_c-node'
-import {CList} from './_c-list'
+import {CKeyed} from './_c-keyed'
+import {CSelect} from './_c-select'
 
 var svgURI = 'http://www.w3.org/2000/svg'
 
@@ -46,11 +47,22 @@ export function text(txt) { //eslint-disable-line no-unused-vars
 
 
 /**
- * @function list
- * @param {!Function} model model
- * @param {*} [config] model
+ * @function
+ * @param {!Function} factory
+ * @param {Function} [getKey]
  * @return {!Object} Component
  */
-export function list(model, config) { //eslint-disable-line no-unused-vars
-	return new CList(model, config)
+export function list(factory, getKey) {
+	return new CKeyed(factory, getKey)
+}
+
+
+/**
+ * @function
+ * @param {!Object|!Array} items
+ * @param {Function} [getKeys]
+ * @return {!Object} Component
+ */
+export function select(items, getKeys) {
+	return new CSelect(items, getKeys)
 }

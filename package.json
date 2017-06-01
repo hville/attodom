@@ -29,7 +29,7 @@
     "build:min": "google-closure-compiler-js --compilationLevel ADVANCED --languageIn ES5 --languageOut ES5 --useTypesForOptimization true ./dist/browser.js > ./dist/browser.min.js",
     "build:gzip": "npm run gzip -- ./dist/browser.min.js ./bld/browser.gz",
     "build": "npm run build:main && npm run build:module && npm run build:browser && npm run build:min",
-    "prepublish": "npm test && npm run build:browser && npm run build:min",
+    "prepublishOnly": "npm test && npm run build:browser && npm run build:min",
     "example:table": "cd ./examples && rollup table.js -c -w",
     "example:transition": "cd ./examples && rollup transition.js -c -w"
   },

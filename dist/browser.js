@@ -26,9 +26,48 @@ function CElement(node) {
 
 var CElementProto = CElement.prototype = {
 	constructor: CElement,
-	_events: null,
+	_handlers: null,
 	foot: null,
-	getParent: function() { return this.node.parentNode[attoKey] },
+	get parent() { return this.node.parentNode[attoKey] },
+
+	wrap: function(name, action) {
+		var method = this[name],
+				arity = method.length;
+
+		var async = false;
+		if (action.length === arity + 1) async = true;
+		else if (action.length !== arity) throw Error(name + 'wrapper arity mimatch')
+
+		this[name] = function() {
+			var len = arguments.length,
+					args = Array(arity);
+			for (var i = 0; i < arity; ++i) args[i] = i < len ? arguments[i] : null;
+			if (async) {
+				args.push(method.bind(this));
+				action.apply(this, args);
+			}
+			else {
+				action.apply(this, args);
+				method.apply(this, args);
+			}
+			return this
+		};
+		return this
+	},
+
+	wrapAsync: function (name, action) {
+		var method = this[name],
+				arity = method.length;
+		if (action.length !== arity + 1) throw Error(name + 'async wrapper arity mimatch')
+		this[name] = function () {
+			var len = arguments.length,
+					args = Array(arity);
+			for (var i = 0; i < arity; ++i) args[i] = i < len ? arguments[i] : null;
+			action.apply(this, args);
+			return method.apply(this, args)
+		};
+		return this
+	},
 
 	/**
 	* @function
@@ -60,7 +99,7 @@ var CElementProto = CElement.prototype = {
 
 	destroy: function() {
 		this.remove();
-		if (this._events) for (var i=0, ks=Object.keys(this._events); i<ks.length; ++i) this.event(ks[i], false);
+		if (this._handlers) for (var i=0, ks=Object.keys(this._handlers); i<ks.length; ++i) this.on(ks[i], false);
 		return this
 	},
 
@@ -70,7 +109,7 @@ var CElementProto = CElement.prototype = {
 	 * @param {*} val value
 	 * @returns {!Object} this
 	 */
-	extra: function(key, val) {
+	set: function(key, val) {
 		this[key] = val;
 		return this
 	},
@@ -96,10 +135,10 @@ var CElementProto = CElement.prototype = {
 		return this
 	},
 
-	append: function(child) {
+	child: function(child) {
 		var node = this.node;
 		if (child != null) {
-			if (Array.isArray(child)) child.forEach(this.append, this);
+			if (Array.isArray(child)) child.forEach(this.child, this);
 			else if (child.moveTo) child.moveTo(node);
 			else node.appendChild(
 				child.cloneNode ? child.cloneNode(true) : exports.D.createTextNode(''+child)
@@ -110,21 +149,21 @@ var CElementProto = CElement.prototype = {
 
 	// EVENT LISTENERS
 	handleEvent: function(event) {
-		var handlers = this._events,
+		var handlers = this._handlers,
 				handler = handlers && handlers[event.type];
 		if (handler) handler.call(this, event);
 	},
 
-	event: function(type, handler) {
+	on: function(type, handler) {
 		if (!handler) {
-			if (this._events && this._events[type]) {
-				delete this._events[type];
+			if (this._handlers && this._handlers[type]) {
+				delete this._handlers[type];
 				this.node.removeEventListener(type, this, false);
 			}
 		}
 		else {
-			if (!this._events) this._events = {};
-			this._events[type] = handler;
+			if (!this._handlers) this._handlers = {};
+			this._handlers[type] = handler;
 			this.node.addEventListener(type, this, false);
 		}
 		return this
@@ -158,9 +197,10 @@ function CNode(node) {
 CNode.prototype = {
 	constructor: CNode,
 	foot: null,
-	getParent: CElementProto.getParent,
+	get parent() { return this.node.parentNode[attoKey] },
 	prop: CElementProto.prop,
-	extra: CElementProto.extra,
+	wrap: CElementProto.wrap,
+	set: CElementProto.set,
 	moveTo: CElementProto.moveTo,
 	remove: CElementProto.remove,
 	destroy: CElementProto.remove,
@@ -174,37 +214,26 @@ function nodeValue(val) {
 
 /**
  * @constructor
- * @param {!Object} template
- * @param {*} [config]
+ * @param {!Function} factory
+ * @param {Function} [getKey]
  */
-function CList(template, config) { //TODO list config vs template config
+function CKeyed(factory, getKey) {
+	this.refs = Object.create(null);
+	this.factory = factory;
+	if (getKey) this.getKey = getKey;
+
 	this.node = exports.D.createComment('^');
 	this.foot = exports.D.createComment('$');
-	this.refs = Object.create(null);
 	this.node[attoKey] = this;
 	this.foot[attoKey] = this;
-
-	// select list
-	if (typeof template === 'object') {
-		this.update = this.updateChildren = updateSelectChildren;
-		for (var i=0, ks=Object.keys(template); i<ks.length; ++i) {
-			var key = ks[i];
-			this.refs[key] = template[key].node ? template[key] : template[key].call(this, config, key);
-		}
-	}
-	//keyed
-	else {
-		this.template = template;
-		this.update = this.updateChildren;
-		this.config = config;
-	}
 }
 
-CList.prototype = {
-	constructor: CList,
-	getParent: CElementProto.getParent,
-	extra: CElementProto.extra,
+var CKeyedProto = CKeyed.prototype = {
+	constructor: CKeyed,
+	set: CElementProto.set,
 	prop: CElementProto.prop,
+	wrap: CElementProto.wrap,
+	get parent() { return this.node.parentNode[attoKey] },
 	remove: remove,
 	destroy: remove,
 
@@ -245,42 +274,96 @@ CList.prototype = {
 		return item.foot || item.node
 	},
 
-	// FOR KEYED LIST
 	getKey: function(v,i,a) { //eslint-disable-line no-unused-vars
 		return i  // default: indexed
 	},
+	update: updateKeyedChildren,
+	updateChildren: updateKeyedChildren,
+};
 
-	updateChildren: function updateKeyedChildren(arr) {
-		var foot = this.foot,
-				parent = foot.parentNode || this.moveTo(exports.D.createDocumentFragment()).foot.parentNode,
-				spot = this.node.nextSibling,
-				items = this.refs,
-				refs = Object.create(null);
 
-		for (var i=0; i<arr.length; ++i) {
-			var key = this.getKey(arr[i], i, arr),
-					item = refs[key] = items[key] || this.template(this.config);
-			if (item.update) item.update(arr[i], i, arr);
-			spot = this._placeItem(parent, item, spot, foot).nextSibling;
-		}
-		this.refs = refs;
 
+/**
+* @function remove
+* @return {!Object} this
+*/
+function remove() {
+	var head = this.node,
+			origin = head.parentNode,
+			spot = head.nextSibling;
+
+	if (origin) {
 		if (spot !== this.foot) do {
-			item = foot.previousSibling[attoKey];
+			var item = this.foot.previousSibling[attoKey];
 			item.destroy();
 		} while (item !== spot[attoKey])
+		origin.removeChild(this.foot);
+		origin.removeChild(head);
+	}
 
-		return this
+	return this
+}
+
+function updateKeyedChildren(arr) {
+	var foot = this.foot,
+			parent = foot.parentNode || this.moveTo(exports.D.createDocumentFragment()).foot.parentNode,
+			spot = this.node.nextSibling,
+			items = this.refs,
+			refs = Object.create(null);
+
+	for (var i = 0; i < arr.length; ++i) {
+		var key = this.getKey(arr[i], i, arr),
+				item = refs[key] = items[key] || this.factory(this.config);
+		if (item.update) item.update(arr[i], i, arr);
+		spot = this._placeItem(parent, item, spot, foot).nextSibling;
+	}
+	this.refs = refs;
+
+	if (spot !== this.foot) do {
+		item = foot.previousSibling[attoKey];
+		item.destroy();
+	} while (item !== spot[attoKey])
+
+	return this
+}
+
+/**
+ * @constructor
+ * @param {!Object} items
+ * @param {Function} [select]
+ */
+function CSelect(items, select) { //TODO list config vs template config
+	this.refs = items;
+	if (select) this.select = select;
+
+	this.node = exports.D.createComment('^');
+	this.foot = exports.D.createComment('$');
+	this.node[attoKey] = this;
+	this.foot[attoKey] = this;
+}
+
+CSelect.prototype = {
+	constructor: CSelect,
+
+/**
+ * select all by default
+ * @function
+ * @param {...*} [v]
+ * @return {!Array}
+ */
+	select: function (v) { //eslint-disable-line no-unused-vars
+		return Object.keys(this.refs)
 	},
 
-	// FOR SELECT LIST
-	/**
-	 * select all by default
-	 * @function
-	 * @param {...*} [v]
-	 * @return {!Array}
-	 */
-	select: function(v) { return Object.keys(this.refs) } //eslint-disable-line no-unused-vars
+	set: CElementProto.set,
+	wrap: CElementProto.wrap,
+	get parent() { return this.node.parentNode[attoKey] },
+	remove: CKeyedProto.remove,
+	destroy: CKeyedProto.remove,
+	moveTo: CKeyedProto.moveTo,
+	_placeItem: CKeyedProto._placeItem,
+	update: updateSelectChildren,
+	updateChildren: updateSelectChildren
 };
 
 
@@ -302,27 +385,6 @@ function updateSelectChildren(v,k,o) {
 		item = this.foot.previousSibling[attoKey];
 		item.destroy();
 	} while (item !== spot[attoKey])
-	return this
-}
-
-/**
-* @function remove
-* @return {!Object} this
-*/
-function remove() {
-	var head = this.node,
-			origin = head.parentNode,
-			spot = head.nextSibling;
-
-	if (origin) {
-		if (spot !== this.foot) do {
-			var item = this.foot.previousSibling[attoKey];
-			item.destroy();
-		} while (item !== spot[attoKey])
-		origin.removeChild(this.foot);
-		origin.removeChild(head);
-	}
-
 	return this
 }
 
@@ -369,13 +431,24 @@ function text(txt) { //eslint-disable-line no-unused-vars
 
 
 /**
- * @function list
- * @param {!Function} model model
- * @param {*} [config] model
+ * @function
+ * @param {!Function} factory
+ * @param {Function} [getKey]
  * @return {!Object} Component
  */
-function list(model, config) { //eslint-disable-line no-unused-vars
-	return new CList(model, config)
+function list(factory, getKey) {
+	return new CKeyed(factory, getKey)
+}
+
+
+/**
+ * @function
+ * @param {!Object|!Array} items
+ * @param {Function} [getKeys]
+ * @return {!Object} Component
+ */
+function select(items, getKeys) {
+	return new CSelect(items, getKeys)
 }
 
 function find(start, test, until) { //find(test, head=body, foot=null)
@@ -429,6 +502,7 @@ exports.element = element;
 exports.svg = svg;
 exports.elementNS = elementNS;
 exports.list = list;
+exports.select = select;
 exports.setDocument = setDocument;
 exports.find = find;
 exports.css = css$$1;

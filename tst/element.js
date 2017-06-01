@@ -21,22 +21,22 @@ ct('element - static', function() {
 	ct('===', el('p').node.nodeType, 1)
 
 	// explicit
-	ct('===', toString(el('p').append('ab').node.childNodes), 'ab')
+	ct('===', toString(el('p').child('ab').node.childNodes), 'ab')
 	ct('===', el('p').attr('id', 'A').node.id, 'A')
 
 	// automagic
-	ct('===', toString(el('p').append('ab').node.childNodes), 'ab')
+	ct('===', toString(el('p').child('ab').node.childNodes), 'ab')
 	ct('===', el('p').attr('data-id', 'A').prop('id', 'A').node.id, 'A')
 })
 
 ct('element - mixed children', function() {
-	ct('===', el('p').append([0, el('p'), el('p'), el('p')]).node.childNodes.length, 4)
-	ct('===', el('p').append([el('p'), [], el('p'), [el('p'), 0]]).node.childNodes.length, 4)
-	ct('===', el('p').append([el('p'), null, 0, [el('p'), el('p')]]).node.childNodes.length, 4)
+	ct('===', el('p').child([0, el('p'), el('p'), el('p')]).node.childNodes.length, 4)
+	ct('===', el('p').child([el('p'), [], el('p'), [el('p'), 0]]).node.childNodes.length, 4)
+	ct('===', el('p').child([el('p'), null, 0, [el('p'), el('p')]]).node.childNodes.length, 4)
 })
 
 ct('element - static, multiple mixed arguments', function() {
-	var p = el('p').append(0).class('A').append(1).prop('id', 'B').append(2).node
+	var p = el('p').child(0).class('A').child(1).prop('id', 'B').child(2).node
 	ct('===', p.nodeType, 1)
 	ct('===', p.firstChild.nodeValue, '0')
 	ct('===', p.className, 'A')
@@ -46,7 +46,7 @@ ct('element - static, multiple mixed arguments', function() {
 })
 
 ct('element - event', function() {
-	var cmp = el('h0').event('click', function(e) { e.target.textContent += 'a' }),
+	var cmp = el('h0').on('click', function(e) { e.target.textContent += 'a' }),
 			elm = cmp.node
 
 	ct('===', elm.textContent, '')
@@ -57,10 +57,10 @@ ct('element - event', function() {
 })
 
 ct('element - update', function() {
-	var co = el('h0').append([
+	var co = el('h0').child([
 		P.text('a'),
-		P.text('b').extra('update', function(v) { this.text(v.toUpperCase()) }),
-		P.text('c').extra('update', function(v) { this.text(v.toUpperCase()); this.update = null })
+		P.text('b').set('update', function(v) { this.text(v.toUpperCase()) }),
+		P.text('c').set('update', function(v) { this.text(v.toUpperCase()); this.update = null })
 	])
 	ct('===', co.node.textContent, 'abc')
 
@@ -71,9 +71,9 @@ ct('element - update', function() {
 })
 
 ct('element - custom element', function() {
-	var child = el('h2').append('x')
-	var root = el('h0').append(
-		el('h1').append(child)
+	var child = el('h2').child('x')
+	var root = el('h0').child(
+		el('h1').child(child)
 	)
 	root.update = child.text.bind(child)
 	ct('===', root.node.textContent, 'x')
