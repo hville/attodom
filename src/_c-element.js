@@ -41,20 +41,6 @@ export var CElementProto = CElement.prototype = {
 		return this
 	},
 
-	wrapAsync: function (name, action) {
-		var method = this[name],
-				arity = method.length
-		if (action.length !== arity + 1) throw Error(name + 'async wrapper arity mimatch')
-		this[name] = function () {
-			var len = arguments.length,
-					args = Array(arity)
-			for (var i = 0; i < arity; ++i) args[i] = i < len ? arguments[i] : null
-			action.apply(this, args)
-			return method.apply(this, args)
-		}
-		return this
-	},
-
 	/**
 	* @function
 	* @param  {!Object} parent destination parent
