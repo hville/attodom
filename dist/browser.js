@@ -55,20 +55,6 @@ var CElementProto = CElement.prototype = {
 		return this
 	},
 
-	wrapAsync: function (name, action) {
-		var method = this[name],
-				arity = method.length;
-		if (action.length !== arity + 1) throw Error(name + 'async wrapper arity mimatch')
-		this[name] = function () {
-			var len = arguments.length,
-					args = Array(arity);
-			for (var i = 0; i < arity; ++i) args[i] = i < len ? arguments[i] : null;
-			action.apply(this, args);
-			return method.apply(this, args)
-		};
-		return this
-	},
-
 	/**
 	* @function
 	* @param  {!Object} parent destination parent
@@ -204,13 +190,9 @@ CNode.prototype = {
 	moveTo: CElementProto.moveTo,
 	remove: CElementProto.remove,
 	destroy: CElementProto.remove,
-	text: nodeValue,
-	update: nodeValue
+	text: CElementProto.text,
+	update: CElementProto.text
 };
-
-function nodeValue(val) {
-	this.node.nodeValue = val;
-}
 
 /**
  * @constructor
@@ -280,7 +262,6 @@ var CKeyedProto = CKeyed.prototype = {
 	update: updateKeyedChildren,
 	updateChildren: updateKeyedChildren,
 };
-
 
 
 /**
