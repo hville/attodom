@@ -1,0 +1,45 @@
+{
+  "name": "attodom",
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "module": "./module.js",
+  "browser": "./dist/browser.js",
+  "description": "yet another small DOM component library",
+  "keywords": [
+    "component",
+    "dom",
+    "createElement",
+    "hyperscript",
+    "svg",
+    "xml",
+    "namespace"
+  ],
+  "author": "Hugo Villeneuve",
+  "dependencies": {},
+  "devDependencies": {
+    "cotest": "^2.1.1",
+    "rollup-plugin-livereload": "^0.4.0",
+    "rollup-plugin-serve": "^0.3.0"
+  },
+  "scripts": {
+    "test": "npm run build:main && cotest tst",
+    "gzip": "node -e \"fs.writeFileSync(process.argv[2], zlib.gzipSync(fs.readFileSync(process.argv[1])))\"",
+    "build:main": "rollup -o ./dist/index.js -f cjs --banner \"/* hugov@runbox.com | https://github.com/hville/attodom.git | license:MIT */\" ./module.js",
+    "build:browser": "rollup -o ./dist/browser.js -f iife -n attodom --banner \"/* hugov@runbox.com | https://github.com/hville/attodom.git | license:MIT */\" ./module.js",
+    "build:min": "google-closure-compiler-js --compilationLevel ADVANCED --languageIn ES5 --languageOut ES5 --useTypesForOptimization true ./dist/browser.js > ./dist/browser.min.js",
+    "build:gzip": "npm run gzip -- ./dist/browser.min.js ./bld/browser.gz",
+    "build": "npm run build:main && npm run build:module && npm run build:browser && npm run build:min",
+    "prepublish": "npm test && npm run build:browser && npm run build:min",
+    "example:table": "cd ./examples && rollup table.js -c -w",
+    "example:transition": "cd ./examples && rollup transition.js -c -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hville/attodom.git"
+  },
+  "private": false,
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
+}
