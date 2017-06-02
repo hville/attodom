@@ -1,6 +1,6 @@
 {
   "name": "attodom",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "./dist/index.js",
   "module": "./module.js",
   "browser": "./dist/browser.js",
@@ -18,8 +18,7 @@
   "dependencies": {},
   "devDependencies": {
     "cotest": "^2.1.1",
-    "rollup-plugin-livereload": "^0.4.0",
-    "rollup-plugin-serve": "^0.3.0"
+    "rulo": "^0.4.1"
   },
   "scripts": {
     "test": "npm run build:main && cotest tst",
@@ -30,8 +29,8 @@
     "build:gzip": "npm run gzip -- ./dist/browser.min.js ./bld/browser.gz",
     "build": "npm run build:main && npm run build:module && npm run build:browser && npm run build:min",
     "prepublishOnly": "npm test && npm run build:browser && npm run build:min",
-    "example:table": "cd ./examples && rollup table.js -c -w",
-    "example:transition": "cd ./examples && rollup transition.js -c -w"
+    "example:table": "cd ./examples && rulo -i table.js -o index.js",
+    "example:transition": "cd ./examples && rulo -i transition.js -o index.js"
   },
   "repository": {
     "type": "git",

@@ -22,11 +22,11 @@ ct('element - static', function() {
 
 	// explicit
 	ct('===', toString(el('p').child('ab').node.childNodes), 'ab')
-	ct('===', el('p').attr('id', 'A').node.id, 'A')
+	ct('===', el('p').a('id', 'A').node.id, 'A')
 
 	// automagic
 	ct('===', toString(el('p').child('ab').node.childNodes), 'ab')
-	ct('===', el('p').attr('data-id', 'A').prop('id', 'A').node.id, 'A')
+	ct('===', el('p').a('data-id', 'A').p('id', 'A').node.id, 'A')
 })
 
 ct('element - mixed children', function() {
@@ -36,7 +36,7 @@ ct('element - mixed children', function() {
 })
 
 ct('element - static, multiple mixed arguments', function() {
-	var p = el('p').child(0).class('A').child(1).prop('id', 'B').child(2).node
+	var p = el('p').child(0).class('A').child(1).p('id', 'B').child(2).node
 	ct('===', p.nodeType, 1)
 	ct('===', p.firstChild.nodeValue, '0')
 	ct('===', p.className, 'A')

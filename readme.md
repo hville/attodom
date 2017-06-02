@@ -1,77 +1,70 @@
-<!-- markdownlint-disable MD004 MD007 MD010 MD012 MD041 MD022 MD024 MD032 MD036 -->
-
 # attodom
 
 *yet another small DOM component library, <2kb*
 
 • [Example](#example) • [Why](#why) • [API](#api) • [License](#license)
 
-## Example
-
-supports different environments
-* CJS: `require('attodom').element`
-  * can also be used server-side. See `setDocument` below
-* ES modules: `import {element} from 'attodom'`
-* browser: (`attodom.element`)*
+## Examples
 
 ```javascript
 import {D, element as el, list} from '../module'
 import {Store} from './Store' // any user store will do
 import {ic_remove, ic_add} from './icons'
 
-var store = new Store([]),
-		i = 0,
-		j = 0
+var store = new Store([])
 
-var table = el('table',
-	el('caption', {class: 'f4'}, 'table example with...'),
-	el('tbody',
-		list(
-			el('tr',
-				function() { i = this.key },
-				el('td', //leading column with icon
-					function() { this.i = i },
-					{ events: { click: function() { this.root.store.delRow(this.i) } } },
-					ic_remove
-				),
-				list( // data columns
-					el('td',
-						function() { j = this.key },
-						el('input',
-							function() {
-								this.i = i; this.j = j
-								this.update = function(v) { this.node.value = v }
-								this.on('change', function() {
-									this.root.store.set(this.node.value, [this.i, this.j])
-								})
-							}
-						)
-					)
-				)
-			)
-		),
-		el('tr',
-			el('td',
-				{ events: {click: function() { this.root.store.addRow() } } },
-				ic_add
-			)
-		)
-	)
-).set('store', store)
+var table = el('table').child([
+  el('caption').class('f4').text('table example with...'),
+  el('tbody').child([
+    list(function(rowKey) {
+      return el('tr').child([
+        el('td') //leading column with icon
+        .on('click', function() {store.delRow(rowKey) })
+        .child(ic_remove),
+        list(function(colKey) {
+          return el('td') // data columns
+          .child(
+            el('input')
+            .set('update', function(v) { this.node.value = v })
+            .on('change', function() {store.set(this.node.value, [rowKey, colKey]) } )
+          )
+        })
+      ])
+    }),
+    el('tr').child(
+      el('td')
+      .on('click', function() { store.addRow() } )
+      .child(ic_add)
+    )
+  ])
+])
 .moveTo(D.body)
 
 store.onchange = function() { table.update( store.get() ) }
 store.set([
-	['icons', 'SVG icons'],
-	['keyed', 'keyed list'],
-	['store', 'data flow'],
-	['event', 'event listeners']
+  ['icons', 'SVG icons'],
+  ['keyed', 'keyed list'],
+  ['store', 'data flow'],
+  ['event', 'event listeners']
 ])
 ```
 
+supports different environments
+* CJS: `require('attodom').element`
+* ES modules: `import {element} from 'attodom'`
+* browser: (`attodom.element`)
+* server: See `setDocument` below
+
+Two examples are available:
+* `npm run example:table`: dynamic list, 1-way data flow, components, icons
+* `npm run example:transition`: select list, transitions
+
+
 ## Why
 
-...experimenting on different APIs
+* experimenting on different APIs to find the minimal helpers required for
+  * dynamic nodes, elements and lists
+  * one way data flow from root component to child nodes
 
 
 ### Features
@@ -97,74 +90,93 @@ store.set([
 
 ### Components
 
+Components can be created with the functions element, elementNS, svg, text, list, select and component
+
 Element
 * `element(tagName)`
 * `elementNS(nsURI, tagName)`
 * `svg(tagName)`
+* `component(element)`
 
 Node
 * `text(textContent)`
+* `component(node)`
+* `fragment()`
 
-List
+List (component with multiple or no nodes)
 * `list(factory)`
+* `select(components)`
+
 
 Components have a number of chainable methods:
-* element attributes: `.attr(key, val)`
-* element children: `.child(node | number | string | Array)`
-* element event listeners: `.on(name, callback)`
-* node properties: `.prop(key, val)`
 * component properties: `.set(key, val)`
+* node properties: `.p(key, val)`
+* method wrapper: `.wrap(name, function)`
+* node textContent: `.text(key, val)`
+* element attributes: `.a(key, val)`
+* element class: `.class(string)`
+* element child: `.child(node | number | string | Array)`
+* element event listeners: `.on(name, callback)` to add, `on(name, falsy)` to remove
 
 
-### List
+### List and Select components
 
-List are special components representing a group of multiple nodes.
+`List` and `Select` are special components representing a group of multiple nodes.
 
-Resizable lists take a single factory that will be used to generate list of varying sizes
+`List` take a single factory that will be used to generate list of varying sizes and an optional argument to derive a unique key from individual records
 * `list(factory)` to create dynamic indexed set of nodes based on the size of the array upon updates
-* `list(factory, factory arguments).set('getKey', function(v) {return v.id}})` for a keyed list
+* `list(factory, function(v) {return v.id}})` for a keyed list
 
-Select lists have predefined components or factories that are used to conditionally display subsets on updates
-* `list({a: factoryA, b: componentB}).set('select', function(v) {return [v.id]}})` created a conditional list
+Select lists have predefined components that are used to conditionally display subsets on updates. The optional select function returns the selected keys to show on each updates
+* `list({a: componentA, b: componentB}, function(v) {return v ? [a] : [b]})`
 
-lists can be stacked and nested.
+lists can be stacked and nested with other components or lists.
 
 
-#### DOM references
+#### DOM component properties and methods
 
-* `.node`: the associated DOM node or anchor node for lists
-
-#### DOM functions
-
+* `component.node`: the associated DOM node or comment node anchor node for lists
 * `.moveTo(parent [,before])`: to move a component
 * `.remove()`: to remove a component from the DOM
-* `.destroy()`: to remove a component and remove listeners
 
-#### Update Functions
+#### Component update functions
 
-* `.text(v)`: to set the node textContent of element Component
 * `.update(...)` the function to trigger changes based on external data
 * `.updateChildren(..)` to pass update data down the tree.
 
-By default, update is set to `text` for text components and `updateChildren` for the rest.
+By default, update is set to `text` for text components and `updateChildren` for the other components.
 
+#### Lifecycle events and method wrappers
 
-#### Other
+For additional lifecycle behaviours, component methods can be wrapped (`moveTo`, `remove`). If the arity (number of arguments) of the custom action is greater than the that of the component method, the method will be passed as an argument for async behaviours
 
-* `.refs`: used in list to hold node references
-* `.getKey(val, key, arr) => string`: to get the unique key for keyed lists
-* `.select(val, key) => array`: array of keys for conditional/select lists
+* `co.wrap('moveTo', function() { console.log('about to move') })`
+* `co.wrap('remove', function(cb) { setTimeout(cb) })`
+
+Wrapper actions are launched before the native method.
+
 
 
 ### Other helpers
+
 * `setDocument(document)` to set the Document interface for testing or server use
   * eg. `setDocument((new JSDOM).window.document)`
 * `D` reference to the Document interface for testing or server use
-  * eg. `var body = D.body`
+  * eg. `document.body === D.body`
 * `find(from [, test] [, until])` find a component within nodes or components and matching the test function. It parses nodes up and down following the html markup order.
   * eg. `find(document.body)` to get the first component in the document
   * eg. `find(tableComponent, function(c) { return c.key === 5 } )`
 * `css(ruleText)` to insert a rule in the document for cases where an exported factory relies on a specific css rule that is not convenient or practical to include in a seperate css file
+
+
+### Gotcha
+
+* Adding a child node (`parent.child(node)`) will deep clone the node without affection other areas. Only components can be moved.
+* `parent.child(component(node))` will move the new component and associated node
+* A node can only belong to one component. Creating a component with `component(node)` will destroy any existing component already tied to the node
+* Components may include items that that are not clonable like event listeners and custom properties. As such, modules should either export plain nodes (`svg(...).node`) or component factory functions.
+* `List` and `Select` can't be updated unless they have a parentNode or parent fragment to hold them together.
+
 
 ## License
 

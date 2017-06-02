@@ -1,7 +1,6 @@
 import {CElementProto} from './_c-element'
 import {attoKey} from './atto-key'
 
-
 /**
  * @constructor
  * @param {Node} node - DOM node
@@ -15,12 +14,11 @@ CNode.prototype = {
 	constructor: CNode,
 	foot: null,
 	get parent() { return this.node.parentNode[attoKey] },
-	prop: CElementProto.prop,
+	p: CElementProto.p,
 	wrap: CElementProto.wrap,
 	set: CElementProto.set,
 	moveTo: CElementProto.moveTo,
 	remove: CElementProto.remove,
-	destroy: CElementProto.remove,
 	text: CElementProto.text,
 	update: CElementProto.text
 }

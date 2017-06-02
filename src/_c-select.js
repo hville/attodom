@@ -3,13 +3,12 @@ import {attoKey} from './atto-key'
 import {CElementProto} from './_c-element'
 import {CKeyedProto} from './_c-keyed'
 
-
 /**
  * @constructor
  * @param {!Object} items
  * @param {Function} [select]
  */
-export function CSelect(items, select) { //TODO list config vs template config
+export function CSelect(items, select) {
 	this.refs = items
 	if (select) this.select = select
 
@@ -35,32 +34,33 @@ CSelect.prototype = {
 	set: CElementProto.set,
 	wrap: CElementProto.wrap,
 	get parent() { return this.node.parentNode[attoKey] },
+	foot: null,
 	remove: CKeyedProto.remove,
-	destroy: CKeyedProto.remove,
 	moveTo: CKeyedProto.moveTo,
 	_placeItem: CKeyedProto._placeItem,
 	update: updateSelectChildren,
 	updateChildren: updateSelectChildren
 }
 
-
 function updateSelectChildren(v,k,o) {
 	var foot = this.foot,
-			parent = foot.parentNode || this.moveTo(D.createDocumentFragment()).foot.parentNode,
+			parent = foot.parentNode,
 			spot = this.node.nextSibling,
 			items = this.refs,
 			keys = this.select(v,k,o)
-
+	if (!parent) throw Error('select update requires a parent node')
 	for (var i=0; i<keys.length; ++i) {
 		var item = items[keys[i]]
 		if (item) {
-			if (item.update) item.update(v,k,o)
+			// place before update since lists require a parent before update
 			spot = this._placeItem(parent, item, spot, foot).nextSibling
+			if (item.update) item.update(v,k,o)
 		}
 	}
-	if (spot !== this.foot) do {
-		item = this.foot.previousSibling[attoKey]
-		item.destroy()
-	} while (item !== spot[attoKey])
+	while (spot !== this.foot) {
+		item = spot[attoKey]
+		spot = (item.foot || item.node).nextSibling
+		item.remove()
+	}
 	return this
 }

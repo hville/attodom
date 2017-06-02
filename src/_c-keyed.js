@@ -2,7 +2,6 @@ import {D} from './document'
 import {attoKey} from './atto-key'
 import {CElementProto} from './_c-element'
 
-
 /**
  * @constructor
  * @param {!Function} factory
@@ -22,11 +21,10 @@ export function CKeyed(factory, getKey) {
 export var CKeyedProto = CKeyed.prototype = {
 	constructor: CKeyed,
 	set: CElementProto.set,
-	prop: CElementProto.prop,
 	wrap: CElementProto.wrap,
 	get parent() { return this.node.parentNode[attoKey] },
 	remove: remove,
-	destroy: remove,
+	foot: null,
 
 
 	/**
@@ -68,10 +66,10 @@ export var CKeyedProto = CKeyed.prototype = {
 	getKey: function(v,i,a) { //eslint-disable-line no-unused-vars
 		return i  // default: indexed
 	},
+
 	update: updateKeyedChildren,
 	updateChildren: updateKeyedChildren,
 }
-
 
 /**
 * @function remove
@@ -83,10 +81,11 @@ function remove() {
 			spot = head.nextSibling
 
 	if (origin) {
-		if (spot !== this.foot) do {
-			var item = this.foot.previousSibling[attoKey]
-			item.destroy()
-		} while (item !== spot[attoKey])
+		while (spot !== this.foot) {
+			var item = spot[attoKey]
+			spot = (item.foot || item.node).nextSibling
+			item.remove()
+		}
 		origin.removeChild(this.foot)
 		origin.removeChild(head)
 	}
@@ -96,23 +95,25 @@ function remove() {
 
 function updateKeyedChildren(arr) {
 	var foot = this.foot,
-			parent = foot.parentNode || this.moveTo(D.createDocumentFragment()).foot.parentNode,
+			parent = foot.parentNode,
 			spot = this.node.nextSibling,
 			items = this.refs,
 			refs = Object.create(null)
-
+	if (!parent) throw Error('list update requires a parent node')
 	for (var i = 0; i < arr.length; ++i) {
 		var key = this.getKey(arr[i], i, arr),
-				item = refs[key] = items[key] || this.factory(this.config)
-		if (item.update) item.update(arr[i], i, arr)
+				item = refs[key] = items[key] || this.factory(key, arr[i], i, arr)
+		// place before update since lists require a parent before update
 		spot = this._placeItem(parent, item, spot, foot).nextSibling
+		if (item.update) item.update(arr[i], i, arr)
 	}
 	this.refs = refs
 
-	if (spot !== this.foot) do {
-		item = foot.previousSibling[attoKey]
-		item.destroy()
-	} while (item !== spot[attoKey])
+	while (spot !== this.foot) {
+		item = spot[attoKey]
+		spot = (item.foot || item.node).nextSibling
+		item.remove()
+	}
 
 	return this
 }

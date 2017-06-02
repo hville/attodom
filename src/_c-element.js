@@ -3,7 +3,7 @@ import {attoKey} from './atto-key'
 
 /**
  * @constructor
- * @param {Element} node - DOM node
+ * @param {!Node} node - DOM node
  */
 export function CElement(node) {
 	this.node = node
@@ -12,25 +12,25 @@ export function CElement(node) {
 
 export var CElementProto = CElement.prototype = {
 	constructor: CElement,
-	_handlers: null,
 	foot: null,
 	get parent() { return this.node.parentNode[attoKey] },
 
 	wrap: function(name, action) {
-		var method = this[name],
-				arity = method.length
-
-		var async = false
-		if (action.length === arity + 1) async = true
-		else if (action.length !== arity) throw Error(name + 'wrapper arity mimatch')
+		var method = this.constructor.prototype[name],
+				arity = method.length,
+				async = (action.length === arity + 1)
 
 		this[name] = function() {
 			var len = arguments.length,
 					args = Array(arity)
+
 			for (var i = 0; i < arity; ++i) args[i] = i < len ? arguments[i] : null
 			if (async) {
-				args.push(method.bind(this))
-				action.apply(this, args)
+				var ctx = this
+				action.apply(this, args.concat(function() {
+					if (arguments.length) throw Error('callback takes no argument')
+					method.apply(ctx, args)
+				}))
 			}
 			else {
 				action.apply(this, args)
@@ -38,13 +38,14 @@ export var CElementProto = CElement.prototype = {
 			}
 			return this
 		}
+
 		return this
 	},
 
 	/**
 	* @function
-	* @param  {!Object} parent destination parent
-	* @param  {Object} [before] nextSibling
+	* @param  {!Node} parent destination parent
+	* @param  {Node} [before] nextSibling
 	* @return {!Object} this
 	*/
 	moveTo: function(parent, before) {
@@ -69,12 +70,6 @@ export var CElementProto = CElement.prototype = {
 		return this
 	},
 
-	destroy: function() {
-		this.remove()
-		if (this._handlers) for (var i=0, ks=Object.keys(this._handlers); i<ks.length; ++i) this.on(ks[i], false)
-		return this
-	},
-
 	/**
 	 * @function
 	 * @param {string|number} key
@@ -86,7 +81,7 @@ export var CElementProto = CElement.prototype = {
 		return this
 	},
 
-	prop: function(key, val) {
+	p: function(key, val) {
 		if (this.node[key] !== val) this.node[key] = val
 		return this
 	},
@@ -96,7 +91,7 @@ export var CElementProto = CElement.prototype = {
 		return this
 	},
 
-	attr: function(key, val) {
+	a: function(key, val) {
 		if (val === false) this.node.removeAttribute(key)
 		else this.node.setAttribute(key, val === true ? '' : val)
 		return this
@@ -109,7 +104,8 @@ export var CElementProto = CElement.prototype = {
 
 	child: function(child) {
 		var node = this.node
-		if (child != null) {
+		if (child === undefined) throw Error('undefined is not a valid child')
+		if (child !== null) {
 			if (Array.isArray(child)) child.forEach(this.child, this)
 			else if (child.moveTo) child.moveTo(node)
 			else node.appendChild(
@@ -120,26 +116,28 @@ export var CElementProto = CElement.prototype = {
 	},
 
 	// EVENT LISTENERS
+	handlers: null,
 	handleEvent: function(event) {
-		var handlers = this._handlers,
+		var handlers = this.handlers,
 				handler = handlers && handlers[event.type]
 		if (handler) handler.call(this, event)
+		else throw Error(event.type + ' handler mismatch')
 	},
-
 	on: function(type, handler) {
 		if (!handler) {
-			if (this._handlers && this._handlers[type]) {
-				delete this._handlers[type]
+			if (this.handlers && this.handlers[type]) {
+				delete this.handlers[type]
 				this.node.removeEventListener(type, this, false)
 			}
 		}
 		else {
-			if (!this._handlers) this._handlers = {}
-			this._handlers[type] = handler
+			if (!this.handlers) this.handlers = {}
+			this.handlers[type] = handler
 			this.node.addEventListener(type, this, false)
 		}
 		return this
 	},
+
 	update: updateChildren,
 	updateChildren: updateChildren
 }

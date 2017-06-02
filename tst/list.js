@@ -71,6 +71,7 @@ ct('list stacked and grouped', function() {
 			list(function() { return text('y') })
 		])
 	)
+
 	var elem = co.node
 
 	co.update([1,2,3])
@@ -87,8 +88,11 @@ ct('list stacked and grouped', function() {
 })
 
 ct('list nested', function() {
-	var co = el('div').child(
-		list(list.bind(null, function() { return el('h0').child(text('')) }))
+	var childFactory = function() { return el('h0').child(text('')) },
+			co = el('div').child(
+		list(function() {
+			return list(childFactory)
+		})
 	)
 	var elem = co.node
 
