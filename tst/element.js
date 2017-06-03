@@ -22,7 +22,7 @@ ct('element - static', function() {
 
 	// explicit
 	ct('===', toString(el('p').child('ab').node.childNodes), 'ab')
-	ct('===', el('p').a('id', 'A').node.id, 'A')
+	ct('===', el('p').id('A').node.id, 'A')
 
 	// automagic
 	ct('===', toString(el('p').child('ab').node.childNodes), 'ab')
@@ -31,7 +31,7 @@ ct('element - static', function() {
 
 ct('element - mixed children', function() {
 	ct('===', el('p').child([0, el('p'), el('p'), el('p')]).node.childNodes.length, 4)
-	ct('===', el('p').child([el('p'), [], el('p'), [el('p'), 0]]).node.childNodes.length, 4)
+	ct('===', el('p').child(el('p'), [], el('p'), [el('p'), 0]).node.childNodes.length, 4)
 	ct('===', el('p').child([el('p'), null, 0, [el('p'), el('p')]]).node.childNodes.length, 4)
 })
 

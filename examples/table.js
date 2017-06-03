@@ -4,11 +4,11 @@ import {ic_remove, ic_add} from './icons'
 
 var store = new Store([])
 
-var table = el('table').child([
+var table = el('table').child(
 	el('caption').class('f4').text('table example with...'),
-	el('tbody').child([
+	el('tbody').child(
 		list(function(rowKey) {
-			return el('tr').child([
+			return el('tr').child(
 				el('td') //leading column with icon
 					.on('click', function() {store.delRow(rowKey) })
 				.child(ic_remove),
@@ -20,15 +20,15 @@ var table = el('table').child([
 						.on('change', function() {store.set(this.node.value, [rowKey, colKey]) } )
 					)
 				})
-			])
+			)
 		}),
 		el('tr').child(
 			el('td')
 			.on('click', function() { store.addRow() } )
 			.child(ic_add)
 		)
-	])
-])
+	)
+)
 .moveTo(D.body)
 
 store.onchange = function() { table.update( store.get() ) }

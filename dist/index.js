@@ -112,20 +112,26 @@ var CElementProto = CElement.prototype = {
 		return this
 	},
 
+	id: function(id) {
+		this.node.setAttribute('id', id);
+		return this
+	},
+
 	class: function(val) {
 		this.node.setAttribute('class', val);
 		return this
 	},
 
-	child: function(child) {
+	child: function() {
 		var node = this.node;
-		if (child === undefined) throw Error('undefined is not a valid child')
-		if (child !== null) {
-			if (Array.isArray(child)) child.forEach(this.child, this);
-			else if (child.moveTo) child.moveTo(node);
-			else node.appendChild(
-				child.cloneNode ? child.cloneNode(true) : exports.D.createTextNode(''+child)
-			);
+		for (var i=0; i<arguments.length; ++i) {
+			var child = arguments[i];
+			if (child === undefined) throw Error('undefined child')
+			if (child !== null) {
+				if (Array.isArray(child)) this.child.apply(this, child);
+				else if (child.moveTo) child.moveTo(node);
+				else node.appendChild(child.nodeType ? child : exports.D.createTextNode(''+child));
+			}
 		}
 		return this
 	},

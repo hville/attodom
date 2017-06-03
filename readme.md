@@ -13,11 +13,11 @@ import {ic_remove, ic_add} from './icons'
 
 var store = new Store([])
 
-var table = el('table').child([
+var table = el('table').child(
   el('caption').class('f4').text('table example with...'),
-  el('tbody').child([
+  el('tbody').child(
     list(function(rowKey) {
-      return el('tr').child([
+      return el('tr').child(
         el('td') //leading column with icon
         .on('click', function() {store.delRow(rowKey) })
         .child(ic_remove),
@@ -29,15 +29,15 @@ var table = el('table').child([
             .on('change', function() {store.set(this.node.value, [rowKey, colKey]) } )
           )
         })
-      ])
+      )
     }),
     el('tr').child(
       el('td')
       .on('click', function() { store.addRow() } )
       .child(ic_add)
     )
-  ])
-])
+  )
+)
 .moveTo(D.body)
 
 store.onchange = function() { table.update( store.get() ) }
@@ -114,8 +114,9 @@ Components have a number of chainable methods:
 * method wrapper: `.wrap(name, function)`
 * node textContent: `.text(key, val)`
 * element attributes: `.a(key, val)`
+* element id: `.id(string)`
 * element class: `.class(string)`
-* element child: `.child(node | number | string | Array)`
+* element child: `.child(node | number | string | Array | null, ...)`
 * element event listeners: `.on(name, callback)` to add, `on(name, falsy)` to remove
 
 
@@ -126,6 +127,7 @@ Components have a number of chainable methods:
 `List` take a single factory that will be used to generate list of varying sizes and an optional argument to derive a unique key from individual records
 * `list(factory)` to create dynamic indexed set of nodes based on the size of the array upon updates
 * `list(factory, function(v) {return v.id}})` for a keyed list
+* factory: `(key, val, index, array) => component`
 
 Select lists have predefined components that are used to conditionally display subsets on updates. The optional select function returns the selected keys to show on each updates
 * `list({a: componentA, b: componentB}, function(v) {return v ? [a] : [b]})`
@@ -171,10 +173,7 @@ Wrapper actions are launched before the native method.
 
 ### Gotcha
 
-* Adding a child node (`parent.child(node)`) will deep clone the node without affection other areas. Only components can be moved.
-* `parent.child(component(node))` will move the new component and associated node
-* A node can only belong to one component. Creating a component with `component(node)` will destroy any existing component already tied to the node
-* Components may include items that that are not clonable like event listeners and custom properties. As such, modules should either export plain nodes (`svg(...).node`) or component factory functions.
+* Components may include items that that are not clonable like event listeners and custom properties. As such, they can only be used once. Modules should either export plain nodes (`eg svgElements icons`) or component factory functions.
 * `List` and `Select` can't be updated unless they have a parentNode or parent fragment to hold them together.
 
 

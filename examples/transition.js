@@ -68,10 +68,10 @@ function transitionBeforeRemove(remove) {
 	}
 }
 
-el('div').class('debug').child([
+el('div').class('debug').child(
 	el('h2').class('pl3').text('example with'),
-	el('div').child([
+	el('div').child(
 		el('div').class('fl w-50 pa3').child(bullets),
 		el('div').class('fl w-50 pa3').child(options)
-	])
-]).moveTo(D.body)
+	)
+).moveTo(D.body)

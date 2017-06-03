@@ -42,11 +42,11 @@ ct('list static', function() {
 
 ct('list stacked', function() {
 	var tFactory = function () { return text('') },
-			co = el('div').child([
+			co = el('div').child(
 				list(tFactory),
 				list(tFactory),
 				list(tFactory)
-			])
+			)
 	var elem = co.node
 	ct('===', toString(elem.childNodes), '^$^$^$')
 

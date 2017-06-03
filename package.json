@@ -1,6 +1,6 @@
 {
   "name": "attodom",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "./dist/index.js",
   "module": "./module.js",
   "browser": "./dist/browser.js",
@@ -9,9 +9,7 @@
     "component",
     "dom",
     "createElement",
-    "hyperscript",
     "svg",
-    "xml",
     "namespace"
   ],
   "author": "Hugo Villeneuve",
