@@ -1,10 +1,12 @@
 export var D = typeof document !== 'undefined' ? document : null
+export var W = typeof window !== 'undefined' ? window : null
 
 /**
-* @function setDocument
-* @param  {Document} doc DOM document
-* @return {Document} DOM document
+* @function setWindow
+* @param  {Window} win
+* @return {Window}
 */
-export function setDocument(doc) {
-	return D = doc
+export function setWindow(win) {
+	D = win.document
+	return W = win
 }

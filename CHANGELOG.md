@@ -6,18 +6,11 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
-## [0.2.0] - 2017-06-03
-
-### Changed
-- c.child now takes multiple children
-- c.child now does not automatically clone nodes
-
+## [0.3.0] - 2017-06-04
 ### Added
-- cElement.id(string)
-
-
-## [0.1.0] - 2017-06-01
 - forked from [pico-dom](https://www.npmjs.com/package/pico-dom)
 - no templates
 - `.wrap` helper
 - `.a` short form for attributes
+- cElement.id(string)
+- setDocument to setWindow

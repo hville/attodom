@@ -53,7 +53,7 @@ supports different environments
 * CJS: `require('attodom').element`
 * ES modules: `import {element} from 'attodom'`
 * browser: (`attodom.element`)
-* server: See `setDocument` below
+* server: See `setWindow` below
 
 Two examples are available:
 * `npm run example:table`: dynamic list, 1-way data flow, components, icons
@@ -161,9 +161,9 @@ Wrapper actions are launched before the native method.
 
 ### Other helpers
 
-* `setDocument(document)` to set the Document interface for testing or server use
-  * eg. `setDocument((new JSDOM).window.document)`
-* `D` reference to the Document interface for testing or server use
+* `setWindow(window)` to set the window and document interface for testing or server use
+  * eg. `setWindow((new JSDOM).window)`
+* `W` and `D` reference to the `window` ad `document` interface for testing or server use
   * eg. `document.body === D.body`
 * `find(from [, test] [, until])` find a component within nodes or components and matching the test function. It parses nodes up and down following the html markup order.
   * eg. `find(document.body)` to get the first component in the document

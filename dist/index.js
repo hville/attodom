@@ -4,14 +4,16 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 exports.D = typeof document !== 'undefined' ? document : null;
+exports.W = typeof window !== 'undefined' ? window : null;
 
 /**
-* @function setDocument
-* @param  {Document} doc DOM document
-* @return {Document} DOM document
+* @function setWindow
+* @param  {Window} win
+* @return {Window}
 */
-function setDocument(doc) {
-	return exports.D = doc
+function setWindow(win) {
+	exports.D = win.document;
+	return exports.W = win
 }
 
 var attoKey = '_aD';
@@ -505,6 +507,6 @@ exports.elementNS = elementNS;
 exports.list = list;
 exports.select = select;
 exports.component = component;
-exports.setDocument = setDocument;
+exports.setWindow = setWindow;
 exports.find = find;
 exports.css = css$$1;

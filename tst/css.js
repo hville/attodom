@@ -4,8 +4,7 @@ var ct = require('cotest'),
 if (!P.D) {
 	// @ts-ignore
 	var JSDOM = require('jsdom').JSDOM //eslint-disable-line global-require
-	var win = (new JSDOM).window
-	P.setDocument(win.document)
+	P.setWindow((new JSDOM).window)
 }
 
 ct('css - add rule', function() {

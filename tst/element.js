@@ -4,8 +4,7 @@ var ct = require('cotest'),
 if (!P.D) {
 	// @ts-ignore
 	var JSDOM = require('jsdom').JSDOM //eslint-disable-line global-require
-	var win = (new JSDOM).window
-	P.setDocument(win.document)
+	P.setWindow((new JSDOM).window)
 }
 
 
@@ -50,9 +49,9 @@ ct('element - event', function() {
 			elm = cmp.node
 
 	ct('===', elm.textContent, '')
-	elm.dispatchEvent(new P.D.defaultView.Event('click'))
+	elm.dispatchEvent(new P.W.Event('click'))
 	ct('===', elm.textContent, 'a')
-	elm.dispatchEvent(new P.D.defaultView.Event('click'))
+	elm.dispatchEvent(new P.W.Event('click'))
 	ct('===', elm.textContent, 'aa')
 })
 
