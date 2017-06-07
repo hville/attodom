@@ -10,13 +10,12 @@ var table = el('table').child(
 		list(function(rowKey) {
 			return el('tr').child(
 				el('td') //leading column with icon
-					.on('click', function() {store.delRow(rowKey) })
-				.child(ic_remove),
+				.on('click', function() {store.delRow(rowKey) })
+				.child(ic_remove.cloneNode(true)),
 				list(function(colKey) {
 					return el('td') // data columns
 					.child(
-						el('input')
-						.set('update', function(v) { this.node.value = v })
+						el('input').set('update', function(v) { this.node.value = v })
 						.on('change', function() {store.set(this.node.value, [rowKey, colKey]) } )
 					)
 				})

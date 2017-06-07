@@ -20,7 +20,7 @@ var table = el('table').child(
       return el('tr').child(
         el('td') //leading column with icon
         .on('click', function() {store.delRow(rowKey) })
-        .child(ic_remove),
+        .child(ic_remove.cloneNode(true)),
         list(function(colKey) {
           return el('td') // data columns
           .child(
@@ -101,7 +101,6 @@ Element
 Node
 * `text(textContent)`
 * `component(node)`
-* `fragment()`
 
 List (component with multiple or no nodes)
 * `list(factory)`
@@ -175,6 +174,7 @@ Wrapper actions are launched before the native method.
 
 * Components may include items that that are not clonable like event listeners and custom properties. As such, they can only be used once. Modules should either export plain nodes (`eg svgElements icons`) or component factory functions.
 * `List` and `Select` can't be updated unless they have a parentNode or parent fragment to hold them together.
+  * e.g. `list(childFactory).moveTo(D.createDocumentFragment()).update()`
 
 
 ## License

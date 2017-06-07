@@ -1,4 +1,4 @@
-import {D} from './document'
+import {D} from './window'
 import {attoKey} from './atto-key'
 
 /**

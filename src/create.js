@@ -1,4 +1,4 @@
-import {D} from './document'
+import {D} from './window'
 import {CElement} from './_c-element'
 import {CNode} from './_c-node'
 import {CKeyed} from './_c-keyed'
@@ -53,14 +53,6 @@ export function component(node) {
 	// destroy existing component if any
 	if (node[attoKey]) node[attoKey].node = null
 	return node.nodeType === 1 ? new CElement(node) : new CNode(node)
-}
-
-/**
- * @function fragment
- * @return {!Object} Component
- */
-export function fragment() {
-	return new CNode(D.createDocumentFragment())
 }
 
 /**

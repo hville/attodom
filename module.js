@@ -8,6 +8,6 @@ export {text, element, svg, elementNS, list, select, component} from './src/crea
 //export {CNode} from './src/_c-node'
 
 // utils
-export {setWindow, D, W} from './src/document'
+export {setWindow, D, W} from './src/window'
 export {find} from './src/find'
 export {css} from './src/css'

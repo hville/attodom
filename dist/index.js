@@ -429,12 +429,6 @@ function component(node) {
 }
 
 /**
- * @function fragment
- * @return {!Object} Component
- */
-
-
-/**
  * @function
  * @param {!Function} factory
  * @param {Function} [getKey]
