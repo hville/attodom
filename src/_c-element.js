@@ -82,7 +82,7 @@ export var CElementProto = CElement.prototype = {
 	},
 
 	p: function(key, val) {
-		if (this.node[key] !== val) this.node[key] = val
+		this.node[key] = val
 		return this
 	},
 

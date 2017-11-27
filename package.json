@@ -25,7 +25,7 @@
     "build:browser": "rollup -o ./dist/browser.js -f iife -n attodom --banner \"/* hugov@runbox.com | https://github.com/hville/attodom.git | license:MIT */\" ./module.js",
     "build:min": "google-closure-compiler-js --compilationLevel ADVANCED --languageIn ES5 --languageOut ES5 --useTypesForOptimization true ./dist/browser.js > ./dist/browser.min.js",
     "build:gzip": "npm run gzip -- ./dist/browser.min.js ./bld/browser.gz",
-    "build": "npm run build:main & npm run build:module & npm run build:browser & npm run build:min",
+    "build": "npm run build:main & npm run build:browser & npm run build:min",
     "prepublishOnly": "npm test & npm run build:browser & npm run build:min",
     "example:table": "cd ./examples & rulo -i table.js -o index.js",
     "example:transition": "cd ./examples & rulo -i transition.js -o index.js"

@@ -99,7 +99,7 @@ var CElementProto = CElement.prototype = {
 	},
 
 	p: function(key, val) {
-		if (this.node[key] !== val) this.node[key] = val;
+		this.node[key] = val;
 		return this
 	},
 
@@ -222,8 +222,6 @@ var CKeyedProto = CKeyed.prototype = {
 	wrap: CElementProto.wrap,
 	get parent() { return this.node.parentNode[attoKey] },
 	remove: remove,
-	foot: null,
-
 
 	/**
 	* @function moveTo
@@ -347,7 +345,6 @@ CSelect.prototype = {
 	set: CElementProto.set,
 	wrap: CElementProto.wrap,
 	get parent() { return this.node.parentNode[attoKey] },
-	foot: null,
 	remove: CKeyedProto.remove,
 	moveTo: CKeyedProto.moveTo,
 	_placeItem: CKeyedProto._placeItem,

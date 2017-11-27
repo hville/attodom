@@ -34,7 +34,6 @@ CSelect.prototype = {
 	set: CElementProto.set,
 	wrap: CElementProto.wrap,
 	get parent() { return this.node.parentNode[attoKey] },
-	foot: null,
 	remove: CKeyedProto.remove,
 	moveTo: CKeyedProto.moveTo,
 	_placeItem: CKeyedProto._placeItem,

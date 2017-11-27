@@ -24,8 +24,6 @@ export var CKeyedProto = CKeyed.prototype = {
 	wrap: CElementProto.wrap,
 	get parent() { return this.node.parentNode[attoKey] },
 	remove: remove,
-	foot: null,
-
 
 	/**
 	* @function moveTo

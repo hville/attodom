@@ -1,5 +1,5 @@
 /* hugov@runbox.com | https://github.com/hville/attodom.git | license:MIT */
-(function (exports) {
+var attodom = (function (exports) {
 'use strict';
 
 exports.D = typeof document !== 'undefined' ? document : null;
@@ -98,7 +98,7 @@ var CElementProto = CElement.prototype = {
 	},
 
 	p: function(key, val) {
-		if (this.node[key] !== val) this.node[key] = val;
+		this.node[key] = val;
 		return this
 	},
 
@@ -221,8 +221,6 @@ var CKeyedProto = CKeyed.prototype = {
 	wrap: CElementProto.wrap,
 	get parent() { return this.node.parentNode[attoKey] },
 	remove: remove,
-	foot: null,
-
 
 	/**
 	* @function moveTo
@@ -346,7 +344,6 @@ CSelect.prototype = {
 	set: CElementProto.set,
 	wrap: CElementProto.wrap,
 	get parent() { return this.node.parentNode[attoKey] },
-	foot: null,
 	remove: CKeyedProto.remove,
 	moveTo: CKeyedProto.moveTo,
 	_placeItem: CKeyedProto._placeItem,
@@ -504,4 +501,6 @@ exports.setWindow = setWindow;
 exports.find = find;
 exports.css = css$$1;
 
-}((this.attodom = this.attodom || {})));
+return exports;
+
+}({}));
