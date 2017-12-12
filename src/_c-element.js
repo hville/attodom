@@ -1,16 +1,18 @@
-import {D} from './window'
-import {attoKey} from './atto-key'
+var W = require('./window')
+var attoKey = require('./atto-key')
+
+module.exports = CElement
 
 /**
  * @constructor
  * @param {!Node} node - DOM node
  */
-export function CElement(node) {
+function CElement(node) {
 	this.node = node
 	node[attoKey] = this
 }
 
-export var CElementProto = CElement.prototype = {
+CElement.prototype = {
 	constructor: CElement,
 	foot: null,
 	get parent() { return this.node.parentNode[attoKey] },
@@ -115,7 +117,7 @@ export var CElementProto = CElement.prototype = {
 			if (child !== null) {
 				if (Array.isArray(child)) this.child.apply(this, child)
 				else if (child.moveTo) child.moveTo(node)
-				else node.appendChild(child.nodeType ? child : D.createTextNode(''+child))
+				else node.appendChild(child.nodeType ? child : W.document.createTextNode(''+child))
 			}
 		}
 		return this

@@ -1,1 +1,1 @@
-export var attoKey = '_aD'
+module.exports = '_aD'

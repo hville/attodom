@@ -1,9 +1,9 @@
-import {D} from './window'
-import {CElement} from './_c-element'
-import {CNode} from './_c-node'
-import {CKeyed} from './_c-keyed'
-import {CSelect} from './_c-select'
-import {attoKey} from './atto-key'
+var W = require('./window')
+var attoKey = require('./atto-key')
+var CElement = require('./_c-element')
+var CNode = require('./_c-node')
+var CKeyed = require('./_c-keyed')
+var CSelect = require('./_c-select')
 
 var svgURI = 'http://www.w3.org/2000/svg'
 
@@ -13,7 +13,7 @@ var svgURI = 'http://www.w3.org/2000/svg'
  * @return {!Object} Component
  */
 export function svg(tag) {
-	return new CElement(D.createElementNS(svgURI, tag))
+	return new CElement(W.document.createElementNS(svgURI, tag))
 }
 
 /**
@@ -22,7 +22,7 @@ export function svg(tag) {
  * @return {!Object} Component
  */
 export function element(tagName) {
-	return new CElement(D.createElement(tagName))
+	return new CElement(W.document.createElement(tagName))
 }
 
 /**
@@ -32,7 +32,7 @@ export function element(tagName) {
  * @return {!Object} Component
  */
 export function elementNS(nsURI, tag) {
-	return new CElement(D.createElementNS(nsURI, tag))
+	return new CElement(W.document.createElementNS(nsURI, tag))
 }
 
 /**
@@ -41,7 +41,7 @@ export function elementNS(nsURI, tag) {
  * @return {!Object} Component
  */
 export function text(txt) {
-	return new CNode(D.createTextNode(txt))
+	return new CNode(W.document.createTextNode(txt))
 }
 
 /**

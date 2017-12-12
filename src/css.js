@@ -10,7 +10,7 @@ export function css(cssRuleText) {
 }
 
 function getSheet() {
-	var sheets = D.styleSheets,
+	var sheets = W.document.styleSheets,
 			media = /^$|^all$/ //mediaTypes: all, print, screen, speach
 
 	// get existing sheet
@@ -19,5 +19,5 @@ function getSheet() {
 		if (media.test(sheet.media.mediaText) && !sheet.disabled) return sheet
 	}
 	// or create a new one
-	return sheet = D.head.appendChild(D.createElement('style')).sheet
+	return sheet = W.document.head.appendChild(W.document.createElement('style')).sheet
 }

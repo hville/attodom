@@ -1,7 +1,7 @@
-import {D} from './window'
-import {attoKey} from './atto-key'
-import {CElementProto} from './_c-element'
-import {CKeyedProto} from './_c-keyed'
+var W = require('./window')
+var attoKey = require('./atto-key')
+var CElement = require('./_c-element')
+var CKeyed = require('./_c-keyed')
 
 /**
  * @constructor
@@ -12,8 +12,8 @@ export function CSelect(items, select) {
 	this.refs = items
 	if (select) this.select = select
 
-	this.node = D.createComment('^')
-	this.foot = D.createComment('$')
+	this.node = W.document.createComment('^')
+	this.foot = W.document.createComment('$')
 	this.node[attoKey] = this
 	this.foot[attoKey] = this
 }
@@ -21,22 +21,22 @@ export function CSelect(items, select) {
 CSelect.prototype = {
 	constructor: CSelect,
 
-/**
- * select all by default
- * @function
- * @param {...*} [v]
- * @return {!Array}
- */
+	/**
+	 * select all by default
+	 * @function
+	 * @param {...*} [v]
+	 * @return {!Array}
+	 */
 	select: function (v) { //eslint-disable-line no-unused-vars
 		return Object.keys(this.refs)
 	},
 
-	set: CElementProto.set,
-	wrap: CElementProto.wrap,
+	set: CElement.prototype.set,
+	wrap: CElement.prototype.wrap,
 	get parent() { return this.node.parentNode[attoKey] },
-	remove: CKeyedProto.remove,
-	moveTo: CKeyedProto.moveTo,
-	_placeItem: CKeyedProto._placeItem,
+	remove: CKeyed.prototype.remove,
+	moveTo: CKeyed.prototype.moveTo,
+	_placeItem: CKeyed.prototype._placeItem,
 	update: updateSelectChildren,
 	updateChildren: updateSelectChildren
 }

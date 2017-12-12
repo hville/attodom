@@ -1,11 +1,13 @@
-import {CElementProto} from './_c-element'
-import {attoKey} from './atto-key'
+var attoKey = require('./atto-key')
+var CElement = require('./_c-element')
+
+module.exports = CNode
 
 /**
  * @constructor
  * @param {Node} node - DOM node
  */
-export function CNode(node) {
+function CNode(node) {
 	this.node = node
 	node[attoKey] = this
 }
@@ -14,11 +16,11 @@ CNode.prototype = {
 	constructor: CNode,
 	foot: null,
 	get parent() { return this.node.parentNode[attoKey] },
-	p: CElementProto.p,
-	wrap: CElementProto.wrap,
-	set: CElementProto.set,
-	moveTo: CElementProto.moveTo,
-	remove: CElementProto.remove,
-	text: CElementProto.text,
-	update: CElementProto.text
+	p: CElement.prototype.p,
+	wrap: CElement.prototype.wrap,
+	set: CElement.prototype.set,
+	moveTo: CElement.prototype.moveTo,
+	remove: CElement.prototype.remove,
+	text: CElement.prototype.text,
+	update: CElement.prototype.text
 }

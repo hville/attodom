@@ -1,27 +1,29 @@
-import {D} from './window'
-import {attoKey} from './atto-key'
-import {CElementProto} from './_c-element'
+var W = require('./window')
+var attoKey = require('./atto-key')
+var CElement = require('./_c-element')
+
+module.exports = CKeyed
 
 /**
  * @constructor
  * @param {!Function} factory
  * @param {Function} [getKey]
  */
-export function CKeyed(factory, getKey) {
+function CKeyed(factory, getKey) {
 	this.refs = Object.create(null)
 	this.factory = factory
 	if (getKey) this.getKey = getKey
 
-	this.node = D.createComment('^')
-	this.foot = D.createComment('$')
+	this.node = W.document.createComment('^')
+	this.foot = W.document.createComment('$')
 	this.node[attoKey] = this
 	this.foot[attoKey] = this
 }
 
-export var CKeyedProto = CKeyed.prototype = {
+CKeyed.prototype = {
 	constructor: CKeyed,
-	set: CElementProto.set,
-	wrap: CElementProto.wrap,
+	set: CElement.prototype.set,
+	wrap: CElement.prototype.wrap,
 	get parent() { return this.node.parentNode[attoKey] },
 	remove: remove,
 
