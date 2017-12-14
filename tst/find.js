@@ -1,15 +1,11 @@
 var ct = require('cotest'),
-		P = require('../dist/index.js')
+		el = require('../element'),
+		find = require('../find'),
+		common = require('../common'),
+		JSDOM = require('jsdom').JSDOM
 
-if (!P.D) {
-	// @ts-ignore
-	var JSDOM = require('jsdom').JSDOM //eslint-disable-line global-require
-	P.setWindow((new JSDOM).window)
-}
-
-var el = P.element,
-		find = P.find
-
+var window = (new JSDOM).window
+common.doc = window.document
 
 ct('find', function() {
 	var h01 = el('h2').text('H01'),

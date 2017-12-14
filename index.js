@@ -1,14 +1,17 @@
 // @ts-check
-var create = require('./src/create'),
-		W = require('./src/window')
+var common = require('./common')
 
+/* eslint-disable global-require */
 module.exports = {
-	text: create.text,
-	element: create.element,
-	elementNS: create.elementNS,
-	svg: create.svg,
-	list: create.list,
-	component: create.component,
-	get document() { return W.D },
-	set document(doc) { W.D = doc }
+	component: require('./component'),
+	text: require('./text'),
+	svg: require('./svg'),
+	element: require('./element'),
+	elementNS: require('./elementNS'),
+	list: require('./list'),
+	select: require('./list'),
+	wrap: require('./wrap'),
+	find: require('./find'),
+	css: require('./css'),
+	setDocument: function(doc) { return common.D = doc }
 }

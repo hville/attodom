@@ -1,5 +1,4 @@
-var W = require('./window')
-var attoKey = require('./atto-key')
+var common = require('../common')
 var CElement = require('./_c-element')
 var CKeyed = require('./_c-keyed')
 
@@ -14,10 +13,10 @@ function CSelect(items, select) {
 	this.refs = items
 	if (select) this.select = select
 
-	this.node = W.document.createComment('^')
-	this.foot = W.document.createComment('$')
-	this.node[attoKey] = this
-	this.foot[attoKey] = this
+	this.node = common.doc.createComment('^')
+	this.foot = common.doc.createComment('$')
+	this.node[common.key] = this
+	this.foot[common.key] = this
 }
 
 CSelect.prototype = {
@@ -34,8 +33,6 @@ CSelect.prototype = {
 	},
 
 	set: CElement.prototype.set,
-	wrap: CElement.prototype.wrap,
-	get parent() { return this.node.parentNode[attoKey] },
 	remove: CKeyed.prototype.remove,
 	moveTo: CKeyed.prototype.moveTo,
 	_placeItem: CKeyed.prototype._placeItem,
@@ -59,7 +56,7 @@ function updateSelectChildren(v,k,o) {
 		}
 	}
 	while (spot !== this.foot) {
-		item = spot[attoKey]
+		item = spot[common.key]
 		spot = (item.foot || item.node).nextSibling
 		item.remove()
 	}

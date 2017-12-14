@@ -1,5 +1,4 @@
-var W = require('./window')
-var attoKey = require('./atto-key')
+var common = require('../common')
 
 module.exports = CElement
 
@@ -9,40 +8,12 @@ module.exports = CElement
  */
 function CElement(node) {
 	this.node = node
-	node[attoKey] = this
+	node[common.key] = this
 }
 
 CElement.prototype = {
 	constructor: CElement,
 	foot: null,
-	get parent() { return this.node.parentNode[attoKey] },
-
-	wrap: function(name, action) {
-		var method = this.constructor.prototype[name],
-				arity = method.length,
-				async = (action.length === arity + 1)
-
-		this[name] = function() {
-			var len = arguments.length,
-					args = Array(arity)
-
-			for (var i = 0; i < arity; ++i) args[i] = i < len ? arguments[i] : null
-			if (async) {
-				var ctx = this
-				action.apply(this, args.concat(function() {
-					if (arguments.length) throw Error('callback takes no argument')
-					method.apply(ctx, args)
-				}))
-			}
-			else {
-				action.apply(this, args)
-				method.apply(this, args)
-			}
-			return this
-		}
-
-		return this
-	},
 
 	/**
 	* @function
@@ -117,7 +88,7 @@ CElement.prototype = {
 			if (child !== null) {
 				if (Array.isArray(child)) this.child.apply(this, child)
 				else if (child.moveTo) child.moveTo(node)
-				else node.appendChild(child.nodeType ? child : W.document.createTextNode(''+child))
+				else node.appendChild(child.nodeType ? child : common.doc.createTextNode(''+child))
 			}
 		}
 		return this
@@ -153,7 +124,7 @@ CElement.prototype = {
 function updateChildren(v, k, o) {
 	var child = this.node.firstChild
 	while (child) {
-		var co = child[attoKey]
+		var co = child[common.key]
 		if (co) {
 			if (co.update) co.update(v, k, o)
 			child = (co.foot || child).nextSibling

@@ -1,9 +1,9 @@
-import {attoKey} from './atto-key'
+var common = require('./common')
 
-export function find(start, test, until) { //find(test, head=body, foot=null)
+module.exports = function find(start, test, until) { //find(test, head=body, foot=null)
 	var spot = start.node || start,
 			last = until ? (until.node || until.foot || until) : null,
-			comp = spot[attoKey]
+			comp = spot[common.key]
 
 	while(!comp || (test && !test(comp))) {
 		if (spot === last) return null // specified end reached
@@ -15,7 +15,7 @@ export function find(start, test, until) { //find(test, head=body, foot=null)
 			if (spot === null) return null // end of tree reached
 		}
 		spot = next
-		comp = spot[attoKey]
+		comp = spot[common.key]
 	}
 	return comp
 }

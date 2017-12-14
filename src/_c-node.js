@@ -1,4 +1,4 @@
-var attoKey = require('./atto-key')
+var common = require('../common')
 var CElement = require('./_c-element')
 
 module.exports = CNode
@@ -9,15 +9,13 @@ module.exports = CNode
  */
 function CNode(node) {
 	this.node = node
-	node[attoKey] = this
+	node[common.key] = this
 }
 
 CNode.prototype = {
 	constructor: CNode,
 	foot: null,
-	get parent() { return this.node.parentNode[attoKey] },
 	p: CElement.prototype.p,
-	wrap: CElement.prototype.wrap,
 	set: CElement.prototype.set,
 	moveTo: CElement.prototype.moveTo,
 	remove: CElement.prototype.remove,

@@ -1,5 +1,4 @@
-var W = require('./window')
-var attoKey = require('./atto-key')
+var common = require('../common')
 var CElement = require('./_c-element')
 
 module.exports = CKeyed
@@ -14,17 +13,15 @@ function CKeyed(factory, getKey) {
 	this.factory = factory
 	if (getKey) this.getKey = getKey
 
-	this.node = W.document.createComment('^')
-	this.foot = W.document.createComment('$')
-	this.node[attoKey] = this
-	this.foot[attoKey] = this
+	this.node = common.doc.createComment('^')
+	this.foot = common.doc.createComment('$')
+	this.node[common.key] = this
+	this.foot[common.key] = this
 }
 
 CKeyed.prototype = {
 	constructor: CKeyed,
 	set: CElement.prototype.set,
-	wrap: CElement.prototype.wrap,
-	get parent() { return this.node.parentNode[attoKey] },
 	remove: remove,
 
 	/**
@@ -58,13 +55,13 @@ CKeyed.prototype = {
 
 	_placeItem: function(parent, item, spot, foot) {
 		if (!spot) item.moveTo(parent)
-		else if (item.node === spot.nextSibling) spot[attoKey].moveTo(parent, foot)
+		else if (item.node === spot.nextSibling) spot[common.key].moveTo(parent, foot)
 		else if (item.node !== spot) item.moveTo(parent, spot)
 		return item.foot || item.node
 	},
 
 	getKey: function(v,i,a) { //eslint-disable-line no-unused-vars
-		return i  // default: indexed
+		return i // default: indexed
 	},
 
 	update: updateKeyedChildren,
@@ -82,7 +79,7 @@ function remove() {
 
 	if (origin) {
 		while (spot !== this.foot) {
-			var item = spot[attoKey]
+			var item = spot[common.key]
 			spot = (item.foot || item.node).nextSibling
 			item.remove()
 		}
@@ -110,7 +107,7 @@ function updateKeyedChildren(arr) {
 	this.refs = refs
 
 	while (spot !== this.foot) {
-		item = spot[attoKey]
+		item = spot[common.key]
 		spot = (item.foot || item.node).nextSibling
 		item.remove()
 	}

@@ -1,34 +1,31 @@
-var W = require('./window')
-var attoKey = require('./atto-key')
-
 /**
- * @param {Object} node
- * @param {string} node
- * @param {Function} node
+ * @param {Object} component
+ * @param {string} name
+ * @param {Function} action
+ * @return {Object}
  */
 module.exports = function wrap(component, name, action) {
-	var method = this.constructor.prototype[name],
+	var method = component.constructor.prototype[name],
 			arity = method.length,
 			async = (action.length === arity + 1)
 
-	this[name] = function() {
+	component[name] = function() {
 		var len = arguments.length,
 				args = Array(arity)
 
 		for (var i = 0; i < arity; ++i) args[i] = i < len ? arguments[i] : null
 		if (async) {
-			var ctx = this
-			action.apply(this, args.concat(function() {
+			action.apply(component, args.concat(function() {
 				if (arguments.length) throw Error('callback takes no argument')
-				method.apply(ctx, args)
+				method.apply(component, args)
 			}))
 		}
 		else {
-			action.apply(this, args)
-			method.apply(this, args)
+			action.apply(component, args)
+			method.apply(component, args)
 		}
-		return this
+		return component
 	}
 
-	return this
+	return component
 }

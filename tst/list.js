@@ -1,17 +1,13 @@
 var ct = require('cotest'),
-		P = require('../dist/index.js')
+		el = require('../element'),
+		list = require('../list'),
+		select = require('../select'),
+		text = require('../text'),
+		common = require('../common'),
+		JSDOM = require('jsdom').JSDOM
 
-if (!P.D) {
-	// @ts-ignore
-	var JSDOM = require('jsdom').JSDOM //eslint-disable-line global-require
-	P.setWindow((new JSDOM).window)
-}
-
-
-var el = P.element,
-		list = P.list,
-		select = P.select,
-		text = P.text
+var window = (new JSDOM).window
+common.doc = window.document
 
 function toString(nodes) {
 	var str = ''
@@ -89,10 +85,10 @@ ct('list stacked and grouped', function() {
 ct('list nested', function() {
 	var childFactory = function() { return el('h0').child(text('')) },
 			co = el('div').child(
-		list(function() {
-			return list(childFactory)
-		})
-	)
+				list(function() {
+					return list(childFactory)
+				})
+			)
 	var elem = co.node
 
 	ct('===', toString(elem.childNodes), '^$')

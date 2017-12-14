@@ -1,14 +1,9 @@
 var ct = require('cotest'),
-		P = require('../dist/index.js')
+		text = require('../text'),
+		common = require('../common'),
+		JSDOM = require('jsdom').JSDOM
 
-if (!P.D) {
-	// @ts-ignore
-	var JSDOM = require('jsdom').JSDOM //eslint-disable-line global-require
-	P.setWindow((new JSDOM).window)
-}
-
-
-var text = P.text
+common.doc = (new JSDOM).window.document
 
 ct('text - static', function() {
 	ct('===', text('a').node.nodeType, 3)

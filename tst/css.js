@@ -1,24 +1,24 @@
 var ct = require('cotest'),
-		P = require('../dist/index.js')
+		css = require('../css'),
+		common = require('../common'),
+		JSDOM = require('jsdom').JSDOM
 
-if (!P.D) {
-	// @ts-ignore
-	var JSDOM = require('jsdom').JSDOM //eslint-disable-line global-require
-	P.setWindow((new JSDOM).window)
-}
+var document = common.doc = (new JSDOM).window.document
 
 ct('css - add rule', function() {
-	var sheets = P.D.styleSheets,
+	var sheets = document.styleSheets,
 			sheet = null,
 			match = /myClass/,
 			found = false
 
-	P.css('.myClass { color: white }')
+	css('.myClass { color: white }')
 
 	// get existing sheet
 	for (var i=0; i<sheets.length && !found; ++i) {
 		sheet = sheets[i]
+		//@ts-ignore
 		for (var j=0; j<sheet.cssRules.length && !found; ++j) {
+			//@ts-ignore
 			found = match.test(sheet.cssRules[i].cssText)
 		}
 	}

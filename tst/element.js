@@ -1,14 +1,11 @@
 var ct = require('cotest'),
-		P = require('../dist/index.js')
+		el = require('../element'),
+		text = require('../text'),
+		common = require('../common'),
+		JSDOM = require('jsdom').JSDOM
 
-if (!P.D) {
-	// @ts-ignore
-	var JSDOM = require('jsdom').JSDOM //eslint-disable-line global-require
-	P.setWindow((new JSDOM).window)
-}
-
-
-var el = P.element
+var window = (new JSDOM).window
+common.doc = window.document
 
 function toString(nodes) {
 	var str = ''
@@ -49,17 +46,17 @@ ct('element - event', function() {
 			elm = cmp.node
 
 	ct('===', elm.textContent, '')
-	elm.dispatchEvent(new P.W.Event('click'))
+	elm.dispatchEvent(new window.Event('click'))
 	ct('===', elm.textContent, 'a')
-	elm.dispatchEvent(new P.W.Event('click'))
+	elm.dispatchEvent(new window.Event('click'))
 	ct('===', elm.textContent, 'aa')
 })
 
 ct('element - update', function() {
 	var co = el('h0').child([
-		P.text('a'),
-		P.text('b').set('update', function(v) { this.text(v.toUpperCase()) }),
-		P.text('c').set('update', function(v) { this.text(v.toUpperCase()); this.update = null })
+		text('a'),
+		text('b').set('update', function(v) { this.text(v.toUpperCase()) }),
+		text('c').set('update', function(v) { this.text(v.toUpperCase()); this.update = null })
 	])
 	ct('===', co.node.textContent, 'abc')
 

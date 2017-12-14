@@ -5,6 +5,11 @@
 
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
+--wrap in seperate function
+--esm to cjs
+--remove parent getter. use find
+--setDocument
+
 
 ## [0.3.0] - 2017-06-04
 ### Added

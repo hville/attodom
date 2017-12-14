@@ -1,29 +1,28 @@
 var ct = require('cotest'),
-		P = require('../dist/index.js')
+		el = require('../element'),
+		find = require('../find'),
+		wrap = require('../wrap'),
+		common = require('../common'),
+		JSDOM = require('jsdom').JSDOM
 
-if (!P.D) {
-	// @ts-ignore
-	var JSDOM = require('jsdom').JSDOM //eslint-disable-line global-require
-	P.setWindow((new JSDOM).window)
-}
-
-
-var el = P.element
+var window = (new JSDOM).window
+common.doc = window.document
 
 ct('component.wrap sync and async', function(end) {
-	var input = el('input')
-	.p('value', 'INPUT')
-	.wrap('moveTo', function(parent, before) {
-		this.parent = P.find(parent)
+	var input = el('input').p('value', 'INPUT'),
+			div = el('div').p('id', 'ID').text('DIV')
+
+	wrap(input, 'moveTo', function(parent) {
+		this.parent = find(parent)
 		parent.textContent = 'CHILD'
 		this.node.value = parent.id
 	})
-	.wrap('remove', function (cb) {
+
+	wrap(input, 'remove', function (cb) {
 		this.parent.text('ALONE')
 		ct('===', cb.length, 0)
 		cb()
 	})
-	var div = el('div').p('id', 'ID').text('DIV')
 
 	ct('===', input.node.value, 'INPUT')
 	ct('===', div.node.textContent, 'DIV')
@@ -37,4 +36,3 @@ ct('component.wrap sync and async', function(end) {
 		end()
 	})
 })
-
