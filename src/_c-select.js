@@ -3,12 +3,14 @@ var attoKey = require('./atto-key')
 var CElement = require('./_c-element')
 var CKeyed = require('./_c-keyed')
 
+module.exports = CSelect
+
 /**
  * @constructor
  * @param {!Object} items
  * @param {Function} [select]
  */
-export function CSelect(items, select) {
+function CSelect(items, select) {
 	this.refs = items
 	if (select) this.select = select
 
