@@ -3,7 +3,7 @@ var ct = require('cotest'),
 		common = require('../common'),
 		JSDOM = require('jsdom').JSDOM
 
-common.doc = (new JSDOM).window.document
+common.document = (new JSDOM).window.document
 
 ct('text - static', function() {
 	ct('===', text('a').node.nodeType, 3)

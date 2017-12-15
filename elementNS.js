@@ -8,5 +8,5 @@ var CElement = require('./src/_c-element')
  * @return {!Object} Component
  */
 module.exports = function elementNS(nsURI, tag) {
-	return new CElement(common.doc.createElementNS(nsURI, tag))
+	return new CElement(common.document.createElementNS(nsURI, tag))
 }

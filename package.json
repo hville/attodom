@@ -21,6 +21,7 @@
   },
   "scripts": {
     "test": "npm run build:main & cotest tst",
+    "test:cjs": "cotest tst",
     "gzip": "node -e \"fs.writeFileSync(process.argv[2], zlib.gzipSync(fs.readFileSync(process.argv[1])))\"",
     "build:main": "rollup -o ./dist/index.js -f cjs --banner \"/* hugov@runbox.com | https://github.com/hville/attodom.git | license:MIT */\" ./module.js",
     "build:browser": "rollup -o ./dist/browser.js -f iife -n attodom --banner \"/* hugov@runbox.com | https://github.com/hville/attodom.git | license:MIT */\" ./module.js",

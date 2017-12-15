@@ -1,4 +1,4 @@
 module.exports = {
 	key: '_aD',
-	doc: typeof document !== 'undefined' ? document : null
+	document: typeof document !== 'undefined' ? document : null
 }

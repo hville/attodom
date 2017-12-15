@@ -1,5 +1,6 @@
-var common = require('../common')
-var CElement = require('./_c-element')
+var common = require('../common'),
+		CElement = require('./_c-element'),
+		placeItem = require('./place-item')
 
 module.exports = CKeyed
 
@@ -11,10 +12,10 @@ module.exports = CKeyed
 function CKeyed(factory, getKey) {
 	this.refs = Object.create(null)
 	this.factory = factory
-	if (getKey) this.getKey = getKey
+	this.getKey = getKey || getIndex
 
-	this.node = common.doc.createComment('^')
-	this.foot = common.doc.createComment('$')
+	this.node = common.document.createComment('^')
+	this.foot = common.document.createComment('$')
 	this.node[common.key] = this
 	this.foot[common.key] = this
 }
@@ -51,17 +52,6 @@ CKeyed.prototype = {
 			}
 		}
 		return this
-	},
-
-	_placeItem: function(parent, item, spot, foot) {
-		if (!spot) item.moveTo(parent)
-		else if (item.node === spot.nextSibling) spot[common.key].moveTo(parent, foot)
-		else if (item.node !== spot) item.moveTo(parent, spot)
-		return item.foot || item.node
-	},
-
-	getKey: function(v,i,a) { //eslint-disable-line no-unused-vars
-		return i // default: indexed
 	},
 
 	update: updateKeyedChildren,
@@ -101,7 +91,7 @@ function updateKeyedChildren(arr) {
 		var key = this.getKey(arr[i], i, arr),
 				item = refs[key] = items[key] || this.factory(key, arr[i], i, arr)
 		// place before update since lists require a parent before update
-		spot = this._placeItem(parent, item, spot, foot).nextSibling
+		spot = placeItem(parent, item, spot, foot).nextSibling
 		if (item.update) item.update(arr[i], i, arr)
 	}
 	this.refs = refs
@@ -113,4 +103,8 @@ function updateKeyedChildren(arr) {
 	}
 
 	return this
+}
+
+function getIndex(v,i) {
+	return i // default: indexed
 }

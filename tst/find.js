@@ -5,7 +5,7 @@ var ct = require('cotest'),
 		JSDOM = require('jsdom').JSDOM
 
 var window = (new JSDOM).window
-common.doc = window.document
+common.document = window.document
 
 ct('find', function() {
 	var h01 = el('h2').text('H01'),

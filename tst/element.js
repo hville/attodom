@@ -5,7 +5,7 @@ var ct = require('cotest'),
 		JSDOM = require('jsdom').JSDOM
 
 var window = (new JSDOM).window
-common.doc = window.document
+common.document = window.document
 
 function toString(nodes) {
 	var str = ''

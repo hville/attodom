@@ -7,5 +7,5 @@ var CElement = require('./src/_c-element')
  * @return {!Object} Component
  */
 module.exports = function element(tagName) {
-	return new CElement(common.doc.createElement(tagName))
+	return new CElement(common.document.createElement(tagName))
 }

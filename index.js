@@ -1,6 +1,4 @@
 // @ts-check
-var common = require('./common')
-
 /* eslint-disable global-require */
 module.exports = {
 	component: require('./component'),
@@ -12,6 +10,5 @@ module.exports = {
 	select: require('./list'),
 	wrap: require('./wrap'),
 	find: require('./find'),
-	css: require('./css'),
-	setDocument: function(doc) { return common.D = doc }
+	css: require('./css')
 }

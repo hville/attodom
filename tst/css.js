@@ -3,10 +3,10 @@ var ct = require('cotest'),
 		common = require('../common'),
 		JSDOM = require('jsdom').JSDOM
 
-var document = common.doc = (new JSDOM).window.document
+common.document = (new JSDOM).window.document
 
 ct('css - add rule', function() {
-	var sheets = document.styleSheets,
+	var sheets = common.document.styleSheets,
 			sheet = null,
 			match = /myClass/,
 			found = false
@@ -22,5 +22,6 @@ ct('css - add rule', function() {
 			found = match.test(sheet.cssRules[i].cssText)
 		}
 	}
+
 	ct('!!', found)
 })

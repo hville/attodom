@@ -1,5 +1,5 @@
-var common = require('../common')
-var CElement = require('./_c-element')
+var common = require('../common'),
+		CElement = require('./_c-element')
 
 module.exports = CNode
 

@@ -1,38 +1,42 @@
 var ct = require('cotest'),
 		el = require('../element'),
-		find = require('../find'),
 		wrap = require('../wrap'),
 		common = require('../common'),
 		JSDOM = require('jsdom').JSDOM
 
 var window = (new JSDOM).window
-common.doc = window.document
+common.document = window.document
 
-ct('component.wrap sync and async', function(end) {
-	var input = el('input').p('value', 'INPUT'),
-			div = el('div').p('id', 'ID').text('DIV')
+ct('wrap component methods', function(end) {
+	var input = el('input'),
+			span = el('span'),
+			div = el('div').child(span)
 
-	wrap(input, 'moveTo', function(parent) {
-		this.parent = find(parent)
-		parent.textContent = 'CHILD'
-		this.node.value = parent.id
+	wrap(input, 'moveTo', function(parent, moveTo) {
+		parent.id = 'gotChild!'
+		this.node.id = 'gotParent!'
+		setTimeout(moveTo, 0, parent)
 	})
 
-	wrap(input, 'remove', function (cb) {
-		this.parent.text('ALONE')
-		ct('===', cb.length, 0)
-		cb()
+	wrap(span, 'remove', function (remove) {
+		this.node.parentNode.id = 'lostChild!'
+		this.node.id = 'lostParent!'
+		setTimeout(remove, 0)
 	})
 
-	ct('===', input.node.value, 'INPUT')
-	ct('===', div.node.textContent, 'DIV')
 	div.child(input)
-	ct('===', input.node.value, 'ID')
-	ct('===', div.node.textContent, 'CHILD')
-	input.remove()
+
 	setTimeout(function() {
-		ct('===', input.node.value, 'ID')
-		ct('===', div.node.textContent, 'ALONE')
-		end()
+		ct('===', input.node.id, 'gotParent!')
+		ct('===', div.node.id, 'gotChild!')
+		ct('===', span.node.id, '')
+
+		span.remove()
+
+		setTimeout(function() {
+			ct('===', div.node.id, 'lostChild!')
+			ct('===', span.node.id, 'lostParent!')
+			end()
+		})
 	})
 })

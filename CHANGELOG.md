@@ -5,7 +5,7 @@
 
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
---wrap in seperate function
+--wrap in seperate function, async only, normal callback
 --esm to cjs
 --remove parent getter. use find
 --setDocument

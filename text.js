@@ -7,5 +7,5 @@ var CNode = require('./src/_c-node')
  * @return {!Object} Component
  */
 module.exports = function textNode(txt) {
-	return new CNode(common.doc.createTextNode(txt))
+	return new CNode(common.document.createTextNode(txt))
 }

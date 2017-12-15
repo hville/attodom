@@ -8,5 +8,5 @@ var svgURI = 'http://www.w3.org/2000/svg'
  * @return {!Object} Component
  */
 module.exports = function svg(tag) {
-	return new CElement(common.doc.createElementNS(svgURI, tag))
+	return new CElement(common.document.createElementNS(svgURI, tag))
 }

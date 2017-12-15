@@ -88,7 +88,7 @@ CElement.prototype = {
 			if (child !== null) {
 				if (Array.isArray(child)) this.child.apply(this, child)
 				else if (child.moveTo) child.moveTo(node)
-				else node.appendChild(child.nodeType ? child : common.doc.createTextNode(''+child))
+				else node.appendChild(child.nodeType ? child : common.document.createTextNode(''+child))
 			}
 		}
 		return this
