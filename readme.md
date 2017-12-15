@@ -13,11 +13,11 @@ import {ic_remove, ic_add} from './icons'
 
 var store = new Store([])
 
-var table = el('table').child(
-  el('caption').class('f4').text('table example with...'),
-  el('tbody').child(
+var table = el('table').append(
+  el('caption').attr('class', 'f4').text('table example with...'),
+  el('tbody').append(
     list(function(rowKey) {
-      return el('tr').child(
+      return el('tr').append(
         el('td') //leading column with icon
         .on('click', function() {store.delRow(rowKey) })
         .child(ic_remove.cloneNode(true)),
@@ -31,7 +31,7 @@ var table = el('table').child(
         })
       )
     }),
-    el('tr').child(
+    el('tr').append(
       el('td')
       .on('click', function() { store.addRow() } )
       .child(ic_add)

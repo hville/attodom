@@ -1,4 +1,6 @@
-var common = require('../common')
+var common = require('../common'),
+		CNode = require('./_c-node'),
+		thisAssign = require('./this-assign')
 
 module.exports = CElement
 
@@ -11,117 +13,48 @@ function CElement(node) {
 	node[common.key] = this
 }
 
-CElement.prototype = {
-	constructor: CElement,
-	foot: null,
+var CEproto = CElement.prototype,
+		CNproto = CNode.prototype
 
-	/**
-	* @function
-	* @param  {!Node} parent destination parent
-	* @param  {Node} [before] nextSibling
-	* @return {!Object} this
-	*/
-	moveTo: function(parent, before) {
-		var node = this.node,
-				anchor = before || null
-		if (!parent) throw Error('invalid parent node')
+CEproto.assign = thisAssign
 
-		if (node.parentNode !== parent || (anchor !== node && anchor !== node.nextSibling)) {
-			parent.insertBefore(node, anchor)
+CEproto.remove = CNproto.remove
+CEproto.moveTo = CNproto.moveTo
+CEproto.prop = CNproto.prop
+
+/**
+* @param  {!Object|string} key
+* @param  {*} [val]
+* @return {!Object}
+*/
+CEproto.attr = function(key, val) {
+	if (typeof key === 'object')
+		for (var i=0, ks=Object.keys(key); i<ks.length; ++i) {
+			if (val === false) this.node.removeAttribute(ks[i])
+			else this.node.setAttribute(ks[i], key[ks[i]] === true ? '' : key[ks[i]])
 		}
-		return this
-	},
-
-	/**
-	* @function
-	* @return {!Object} this
-	*/
-	remove: function() {
-		var node = this.node,
-				origin = node.parentNode
-		if (origin) origin.removeChild(node)
-		return this
-	},
-
-	/**
-	 * @function
-	 * @param {string|number} key
-	 * @param {*} val value
-	 * @returns {!Object} this
-	 */
-	set: function(key, val) {
-		this[key] = val
-		return this
-	},
-
-	p: function(key, val) {
-		this.node[key] = val
-		return this
-	},
-
-	text: function(txt) {
-		this.node.textContent = txt
-		return this
-	},
-
-	a: function(key, val) {
+	else {
 		if (val === false) this.node.removeAttribute(key)
 		else this.node.setAttribute(key, val === true ? '' : val)
-		return this
-	},
-
-	id: function(id) {
-		this.node.setAttribute('id', id)
-		return this
-	},
-
-	class: function(val) {
-		this.node.setAttribute('class', val)
-		return this
-	},
-
-	child: function() {
-		var node = this.node
-		for (var i=0; i<arguments.length; ++i) {
-			var child = arguments[i]
-			if (child === undefined) throw Error('undefined child')
-			if (child !== null) {
-				if (Array.isArray(child)) this.child.apply(this, child)
-				else if (child.moveTo) child.moveTo(node)
-				else node.appendChild(child.nodeType ? child : common.document.createTextNode(''+child))
-			}
-		}
-		return this
-	},
-
-	// EVENT LISTENERS
-	handlers: null,
-	handleEvent: function(event) {
-		var handlers = this.handlers,
-				handler = handlers && handlers[event.type]
-		if (handler) handler.call(this, event)
-		else throw Error(event.type + ' handler mismatch')
-	},
-	on: function(type, handler) {
-		if (!handler) {
-			if (this.handlers && this.handlers[type]) {
-				delete this.handlers[type]
-				this.node.removeEventListener(type, this, false)
-			}
-		}
-		else {
-			if (!this.handlers) this.handlers = {}
-			this.handlers[type] = handler
-			this.node.addEventListener(type, this, false)
-		}
-		return this
-	},
-
-	update: updateChildren,
-	updateChildren: updateChildren
+	}
+	return this
 }
 
-function updateChildren(v, k, o) {
+CEproto.append = function() {
+	var node = this.node
+	for (var i=0; i<arguments.length; ++i) {
+		var child = arguments[i]
+		if (child === undefined) throw Error('undefined child')
+		if (child !== null) {
+			if (Array.isArray(child)) this.append.apply(this, child)
+			else if (child.moveTo) child.moveTo(node)
+			else node.appendChild(child.nodeType ? child : common.document.createTextNode(''+child))
+		}
+	}
+	return this
+}
+
+CEproto.update = CEproto.updateChildren = function(v, k, o) {
 	var child = this.node.firstChild
 	while (child) {
 		var co = child[common.key]
@@ -130,6 +63,30 @@ function updateChildren(v, k, o) {
 			child = (co.foot || child).nextSibling
 		}
 		else child = child.nextSibling
+	}
+	return this
+}
+
+// EVENT LISTENERS
+
+CEproto.handleEvent = function(event) {
+	var handlers = this.handlers,
+			handler = handlers && handlers[event.type]
+	if (handler) handler.call(this, event)
+	else throw Error(event.type + ' handler mismatch')
+}
+
+CEproto.on = function(type, handler) {
+	if (!handler) {
+		if (this.handlers && this.handlers[type]) {
+			delete this.handlers[type]
+			this.node.removeEventListener(type, this, false)
+		}
+	}
+	else {
+		if (!this.handlers) this.handlers = {}
+		this.handlers[type] = handler
+		this.node.addEventListener(type, this, false)
 	}
 	return this
 }

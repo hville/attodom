@@ -16,8 +16,8 @@ function toString(nodes) {
 }
 
 ct('list static', function() {
-	var childFactory = function() { return el('p').child(text('x')) },
-			co = el('div').child(list(childFactory)),
+	var childFactory = function() { return el('p').append(text('x')) },
+			co = el('div').append(list(childFactory)),
 			elem = co.node
 
 	ct('===', toString(elem.childNodes), '^$')
@@ -37,7 +37,7 @@ ct('list static', function() {
 
 ct('list stacked', function() {
 	var tFactory = function () { return text('') },
-			co = el('div').child(
+			co = el('div').append(
 				list(tFactory),
 				list(tFactory),
 				list(tFactory)
@@ -59,7 +59,7 @@ ct('list stacked', function() {
 })
 
 ct('list stacked and grouped', function() {
-	var co = el('div').child(
+	var co = el('div').append(
 		select([
 			list(text),
 			list(text.bind(text,'x')),
@@ -83,8 +83,8 @@ ct('list stacked and grouped', function() {
 })
 
 ct('list nested', function() {
-	var childFactory = function() { return el('h0').child(text('')) },
-			co = el('div').child(
+	var childFactory = function() { return el('h0').append(text('')) },
+			co = el('div').append(
 				list(function() {
 					return list(childFactory)
 				})
@@ -104,10 +104,10 @@ ct('list nested', function() {
 })
 
 ct('list keyed', function() {
-	var co = el('h0').child(
+	var co = el('h0').append(
 		list(function() {
-			return text('x').set('update', function(v) { this.text(v.v); this.update = null })
-		}).set('getKey', v => v.k)
+			return text('x').assign('update', function(v) { this.node.textContent = v.v; this.update = null })
+		}).assign('getKey', v => v.k)
 	)
 	var elem = co.node
 
@@ -127,11 +127,11 @@ ct('list keyed', function() {
 })
 
 ct('list select', function() {
-	var co = el('h0').child(
+	var co = el('h0').append(
 		select({
-			a: text('').set('update', function(v) { this.text('a'+v) }),
-			b: text('').set('update', function(v) { this.text('b'+v) })
-		}).set('select', v => v)
+			a: text('').assign('update', function(v) { this.node.textContent = 'a'+v }),
+			b: text('').assign('update', function(v) { this.node.textContent = 'b'+v })
+		}).assign('select', v => v)
 	)
 	var elem = co.node
 

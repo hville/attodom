@@ -1,6 +1,6 @@
 var common = require('../common'),
-		CElement = require('./_c-element'),
-		placeItem = require('./place-item')
+		placeItem = require('./place-item'),
+		thisAssign = require('./this-assign')
 
 module.exports = CKeyed
 
@@ -20,49 +20,14 @@ function CKeyed(factory, getKey) {
 	this.foot[common.key] = this
 }
 
-CKeyed.prototype = {
-	constructor: CKeyed,
-	set: CElement.prototype.set,
-	remove: remove,
+var CKproto = CKeyed.prototype
 
-	/**
-	* @function moveTo
-	* @param  {!Object} parent destination parent
-	* @param  {Object} [before] nextSibling
-	* @return {!Object} this
-	*/
-	moveTo: function(parent, before) {
-		var foot = this.foot,
-				next = this.node,
-				origin = next.parentNode,
-				anchor = before || null
-
-		if (!parent.nodeType) throw Error('invalid parent node')
-
-		if (origin !== parent || (anchor !== foot && anchor !== foot.nextSibling)) {
-
-			if (origin) { // relocate
-				var cursor
-				do next = (cursor = next).nextSibling
-				while (parent.insertBefore(cursor, anchor) !== foot)
-			}
-			else { // insertion
-				parent.insertBefore(next, anchor)
-				parent.insertBefore(foot, anchor)
-			}
-		}
-		return this
-	},
-
-	update: updateKeyedChildren,
-	updateChildren: updateKeyedChildren,
-}
+CKproto.assign = thisAssign
 
 /**
-* @function remove
 * @return {!Object} this
 */
-function remove() {
+CKproto.remove = function() {
 	var head = this.node,
 			origin = head.parentNode,
 			spot = head.nextSibling
@@ -80,7 +45,35 @@ function remove() {
 	return this
 }
 
-function updateKeyedChildren(arr) {
+/**
+* @param  {!Object} parent destination parent
+* @param  {Object} [before] nextSibling
+* @return {!Object} this
+*/
+CKproto.moveTo = function(parent, before) {
+	var foot = this.foot,
+			next = this.node,
+			origin = next.parentNode,
+			anchor = before || null
+
+	if (!parent.nodeType) throw Error('invalid parent node')
+
+	if (origin !== parent || (anchor !== foot && anchor !== foot.nextSibling)) {
+
+		if (origin) { // relocate
+			var cursor
+			do next = (cursor = next).nextSibling
+			while (parent.insertBefore(cursor, anchor) !== foot)
+		}
+		else { // insertion
+			parent.insertBefore(next, anchor)
+			parent.insertBefore(foot, anchor)
+		}
+	}
+	return this
+}
+
+CKproto.update = CKproto.updateKeyedChildren = function(arr) {
 	var foot = this.foot,
 			parent = foot.parentNode,
 			spot = this.node.nextSibling,

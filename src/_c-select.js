@@ -1,7 +1,7 @@
 var common = require('../common'),
-		CElement = require('./_c-element'),
 		CKeyed = require('./_c-keyed'),
-		placeItem = require('./place-item')
+		placeItem = require('./place-item'),
+		thisAssign = require('./this-assign')
 
 module.exports = CSelect
 
@@ -20,17 +20,15 @@ function CSelect(items, select) {
 	this.foot[common.key] = this
 }
 
-CSelect.prototype = {
-	constructor: CSelect,
+var CSproto = CSelect.prototype,
+		CKproto = CKeyed.prototype
 
-	set: CElement.prototype.set,
-	remove: CKeyed.prototype.remove,
-	moveTo: CKeyed.prototype.moveTo,
-	update: updateSelectChildren,
-	updateChildren: updateSelectChildren
-}
+CSproto.assign = thisAssign
 
-function updateSelectChildren(v,k,o) {
+CSproto.remove = CKproto.remove
+CSproto.moveTo = CKproto.moveTo
+
+CSproto.update = CSproto.updateChildren = function(v,k,o) {
 	var foot = this.foot,
 			parent = foot.parentNode,
 			spot = this.node.nextSibling,

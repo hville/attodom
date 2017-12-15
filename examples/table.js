@@ -4,24 +4,24 @@ import {ic_remove, ic_add} from './icons'
 
 var store = new Store([])
 
-var table = el('table').child(
-	el('caption').class('f4').text('table example with...'),
-	el('tbody').child(
+var table = el('table').append(
+	el('caption').attr('class', 'f4').text('table example with...'),
+	el('tbody').append(
 		list(function(rowKey) {
-			return el('tr').child(
+			return el('tr').append(
 				el('td') //leading column with icon
 					.on('click', function() {store.delRow(rowKey) })
 					.child(ic_remove.cloneNode(true)),
 				list(function(colKey) {
 					return el('td') // data columns
 						.child(
-							el('input').set('update', function(v) { this.node.value = v })
+							el('input').assign('update', function(v) { this.node.value = v })
 								.on('change', function() {store.set(this.node.value, [rowKey, colKey]) } )
 						)
 				})
 			)
 		}),
-		el('tr').child(
+		el('tr').append(
 			el('td')
 				.on('click', function() { store.addRow() } )
 				.child(ic_add)

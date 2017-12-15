@@ -10,7 +10,7 @@ common.document = window.document
 ct('wrap component methods', function(end) {
 	var input = el('input'),
 			span = el('span'),
-			div = el('div').child(span)
+			div = el('div').append(span)
 
 	wrap(input, 'moveTo', function(parent, moveTo) {
 		parent.id = 'gotChild!'
@@ -24,7 +24,7 @@ ct('wrap component methods', function(end) {
 		setTimeout(remove, 0)
 	})
 
-	div.child(input)
+	div.append(input)
 
 	setTimeout(function() {
 		ct('===', input.node.id, 'gotParent!')

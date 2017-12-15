@@ -11,8 +11,15 @@ ct('text - static', function() {
 	ct('===', text('ab').node.parentNode, null)
 })
 
-ct('text - dynamic', function() {
-	var co = text('abc').set('update', function(v) { this.text(v+v) })
+ct('text - dynamic - default', function() {
+	var co = text('abc')
+	ct('===', co.node.nodeValue, 'abc')
+	co.update('def')
+	ct('===', co.node.nodeValue, 'def')
+})
+
+ct('text - dynamic - custom', function() {
+	var co = text('abc').assign('update', function(v) { this.node.textContent = v+v })
 	ct('===', co.node.nodeValue, 'abc')
 	co.update('def')
 	ct('===', co.node.nodeValue, 'defdef')
