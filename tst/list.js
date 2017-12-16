@@ -106,8 +106,8 @@ ct('list nested', function() {
 ct('list keyed', function() {
 	var co = el('h0').append(
 		list(function() {
-			return text('x').assign('update', function(v) { this.node.textContent = v.v; this.update = null })
-		}).assign('getKey', v => v.k)
+			return text('x').c('update', function(v) { this.node.textContent = v.v; this.update = null })
+		}).c('getKey', v => v.k)
 	)
 	var elem = co.node
 
@@ -129,9 +129,9 @@ ct('list keyed', function() {
 ct('list select', function() {
 	var co = el('h0').append(
 		select({
-			a: text('').assign('update', function(v) { this.node.textContent = 'a'+v }),
-			b: text('').assign('update', function(v) { this.node.textContent = 'b'+v })
-		}).assign('select', v => v)
+			a: text('').c('update', function(v) { this.node.textContent = 'a'+v }),
+			b: text('').c('update', function(v) { this.node.textContent = 'b'+v })
+		}).c('select', v => v)
 	)
 	var elem = co.node
 

@@ -18,11 +18,11 @@ ct('element - static', function() {
 
 	// explicit
 	ct('===', toString(el('p').append('ab').node.childNodes), 'ab')
-	ct('===', el('p').attr('id', 'A').node.id, 'A')
+	ct('===', el('p').a('id', 'A').node.id, 'A')
 
 	// automagic
 	ct('===', toString(el('p').append('ab').node.childNodes), 'ab')
-	ct('===', el('p').attr('data-id', 'A').prop('id', 'A').node.id, 'A')
+	ct('===', el('p').a('data-id', 'A').p('id', 'A').node.id, 'A')
 })
 
 ct('element - mixed children', function() {
@@ -32,7 +32,7 @@ ct('element - mixed children', function() {
 })
 
 ct('element - static, multiple mixed arguments', function() {
-	var p = el('p').append(0).attr('class', 'A').append(1).prop('id', 'B').append(2).node
+	var p = el('p').append(0).a('class', 'A').append(1).p('id', 'B').append(2).node
 	ct('===', p.nodeType, 1)
 	ct('===', p.firstChild.nodeValue, '0')
 	ct('===', p.className, 'A')
@@ -55,8 +55,8 @@ ct('element - event', function() {
 ct('element - update', function() {
 	var co = el('h0').append([
 		text('a'),
-		text('b').assign('update', function(v) { this.node.textContent = v.toUpperCase() }),
-		text('c').assign('update', function(v) { this.node.textContent = v.toUpperCase(); this.update = null })
+		text('b').c('update', function(v) { this.node.textContent = v.toUpperCase() }),
+		text('c').c('update', function(v) { this.node.textContent = v.toUpperCase(); this.update = null })
 	])
 	ct('===', co.node.textContent, 'abc')
 

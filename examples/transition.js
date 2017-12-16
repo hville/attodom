@@ -15,16 +15,16 @@ var optionValues = {
 
 var optionKeys = Object.keys(optionValues)
 
-var options = el('select').attr('class', 'v-top').attr('multiple')
+var options = el('select').a('class', 'v-top').a('multiple')
 	.a('size', optionKeys.length)
 	.on('change', function() { bullets.update() })
 	.child(
 		select(optionKeys.map(function(k) {
-			return el('option').attr('selected').text(optionValues[k])
+			return el('option').a('selected').text(optionValues[k])
 		}))
 	).update(optionKeys)
 
-var bullets = el('ol').attr('class', 'v-top').append(
+var bullets = el('ol').a('class', 'v-top').append(
 	list(itemFactory, function(v) {return v})
 	.set('update', function() {
 		var opts = options.node.options
@@ -68,10 +68,10 @@ function transitionBeforeRemove(remove) {
 	}
 }
 
-el('div').attr('class', 'debug').append(
-	el('h2').attr('class', 'pl3').text('example with'),
+el('div').a('class', 'debug').append(
+	el('h2').a('class', 'pl3').text('example with'),
 	el('div').append(
-		el('div').attr('class', 'fl w-50 pa3').append(bullets),
-		el('div').attr('class', 'fl w-50 pa3').append(options)
+		el('div').a('class', 'fl w-50 pa3').append(bullets),
+		el('div').a('class', 'fl w-50 pa3').append(options)
 	)
 ).moveTo(D.body)

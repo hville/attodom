@@ -19,24 +19,17 @@ var CEproto = CElement.prototype
 
 CEproto.remove = remove
 CEproto.moveTo = move
-CEproto.prop = prop
-CEproto.assign = thisAssign
+CEproto.p = prop
+CEproto.c = thisAssign
 
 /**
 * @param  {!Object|string} key
 * @param  {*} [val]
 * @return {!Object}
 */
-CEproto.attr = function(key, val) {
-	if (typeof key === 'object')
-		for (var i=0, ks=Object.keys(key); i<ks.length; ++i) {
-			if (val === false) this.node.removeAttribute(ks[i])
-			else this.node.setAttribute(ks[i], key[ks[i]] === true ? '' : key[ks[i]])
-		}
-	else {
-		if (val === false) this.node.removeAttribute(key)
-		else this.node.setAttribute(key, val === true ? '' : val)
-	}
+CEproto.a = function(key, val) {
+	if (val === false) this.node.removeAttribute(key)
+	else this.node.setAttribute(key, val === true ? '' : val)
 	return this
 }
 

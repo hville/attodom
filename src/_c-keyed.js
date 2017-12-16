@@ -22,7 +22,7 @@ function CKeyed(factory, getKey) {
 
 var CKproto = CKeyed.prototype
 
-CKproto.assign = thisAssign
+CKproto.c = thisAssign
 
 /**
 * @return {!Object} this

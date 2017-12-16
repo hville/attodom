@@ -19,7 +19,7 @@ ct('text - dynamic - default', function() {
 })
 
 ct('text - dynamic - custom', function() {
-	var co = text('abc').assign('update', function(v) { this.node.textContent = v+v })
+	var co = text('abc').c('update', function(v) { this.node.textContent = v+v })
 	ct('===', co.node.nodeValue, 'abc')
 	co.update('def')
 	ct('===', co.node.nodeValue, 'defdef')

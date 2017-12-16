@@ -5,7 +5,7 @@ import {ic_remove, ic_add} from './icons'
 var store = new Store([])
 
 var table = el('table').append(
-	el('caption').attr('class', 'f4').text('table example with...'),
+	el('caption').a('class', 'f4').text('table example with...'),
 	el('tbody').append(
 		list(function(rowKey) {
 			return el('tr').append(
@@ -15,7 +15,7 @@ var table = el('table').append(
 				list(function(colKey) {
 					return el('td') // data columns
 						.child(
-							el('input').assign('update', function(v) { this.node.value = v })
+							el('input').c('update', function(v) { this.node.value = v })
 								.on('change', function() {store.set(this.node.value, [rowKey, colKey]) } )
 						)
 				})

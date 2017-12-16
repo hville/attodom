@@ -14,7 +14,7 @@ import {ic_remove, ic_add} from './icons'
 var store = new Store([])
 
 var table = el('table').append(
-  el('caption').attr('class', 'f4').text('table example with...'),
+  el('caption').a('class', 'f4').text('table example with...'),
   el('tbody').append(
     list(function(rowKey) {
       return el('tr').append(

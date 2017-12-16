@@ -25,7 +25,7 @@ var CSproto = CSelect.prototype,
 
 CSproto.remove = CKproto.remove
 CSproto.moveTo = CKproto.moveTo
-CSproto.assign = thisAssign
+CSproto.c = thisAssign
 
 CSproto.update = CSproto.updateChildren = function(v,k,o) {
 	var foot = this.foot,

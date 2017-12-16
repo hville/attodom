@@ -16,10 +16,10 @@ function CNode(node) {
 }
 
 var CNproto = CNode.prototype
-CNproto.assign = thisAssign
+CNproto.c = thisAssign
 CNproto.remove = remove
 CNproto.moveTo = move
-CNproto.prop = prop
+CNproto.p = prop
 
 /**
 * @param  {string|number} txt
