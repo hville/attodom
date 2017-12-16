@@ -1,4 +1,4 @@
-var common = require('./common')
+var common = require('./config')
 var CElement = require('./src/_c-element')
 var svgURI = 'http://www.w3.org/2000/svg'
 

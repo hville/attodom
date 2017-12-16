@@ -1,4 +1,4 @@
-var common = require('../common'),
+var common = require('../config'),
 		placeItem = require('./place-item'),
 		thisAssign = require('./this-assign')
 

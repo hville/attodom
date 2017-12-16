@@ -1,4 +1,4 @@
-var common = require('../common'),
+var common = require('../config'),
 		CKeyed = require('./_c-keyed'),
 		placeItem = require('./place-item'),
 		thisAssign = require('./this-assign')
@@ -23,10 +23,9 @@ function CSelect(items, select) {
 var CSproto = CSelect.prototype,
 		CKproto = CKeyed.prototype
 
-CSproto.assign = thisAssign
-
 CSproto.remove = CKproto.remove
 CSproto.moveTo = CKproto.moveTo
+CSproto.assign = thisAssign
 
 CSproto.update = CSproto.updateChildren = function(v,k,o) {
 	var foot = this.foot,

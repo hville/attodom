@@ -3,7 +3,7 @@ var ct = require('cotest'),
 		list = require('../list'),
 		select = require('../select'),
 		text = require('../text'),
-		common = require('../common'),
+		common = require('../config'),
 		JSDOM = require('jsdom').JSDOM
 
 var window = (new JSDOM).window

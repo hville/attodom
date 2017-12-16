@@ -1,7 +1,7 @@
 var ct = require('cotest'),
 		el = require('../element'),
 		wrap = require('../wrap'),
-		common = require('../common'),
+		common = require('../config'),
 		JSDOM = require('jsdom').JSDOM
 
 var window = (new JSDOM).window

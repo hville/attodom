@@ -1,4 +1,4 @@
-var common = require('./common')
+var common = require('./config')
 var CElement = require('./src/_c-element')
 var CNode = require('./src/_c-node')
 

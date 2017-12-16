@@ -1,6 +1,8 @@
-var common = require('../common'),
-		CNode = require('./_c-node'),
-		thisAssign = require('./this-assign')
+var common = require('../config'),
+		thisAssign = require('./this-assign'),
+		move = require('./node-move'),
+		remove = require('./node-remove'),
+		prop = require('./node-prop')
 
 module.exports = CElement
 
@@ -13,14 +15,12 @@ function CElement(node) {
 	node[common.key] = this
 }
 
-var CEproto = CElement.prototype,
-		CNproto = CNode.prototype
+var CEproto = CElement.prototype
 
+CEproto.remove = remove
+CEproto.moveTo = move
+CEproto.prop = prop
 CEproto.assign = thisAssign
-
-CEproto.remove = CNproto.remove
-CEproto.moveTo = CNproto.moveTo
-CEproto.prop = CNproto.prop
 
 /**
 * @param  {!Object|string} key

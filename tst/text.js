@@ -1,6 +1,6 @@
 var ct = require('cotest'),
 		text = require('../text'),
-		common = require('../common'),
+		common = require('../config'),
 		JSDOM = require('jsdom').JSDOM
 
 common.document = (new JSDOM).window.document

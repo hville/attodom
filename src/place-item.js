@@ -1,4 +1,4 @@
-var common = require('../common')
+var common = require('../config')
 
 module.exports = function(parent, item, spot, foot) {
 	if (!spot) item.moveTo(parent)
