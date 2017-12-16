@@ -10,6 +10,16 @@
 --remove parent getter. use find
 --setDocument
 
+## [0.4.0] - 2017-06-04
+### Removed
+- `.wrap`, `.text`, `.id`, `.class` methods
+- es6 and browser versions
+
+### Changed
+- module system from esm to cjs
+- `.set` => `.c`
+- `.set` => `.c`
+- `setWindow` => `config.document`
 
 ## [0.3.0] - 2017-06-04
 ### Added

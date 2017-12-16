@@ -4,11 +4,10 @@ module.exports = {
 	component: require('./component'),
 	text: require('./text'),
 	svg: require('./svg'),
-	element: require('./element'),
-	elementNS: require('./elementNS'),
+	el: require('./el'),
+	elNS: require('./elNS'),
 	list: require('./list'),
 	select: require('./list'),
-	wrap: require('./wrap'),
 	find: require('./find'),
 	css: require('./css')
 }

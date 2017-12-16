@@ -15,17 +15,18 @@ function CNode(node) {
 	node[common.key] = this
 }
 
-var CNproto = CNode.prototype
-CNproto.c = thisAssign
-CNproto.remove = remove
-CNproto.moveTo = move
-CNproto.p = prop
+CNode.prototype = {
+	c: thisAssign,
+	remove: remove,
+	moveTo: move,
+	p: prop,
 
-/**
-* @param  {string|number} txt
-* @return {!Object}
-*/
-CNproto.update = function(txt) {
-	this.node.textContent = txt
-	return this
+	/**
+	* @param  {string|number} txt
+	* @return {!Object}
+	*/
+	update: function(txt) {
+		this.node.textContent = txt
+		return this
+	}
 }

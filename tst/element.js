@@ -1,5 +1,5 @@
 var ct = require('cotest'),
-		el = require('../element'),
+		el = require('../el'),
 		text = require('../text'),
 		common = require('../config'),
 		JSDOM = require('jsdom').JSDOM

@@ -4,12 +4,13 @@
 
 • [Example](#example) • [Why](#why) • [API](#api) • [License](#license)
 
+
 ## Examples
 
 ```javascript
-import {D, element as el, list} from '../module'
-import {Store} from './Store' // any user store will do
-import {ic_remove, ic_add} from './icons'
+var {el, list} = require('attodom'),
+    Store = require('./Store'), // any user store will do
+    {ic_remove, ic_add} = require('./icons') //any pre-defined component
 
 var store = new Store([])
 
@@ -49,16 +50,6 @@ store.set([
 ])
 ```
 
-supports different environments
-* CJS: `require('attodom').element`
-* ES modules: `import {element} from 'attodom'`
-* browser: (`attodom.element`)
-* server: See `setWindow` below
-
-Two examples are available:
-* `npm run example:table`: dynamic list, 1-way data flow, components, icons
-* `npm run example:transition`: select list, transitions
-
 
 ## Why
 
@@ -73,10 +64,8 @@ Two examples are available:
 * svg and namespace support
 * ability to inject a `document API` for server use and/or testing (e.g. `jsdom`)
 * no virtual DOM, all operations are done on actual nodes
-* <2kb gzip, no dependencies, all under 500 lines including comments and jsDocs
-* all text injections and manipulations done through the secure `textContent` and `nodeValue` DOM API
-* available in CommonJS, ES6 modules and browser versions
-* All in ES5 with ES modules, CJS module and iife for browsers. Should work well on mobile and older browsers like IE9.
+* <2kb gzip, no dependencies
+* Designed for older browsers, low memory requirement and no transpilation required
 
 
 ### Limitations
@@ -90,32 +79,27 @@ Two examples are available:
 
 ### Components
 
-Components can be created with the functions element, elementNS, svg, text, list, select and component
+Components can be created with the functions el, elNS, svg, text, list, select and component
 
-Element
-* `element(tagName)`
-* `elementNS(nsURI, tagName)`
-* `svg(tagName)`
-* `component(element)`
+creating Element component
+* `el(tagName): Component`
+* `elNS(nsURI, tagName): Component`
+* `svg(tagName): Component`
+* `component(element): Component`
 
-Node
-* `text(textContent)`
-* `component(node)`
+creating Node components (e.g. TextNode)
+* `text(textContent): Component`
+* `component(node): Component`
 
 List (component with multiple or no nodes)
-* `list(factory)`
-* `select(components)`
-
+* `list(factory): Component`
+* `select(components): Component`
 
 Components have a number of chainable methods:
-* component properties: `.set(key, val)`
+* component properties: `.c(key, val)`
 * node properties: `.p(key, val)`
-* method wrapper: `.wrap(name, function)`
-* node textContent: `.text(key, val)`
 * element attributes: `.a(key, val)`
-* element id: `.id(string)`
-* element class: `.class(string)`
-* element child: `.child(node | number | string | Array | null, ...)`
+* element child: `.append(node | number | string | Array | null, ...)`
 * element event listeners: `.on(name, callback)` to add, `on(name, falsy)` to remove
 
 
@@ -157,18 +141,21 @@ For additional lifecycle behaviours, component methods can be wrapped (`moveTo`,
 Wrapper actions are launched before the native method.
 
 
-
 ### Other helpers
 
-* `setWindow(window)` to set the window and document interface for testing or server use
-  * eg. `setWindow((new JSDOM).window)`
-* `W` and `D` reference to the `window` ad `document` interface for testing or server use
-  * eg. `document.body === D.body`
 * `find(from [, test] [, until])` find a component within nodes or components and matching the test function. It parses nodes up and down following the html markup order.
   * eg. `find(document.body)` to get the first component in the document
   * eg. `find(tableComponent, function(c) { return c.key === 5 } )`
 * `css(ruleText)` to insert a rule in the document for cases where an exported factory relies on a specific css rule that is not convenient or practical to include in a seperate css file
 
+### Server use
+
+Document can be injected as follow:
+
+```javascript
+const config = require('attodom/config')
+config.document = myDocumentObject
+```
 
 ### Gotcha
 

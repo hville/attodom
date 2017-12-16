@@ -1,6 +1,6 @@
 {
   "name": "attodom",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "main": "./dist/index.js",
   "module": "./module.js",
   "browser": "./dist/browser.js",
@@ -17,20 +17,17 @@
   "devDependencies": {
     "@hugov/cjs-to-iife": "^0.1.1",
     "@types/node": "^8.5.1",
-    "cotest": "^2.1.1",
-    "rulo": "^0.6.0"
+    "cotest": "^2.1.1"
   },
   "scripts": {
     "test": "cotest tst",
     "iife": "npm run node:iife -- ./index.js ./bld/iife.js",
     "min": "google-closure-compiler-js --compilationLevel ADVANCED --languageIn ES5 --languageOut ES5 --useTypesForOptimization true ./bld/iife.js > ./bld/iife.min.js",
     "gzip": "npm run node:gzip -- ./bld/iife.min.js ./bld/iife.gz",
-    "node:iife": "node -e \"require('@hugov/cjs-to-iife')(process.argv[1]).then(code => fs.writeFileSync(process.argv[2], code))\"",
-    "node:gzip": "node -e \"fs.writeFileSync(process.argv[2], zlib.gzipSync(fs.readFileSync(process.argv[1])))\"",
     "build": "npm run iife && npm run min && npm run gzip",
     "prepublishOnly": "npm test",
-    "example:table": "cd ./examples & rulo -i table.js -o index.js",
-    "example:transition": "cd ./examples & rulo -i transition.js -o index.js"
+    "node:iife": "node -e \"require('@hugov/cjs-to-iife')(process.argv[1]).then(code => fs.writeFileSync(process.argv[2], code))\"",
+    "node:gzip": "node -e \"fs.writeFileSync(process.argv[2], zlib.gzipSync(fs.readFileSync(process.argv[1])))\""
   },
   "repository": {
     "type": "git",

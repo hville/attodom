@@ -1,5 +1,5 @@
 var ct = require('cotest'),
-		el = require('../element'),
+		el = require('../el'),
 		list = require('../list'),
 		select = require('../select'),
 		text = require('../text'),
