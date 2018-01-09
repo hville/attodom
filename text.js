@@ -1,4 +1,4 @@
-var common = require('./config')
+var common = require('./common')
 var CNode = require('./src/_c-node')
 
 /**

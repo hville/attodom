@@ -1,4 +1,4 @@
-var common = require('./config')
+var common = require('./common')
 
 module.exports = function find(start, test, until) { //find(test, head=body, foot=null)
 	var spot = start.node || start,

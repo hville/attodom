@@ -7,7 +7,6 @@ module.exports = {
 	el: require('./el'),
 	elNS: require('./elNS'),
 	list: require('./list'),
-	select: require('./list'),
 	find: require('./find'),
 	css: require('./css')
 }

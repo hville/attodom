@@ -1,4 +1,4 @@
-var common = require('./config')
+var common = require('./common')
 
 var media = /^$|^all$/ //mediaTypes: all, print, screen, speach
 
