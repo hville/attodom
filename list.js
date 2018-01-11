@@ -43,8 +43,10 @@ function updateKeyedChildren(arr) {
 			parent = foot.parentNode,
 			spot = this.node.nextSibling,
 			items = this.refs,
-			refs = Object.create(null)
+			refs = Object.create(null) //manually deleting items requires the item to also hold it's key
+
 	if (!parent) throw Error('list update requires a parent node')
+
 	for (var i = 0; i < arr.length; ++i) {
 		var key = this.getKey(arr[i], i, arr),
 				item = refs[key] = items[key] || this.factory(key, arr[i], i, arr)
@@ -52,6 +54,7 @@ function updateKeyedChildren(arr) {
 		spot = placeItem(parent, item, spot, foot).nextSibling
 		if (item.update) item.update(arr[i], i, arr)
 	}
+
 	this.refs = refs
 
 	while (spot !== this.foot) {
