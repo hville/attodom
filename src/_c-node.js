@@ -1,5 +1,4 @@
-var common = require('../config'),
-		thisAssign = require('./this-assign'),
+var thisAssign = require('./this-assign'),
 		move = require('./node-move'),
 		remove = require('./node-remove'),
 		prop = require('./node-prop')
@@ -12,7 +11,6 @@ module.exports = CNode
  */
 function CNode(node) {
 	this.node = node
-	node[common.key] = this
 }
 
 CNode.prototype = {

@@ -26,8 +26,6 @@ function CKeyed(factory, getKey) {
 
 	this.node = common.document.createComment('^')
 	this.foot = common.document.createComment('$')
-	this.node[common.key] = this
-	this.foot[common.key] = this
 }
 
 CKeyed.prototype = {
@@ -58,9 +56,9 @@ function updateKeyedChildren(arr) {
 	this.refs = refs
 
 	while (spot !== this.foot) {
-		item = spot[common.key]
-		spot = (item.foot || item.node).nextSibling
-		item.remove()
+		var next = spot.nextSibling
+		parent.removeChild(spot)
+		spot = next
 	}
 
 	return this

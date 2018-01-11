@@ -1,11 +1,7 @@
-var common = require('./common')
-
 module.exports = function find(start, test, until) { //find(test, head=body, foot=null)
 	var spot = start.node || start,
-			last = until ? (until.node || until.foot || until) : null,
-			comp = spot[common.key]
-
-	while(!comp || (test && !test(comp))) {
+			last = until ? (until.node || until.foot || until) : null
+	while(!spot || (test && !test(spot))) {
 		if (spot === last) return null // specified end reached
 
 		var next = spot.firstChild
@@ -15,7 +11,6 @@ module.exports = function find(start, test, until) { //find(test, head=body, foo
 			if (spot === null) return null // end of tree reached
 		}
 		spot = next
-		comp = spot[common.key]
 	}
-	return comp
+	return spot
 }

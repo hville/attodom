@@ -1,4 +1,3 @@
-var common = require('../config')
 /**
 * @return {!Object} this
 */
@@ -11,9 +10,9 @@ module.exports = function() {
 	if (origin) {
 		//@ts-ignore
 		while (spot !== this.foot) {
-			var item = spot[common.key]
-			spot = (item.foot || item.node).nextSibling
-			item.remove()
+			var next = spot.nextSibling
+			origin.removeChild(spot)
+			spot = next
 		}
 		//@ts-ignore
 		origin.removeChild(this.foot)

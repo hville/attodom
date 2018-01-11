@@ -1,4 +1,4 @@
-var common = require('../config'),
+var common = require('../common'),
 		thisAssign = require('./this-assign'),
 		move = require('./node-move'),
 		remove = require('./node-remove'),
@@ -12,7 +12,6 @@ module.exports = CElement
  */
 function CElement(node) {
 	this.node = node
-	node[common.key] = this
 }
 CElement.prototype = {
 	remove: remove,
@@ -45,10 +44,6 @@ CElement.prototype = {
 		return this
 	},
 
-	update: updateChildren,
-	updateChildren: updateChildren,
-	// EVENT LISTENERS
-
 	handleEvent: function(event) {
 		var handlers = this.handlers,
 				handler = handlers && handlers[event.type]
@@ -70,16 +65,4 @@ CElement.prototype = {
 		}
 		return this
 	}
-}
-function updateChildren(v, k, o) {
-	var child = this.node.firstChild
-	while (child) {
-		var co = child[common.key]
-		if (co) {
-			if (co.update) co.update(v, k, o)
-			child = (co.foot || child).nextSibling
-		}
-		else child = child.nextSibling
-	}
-	return this
 }
