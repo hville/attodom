@@ -93,6 +93,7 @@ Component.prototype = {
 		this.factory = factory
 		this.getKey = getKey || getIndex
 		this.update = this.updateList
+		return this
 	},
 
 	updateList: function(arr) {
