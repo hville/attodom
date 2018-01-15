@@ -1,9 +1,6 @@
 var ct = require('cotest'),
 		el = require('../el'),
-		list = require('../list'),
-		select = require('../select'),
-		text = require('../text'),
-		common = require('../config'),
+		common = require('../context'),
 		JSDOM = require('jsdom').JSDOM
 
 var window = (new JSDOM).window
@@ -16,9 +13,13 @@ function toString(nodes) {
 }
 
 ct('list static', function() {
-	var childFactory = function() { return el('p').append(text('x')) },
-			co = el('div').append(list(childFactory)),
+	var childFactory = function() { return el('p').append('x') },
+			co = el('div'),
 			elem = co.node
+
+	ct('===', co.append('^'), co)
+	ct('===', co.list(childFactory), co)
+	ct('===', co.append('$'), co)
 
 	ct('===', toString(elem.childNodes), '^$')
 
@@ -35,61 +36,10 @@ ct('list static', function() {
 	ct('===', toString(elem.childNodes), '^153$')
 })
 
-ct('list stacked', function() {
-	var tFactory = function () { return text('') },
-			co = el('div').append(
-				list(tFactory),
-				list(tFactory),
-				list(tFactory)
-			)
-	var elem = co.node
-	ct('===', toString(elem.childNodes), '^$^$^$')
-
-	co.update([1,2,3])
-	ct('===', toString(elem.childNodes), '^123$^123$^123$')
-
-	co.update([4,3,1,2])
-	ct('===', toString(elem.childNodes), '^4312$^4312$^4312$')
-
-	co.update([])
-	ct('===', toString(elem.childNodes), '^$^$^$')
-
-	co.update([1,5,3])
-	ct('===', toString(elem.childNodes), '^153$^153$^153$')
-})
-
-ct('list stacked and grouped', function() {
-	var co = el('div').append(
-		select([
-			list(text),
-			list(text.bind(text,'x')),
-			list(function() { return text('y') })
-		])
-	)
-
-	var elem = co.node
-
-	co.update([1,2,3])
-	ct('===', toString(elem.childNodes), '^^123$^123$^123$$')
-
-	co.update([4,3,1,2])
-	ct('===', toString(elem.childNodes), '^^4312$^4312$^4312$$')
-
-	co.update([])
-	ct('===', toString(elem.childNodes), '^^$^$^$$')
-
-	co.update([1,5,3])
-	ct('===', toString(elem.childNodes), '^^153$^153$^153$$')
-})
-
 ct('list nested', function() {
-	var childFactory = function() { return el('h0').append(text('')) },
-			co = el('div').append(
-				list(function() {
-					return list(childFactory)
-				})
-			)
-	var elem = co.node
+	var childFactory = function() { return el('h0').append('') },
+			co = el('div').append('^').list(() => el('span').list(childFactory) ).append('$').c('update', function(a) {this.updateList(a)}),
+			elem = co.node
 
 	ct('===', toString(elem.childNodes), '^$')
 

@@ -1,7 +1,7 @@
 var ct = require('cotest'),
 		el = require('../el'),
 		find = require('../find'),
-		common = require('../config'),
+		common = require('../context'),
 		JSDOM = require('jsdom').JSDOM
 
 var window = (new JSDOM).window

@@ -1,7 +1,6 @@
 var ct = require('cotest'),
 		el = require('../el'),
-		text = require('../text'),
-		common = require('../config'),
+		common = require('../context'),
 		JSDOM = require('jsdom').JSDOM
 
 var window = (new JSDOM).window
@@ -53,17 +52,18 @@ ct('element - event', function() {
 })
 
 ct('element - update', function() {
-	var co = el('h0').append([
-		text('a'),
-		text('b').c('update', function(v) { this.node.textContent = v.toUpperCase() }),
-		text('c').c('update', function(v) { this.node.textContent = v.toUpperCase(); this.update = null })
-	])
+	var kidB = el('span').append('b').c('update', function(v) { this.node.textContent = v.toUpperCase() }),
+			kidC = el('span').append('c').node
+	var co = el('h0').append(['a', kidB, kidC]).c('update', function(t) {
+		kidB.update(t)
+		kidC.textContent = t
+	})
 	ct('===', co.node.textContent, 'abc')
 
 	co.update('d')
-	ct('===', co.node.textContent, 'dDD')
+	ct('===', co.node.textContent, 'aDd')
 	co.update('e')
-	ct('===', co.node.textContent, 'eED')
+	ct('===', co.node.textContent, 'aEe')
 })
 
 ct('element - custom element', function() {

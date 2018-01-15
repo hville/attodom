@@ -1,4 +1,4 @@
-var common = require('./common')
+var common = require('./context')
 
 var media = /^$|^all$/ //mediaTypes: all, print, screen, speach
 

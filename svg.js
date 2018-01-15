@@ -1,5 +1,6 @@
-var common = require('./common')
-var CElement = require('./src/_c-element')
+var common = require('./context'),
+		Component = require('./component')
+
 var svgURI = 'http://www.w3.org/2000/svg'
 
 /**
@@ -8,5 +9,5 @@ var svgURI = 'http://www.w3.org/2000/svg'
  * @return {!Object} Component
  */
 module.exports = function svg(tag) {
-	return new CElement(common.document.createElementNS(svgURI, tag))
+	return new Component(common.document.createElementNS(svgURI, tag))
 }
