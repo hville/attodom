@@ -64,12 +64,12 @@ ct('list keyed', function() {
 
 ct('list - multiple', function() {
 	function childFactory(v) {
-		return co(el('p', ''+v+v))
+		return co(el('p', v))
 	}
-	var comp = co(el('div'), ls(childFactory), ls(childFactory), co(el('p', '$'))),
+	var comp = co(el('div'), ls(childFactory), ls(childFactory), childFactory('$'), ls(childFactory), el('p', '$'), ls(childFactory)),
 			elem = comp.node
 
-	ct('===', toString(elem.childNodes), '<>$')
+	ct('===', toString(elem.childNodes), '<>$$')
 
 	comp.update([1,2,3])
 	ct('===', toString(elem.childNodes), '112233<>112233$')

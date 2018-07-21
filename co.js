@@ -122,6 +122,7 @@ Component.prototype.updateList = function(list, arr) {
 	}
 
 	while (spot !== list.foot) {
+		console.log(spot, list.foot)
 		var next = spot.nextSibling
 		node.removeChild(spot)
 		spot = next
