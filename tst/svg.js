@@ -1,10 +1,10 @@
 var ct = require('cotest'),
 		svg = require('../svg'),
-		root = require('../root'),
+		core = require('../core'),
 		JSDOM = require('jsdom').JSDOM
 
 var window = (new JSDOM).window
-root.document = window.document
+core.document = window.document
 
 ct('svg', function() {
 	ct('===', svg('svg').nodeType, 1)

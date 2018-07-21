@@ -1,39 +1,72 @@
 var ct = require('cotest'),
 		el = require('../el'),
-		co = require('../co'),
 		ls = require('../list'),
-		root = require('../root'),
+		core = require('../core'),
+		update = require('../update'),
 		JSDOM = require('jsdom').JSDOM
 
 var window = (new JSDOM).window
-root.document = window.document
+core.document = window.document
 
 function toString(nodes) {
 	var str = ''
-	if (nodes) for (var i=0; i<nodes.length; ++i) str+=nodes[i].textContent
+	if (nodes) for (var i=0; i<nodes.length; ++i) if (nodes[i].nodeType!==8) str+=nodes[i].textContent
 	return str
 }
+function setText(n,t) {
+	n.textContent = t
+}
+function upperKid(t) {
+	return el('p', t.toUpperCase(), setText)
+}
+
+ct.only('list detached', function() {
+	var list = ls(upperKid)
+	update(list, ['a'], null, null)
+	ct('===', toString(list.parentNode.childNodes), 'A')
+	update(list, ['a', 'b'], null, null)
+	ct('===', toString(list.parentNode.childNodes), 'aB')
+	update(list, ['a'], null, null)
+	ct('===', toString(list.parentNode.childNodes), 'a')
+})
+ct.only('list mounted', function() {
+	var list = ls(upperKid),
+			kin = el('div', list)
+	ct('===', toString(kin.childNodes), '')
+	update(list, ['a'], null, null)
+	ct('===', toString(kin.childNodes), 'A')
+	update(list, ['a', 'b'], null, null)
+	ct('===', toString(kin.childNodes), 'aB')
+	update(list, ['a'], null, null)
+	ct('===', toString(list.parentNode.childNodes), 'a')
+})
+ct.only('list mounted with next', function() {
+	var list = ls(upperKid),
+			kin = el('div', list, '$')
+	ct('===', toString(kin.childNodes), '$')
+	update(list, ['a'], null, null)
+	ct('===', toString(kin.childNodes), 'A$')
+	update(list, ['a', 'b'], null, null)
+	ct('===', toString(kin.childNodes), 'aB$')
+	update(list, ['a'], null, null)
+	ct('===', toString(list.parentNode.childNodes), 'a$')
+})
+
 
 ct('list static', function() {
-	function setText(t) { console.log('Ha', t, this.node.textContent); this.node.textContent = t }
-	function childFactory(v) {
-		return co(el('p', v+1), {update: setText})
-	}
-	var comp = co(el('div'), '^', ls(childFactory), '$'),
-			elem = comp.node
-
+	var elem = el('div', '^', ls(upperKid), '$')
 	ct('===', toString(elem.childNodes), '^$')
 
-	comp.update([1,2,3,])
+	update(elem, [1,2,3])
 	ct('===', toString(elem.childNodes), '^234$')
 
-	comp.update([4,3,1,2])
+	update(elem, [4,3,1,2])
 	ct('===', toString(elem.childNodes), '^4313$')
 
-	comp.update([])
+	update(elem, [])
 	ct('===', toString(elem.childNodes), '^$')
 
-	comp.update([1,5,3])
+	update(elem, [1,5,3])
 	ct('===', toString(elem.childNodes), '^264$')
 })
 
@@ -63,10 +96,10 @@ ct('list keyed', function() {
 })
 
 ct('list - multiple', function() {
-	function childFactory(v) {
+	function upperKid(v) {
 		return co(el('p', v))
 	}
-	var comp = co(el('div'), ls(childFactory), ls(childFactory), childFactory('$'), ls(childFactory), el('p', '$'), ls(childFactory)),
+	var comp = co(el('div'), ls(upperKid), ls(upperKid), upperKid('$'), ls(upperKid), el('p', '$'), ls(upperKid)),
 			elem = comp.node
 
 	ct('===', toString(elem.childNodes), '<>$$')

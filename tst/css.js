@@ -1,12 +1,12 @@
 var ct = require('cotest'),
 		css = require('../css'),
-		root = require('../root'),
+		core = require('../core'),
 		JSDOM = require('jsdom').JSDOM
 
-root.document = (new JSDOM).window.document
+core.document = (new JSDOM).window.document
 
 ct('css - add rule', function() {
-	var sheets = root.document.styleSheets,
+	var sheets = core.document.styleSheets,
 			sheet = null,
 			match = /myClass/,
 			found = false

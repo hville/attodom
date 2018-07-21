@@ -1,4 +1,4 @@
-var root = require('./root'),
+var core = require('./core'),
 		mount = require('./mount')
 
 var svgURI = 'http://www.w3.org/2000/svg'
@@ -8,11 +8,14 @@ var svgURI = 'http://www.w3.org/2000/svg'
  * @return {Element}
  */
 module.exports = function(tagName) {
-	var node = root.document.createElementNS(svgURI, tagName)
+	var node = core.document.createElementNS(svgURI, tagName)
+
 	for (var i=1; i<arguments.length; ++i) {
 		var arg = arguments[i]
 		if (arg != null) {
-			if (arg.constructor && arg.constructor !== Object) mount(node, arg)
+			var typ = arg.constructor
+			if (typ === Function) core.updaters.set(node, arg)
+			else if (typ && typ !== Object) mount(node, arg)
 			else for (var j=0, ks=Object.keys(arg); j<ks.length; ++j) {
 				var key = ks[j],
 						val = arg[key]
