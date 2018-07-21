@@ -1,9 +1,8 @@
 module.exports = function find(start, test, until) { //find(test, head=body, foot=null)
 	var spot = start.node || start,
-			last = until ? (until.node || until.foot || until) : null
-	while(!spot || (test && !test(spot))) {
+			last = until ? (until.node || until) : null
+	while(!test(spot)) {
 		if (spot === last) return null // specified end reached
-
 		var next = spot.firstChild
 		// if no child get sibling, if no sibling, retry with parent
 		if (!next) while(!(next = spot.nextSibling)) {

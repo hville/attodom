@@ -5,10 +5,13 @@
 
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
---wrap in seperate function, async only, normal callback
---esm to cjs
---remove parent getter. use find
---setDocument
+
+## [0.5.0] - 2018-01-21
+### Removed
+- `.find`, `.text`
+
+### Changed
+- reverted to an hyperscript style API
 
 ## [0.4.0] - 2017-06-04
 ### Removed

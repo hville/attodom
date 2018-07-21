@@ -1,4 +1,4 @@
-var common = require('./context')
+var root = require('./root')
 
 var media = /^$|^all$/ //mediaTypes: all, print, screen, speach
 
@@ -20,11 +20,11 @@ module.exports = function css(cssRuleText) {
  * @return {StyleSheet}
  */
 function getSheet() {
-	var sheets = common.document.styleSheets
+	var sheets = root.document.styleSheets
 	// get existing sheet
 	for (var i=0; i<sheets.length; ++i) {
 		if (media.test(sheets[i].media.mediaText) && !sheets[i].disabled) return sheets[i]
 	}
 	// or create a new one
-	return common.document.head.appendChild(common.document.createElement('style')).sheet
+	return root.document.head.appendChild(root.document.createElement('style')).sheet
 }
