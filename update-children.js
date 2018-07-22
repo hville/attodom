@@ -9,6 +9,6 @@ var update = require('./update')
  */
 module.exports = function(kin, val, key, obj) {
 	var spot = kin.firstChild
-	while (spot) spot = update(spot, val, key, obj).nextSibling
+	while ((spot = update(spot, val, key, obj).nextSibling));
 	return kin
 }

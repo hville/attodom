@@ -1,7 +1,7 @@
 var ct = require('cotest'),
-		el = require('../el'),
-		update = require('../update'),
-		updateChildren = require('../update-children'),
+		el = require('../').el,
+		update = require('../').update,
+		updateChildren = require('../').updateChildren,
 		root = require('../core'),
 		JSDOM = require('jsdom').JSDOM
 

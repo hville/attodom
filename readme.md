@@ -18,15 +18,15 @@
 * svg and namespace support
 * ability to inject a `document API` for server use and/or testing (e.g. `jsdom`)
 * no virtual DOM, all operations are done on actual nodes
-* 1 kb gzip, no dependencies
-* Designed for older browsers, low memory requirement and no transpilation required
+* less than 1kb gzip, no dependencies
+* Designed for phones and/or older browsers:
+  * very low memory requirement
+  * no transpilation required
 
 
 ### Limitations
 
-* view and event helpers only
-* limited css utility
-* strictly DOM element creation and manipulation (no router, no store)
+* strictly DOM element creation and manipulations (no router, no store)
 
 
 ## API
@@ -59,16 +59,16 @@ where
 `nodeFactory: function([*], [*], [*]): Node`
 `getKey: function([*], [number], [Array]): string`
 
-list creates a `Comment Node` that will be followed by a variable number of Nodes upon update with an array.
-
+`list` creates a `Comment Node` that will be followed by a variable number of Nodes upon update with an array.
+A list can't contain another list
 
 ### Server use
 
 Document can be injected as follow:
 
 ```javascript
-const root = require('attodom/root')
-root.document = myDocumentObject
+const core = require('attodom/core')
+core.document = myDocumentObject
 ```
 
 ## License

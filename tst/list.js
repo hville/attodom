@@ -1,9 +1,9 @@
 var ct = require('cotest'),
-		el = require('../el'),
-		ls = require('../list'),
+		el = require('../').el,
+		ls = require('../').list,
 		core = require('../core'),
-		update = require('../update'),
-		updateChildren = require('../update-children'),
+		update = require('../').update,
+		updateChildren = require('../').updateChildren,
 		JSDOM = require('jsdom').JSDOM
 
 var window = (new JSDOM).window
@@ -73,13 +73,3 @@ ct('list multiple', function() {
 	update(kin, ['a', 'b'], null, null)
 	ct('===', toString(kin.childNodes), 'aB$aBaB')
 })
-ct.skip('list nested', function() {
-	//TODO fix consistent mounting in list update
-	var kin = el('div', ls(function() {return ls(upperKid)}), updateChildren)
-	ct('===', toString(kin.childNodes), '')
-	update(kin, [['a']], null, null)
-	ct('===', toString(kin.childNodes), 'a')
-	//update(kin, [['a', 'b']], null, null)
-	//ct('===', toString(kin.childNodes), 'aB$aBaB')
-})
-

@@ -1,6 +1,6 @@
 module.exports = function find(start, test, until) { //find(test, head=body, foot=null)
-	var spot = start.node || start,
-			last = until ? (until.node || until) : null
+	var spot = start,
+			last = until || null
 	while(!test(spot)) {
 		if (spot === last) return null // specified end reached
 		var next = spot.firstChild

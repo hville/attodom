@@ -11,16 +11,18 @@ module.exports = function mount(kin, kid) {
 		for (var i=0, node; i<kid.length; ++i) node = mount(kin, kid[i])
 		return node
 	}
-	if (kid.constructor === String) return kin.appendChild(core.document.createTextNode(kid))
-	if (kid.constructor === Number) return kin.appendChild(core.document.createTextNode(''+kid))
-	if (kid.nodeType === 8) {
-		var list = kid._$lK
-		if (list) {
-			kin.appendChild(kid)
-			return kin.appendChild(list.tail)
+	var typ = kid.nodeType
+	if (typ) {
+		if (typ === 8) {
+			//list node
+			var list = kid._$lK
+			if (list) {
+				kin.appendChild(kid)
+				return kin.appendChild(list.tail)
+			}
 		}
+		//normal node
+		return kin.appendChild(kid)
 	}
-	if (kid.nodeType) return kin.appendChild(kid)
-
-	throw Error('invalid child')
+	return kin.appendChild(core.document.createTextNode(''+kid))
 }

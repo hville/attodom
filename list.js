@@ -53,16 +53,13 @@ function updateList(head, arr) {
 		//create or update kid
 		if (kid) {
 			var updt = kid._$uK
-			//TODO does not work for nested lists
 			if (updt) updt(kid, arr[i], key, arr)
 		}
 		else kid = list.make(arr[i], i, arr)
 		kids[key] = kid
 
 		//place kid
-		//TODO does not work for nested lists
-		if (!spot) kin.appendChild(kid)
-		else if (kid === spot.nextSibling) kin.insertBefore(spot, list.tail)
+		if (kid === spot.nextSibling) kin.insertBefore(spot, list.tail)
 		else if (kid !== spot) kin.insertBefore(kid, spot)
 		spot = kid.nextSibling
 	}

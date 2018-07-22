@@ -1,6 +1,6 @@
 {
   "name": "attodom",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "main": "./index.js",
   "description": "yet another small DOM component library",
   "keywords": [
@@ -14,7 +14,7 @@
   "dependencies": {},
   "devDependencies": {
     "@hugov/cjs-to-iife": "^0.1.1",
-    "@types/node": "^8.5.1",
+    "@types/node": "^10.5.2",
     "cotest": "^2.1.1"
   },
   "scripts": {
