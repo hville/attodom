@@ -7,13 +7,15 @@ var core = require('./core')
  */
 module.exports = function(make, getK) {
 	var kin = core.document.createComment('>')
-	core.liveLists.set(kin, {
+	//@ts-ignore
+	kin._$uK = updateList
+	//@ts-ignore
+	kin._$lK = {
 		make: make,
 		getK: getK || getKey,
 		kids: Object.create(null),
 		tail: core.document.createComment('<')
-	})
-	core.updaters.set(kin, updateList)
+	}
 	return kin
 }
 
@@ -34,7 +36,8 @@ function getKey(v,i) {
 function updateList(head, arr) {
 	var kin = head.parentNode,
 			kids = Object.create(null),
-			list = core.liveLists.get(head)
+			//@ts-ignore
+			list = head._$lK
 
 	// find the parent or create one
 	if (!kin) {
@@ -49,13 +52,15 @@ function updateList(head, arr) {
 				kid = list.kids[key]
 		//create or update kid
 		if (kid) {
-			var updt = core.updaters.get(kid)
+			var updt = kid._$uK
+			//TODO does not work for nested lists
 			if (updt) updt(kid, arr[i], key, arr)
 		}
 		else kid = list.make(arr[i], i, arr)
 		kids[key] = kid
 
 		//place kid
+		//TODO does not work for nested lists
 		if (!spot) kin.appendChild(kid)
 		else if (kid === spot.nextSibling) kin.insertBefore(spot, list.tail)
 		else if (kid !== spot) kin.insertBefore(kid, spot)

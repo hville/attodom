@@ -1,5 +1,3 @@
-var core = require('./core')
-
 /**
  * @param {Node} kin
  * @param {*} val
@@ -8,7 +6,7 @@ var core = require('./core')
  * @return {Node}
  */
 module.exports = function(kin, val, key, obj) {
-	var updt = core.updaters.get(kin)
-	if (updt) updt(kin, val, key, obj)
-	return kin
+	//@ts-ignore
+	var updt = kin._$uK
+	return updt && updt(kin, val, key, obj) || kin
 }

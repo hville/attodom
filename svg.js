@@ -14,7 +14,8 @@ module.exports = function(tagName) {
 		var arg = arguments[i]
 		if (arg != null) {
 			var typ = arg.constructor
-			if (typ === Function) core.updaters.set(node, arg)
+			//@ts-ignore
+			if (typ === Function) node._$uK = arg
 			else if (typ && typ !== Object) mount(node, arg)
 			else for (var j=0, ks=Object.keys(arg); j<ks.length; ++j) {
 				var key = ks[j],

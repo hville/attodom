@@ -18,7 +18,7 @@
 * svg and namespace support
 * ability to inject a `document API` for server use and/or testing (e.g. `jsdom`)
 * no virtual DOM, all operations are done on actual nodes
-* <2kb gzip, no dependencies
+* 1 kb gzip, no dependencies
 * Designed for older browsers, low memory requirement and no transpilation required
 
 
@@ -33,25 +33,33 @@
 
 ### Elements (hyperscript)
 
-* `el(tagName [, attributes [,children]] ): HTMLElement`
-* `svg(tagName [, attributes [,children]] ): SVGElement`
+* `el(tagName [, attributes[, updater [,children]]] ): HTMLElement`
+* `svg(tagName [, attributes[, updater [,children]]] ): SVGElement`
+
+where
+`attributes: {name: value}`
+`updater: function(Node, [*], [*], [*]):Node`
+`children: {number|string|Node|Array<children>}`
 
 
-### Components
+### Helper Function
 
-* `co(Element, config, children): Component`
-* `.node` the component's associated element
-* `.update(value)` the function to trigger changes based on external data
-* `.updateChildren(array)` to update all child components
+`update: function(Node, [*], [*], [*]):Node`
+Updates a node with the provided updater defined on creation
 
-By default, update is set to `updateChildren` for `ParentNodes`, `setValue` form `HTMLInputElement` and `setText` for others.
-To change the update function, specify it in the config object `{update: myUpdateFunction}`
+`updateChildren: function(ParentNode, [*], [*], [*]):ParentNode`
+Updates all children nodes of a parenta node with the provided updater defined on creation
 
 
 ### Lists
 
-* `list(componentFactory, getKey)`
-List must be added as children to a component to be activated
+* `list(nodeFactory [, getKey]): CommentNode`
+
+where
+`nodeFactory: function([*], [*], [*]): Node`
+`getKey: function([*], [number], [Array]): string`
+
+list creates a `Comment Node` that will be followed by a variable number of Nodes upon update with an array.
 
 
 ### Server use

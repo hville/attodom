@@ -14,7 +14,7 @@ module.exports = function mount(kin, kid) {
 	if (kid.constructor === String) return kin.appendChild(core.document.createTextNode(kid))
 	if (kid.constructor === Number) return kin.appendChild(core.document.createTextNode(''+kid))
 	if (kid.nodeType === 8) {
-		var list = core.liveLists.get(kid)
+		var list = kid._$lK
 		if (list) {
 			kin.appendChild(kid)
 			return kin.appendChild(list.tail)

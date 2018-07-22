@@ -1,4 +1,4 @@
-var core = require('./core')
+var update = require('./update')
 
 /**
  * @param {Element} kin
@@ -9,9 +9,6 @@ var core = require('./core')
  */
 module.exports = function(kin, val, key, obj) {
 	var spot = kin.firstChild
-	while (spot) {
-		var updt = core.updaters.get(spot)
-		spot = (updt ? updt(spot, val, key, obj)||spot : spot).nextSibling
-	}
+	while (spot) spot = update(spot, val, key, obj).nextSibling
 	return kin
 }
