@@ -16,8 +16,6 @@ ct('element-nodeType', function() {
 ct('element-properties', function() {
 	ct('===', el('div').attributes.length, 0)
 	ct('===', el('div', {id: 'id'}).id, 'id')
-	//@ts-ignore
-	ct('===', el('div', {onchange: e=>e}).onchange.constructor, Function)
 	ct('===', el('div', {className: 'className'}).className, 'className')
 	//@ts-ignore
 	ct('===', el('input', {value: 'value'}).value, 'value')
@@ -47,13 +45,13 @@ ct('el - event', function() {
 ct('element - update', function() {
 	var kin = el('span', 'b', function(n,v) { n.textContent = v.toUpperCase() })
 	ct('===', kin.textContent, 'b')
-	ct('===', update(kin, 'abc', null, null).textContent, 'ABC')
+	ct('===', update(kin, 'abc').textContent, 'ABC')
 })
 
 ct('element - updateChildren', function() {
 	var kid = el('span', 'b', function(n,v) { n.textContent = v.toUpperCase() }),
 			kin = el('h0', ['a', kid, el('span', 'c')], updateChildren)
 	ct('===', kin.textContent, 'abc')
-	ct('===', update(kin, 'abc', null, null).textContent, 'aABCc')
+	ct('===', update(kin, 'abc').textContent, 'aABCc')
 })
 

@@ -1,8 +1,8 @@
 /**
  * @param {Node} kin
- * @param {*} val
- * @param {String|Number} key
- * @param {*} obj
+ * @param {*} [val]
+ * @param {String|Number} [key]
+ * @param {*} [obj]
  * @return {Node}
  */
 module.exports = function(kin, val, key, obj) {
