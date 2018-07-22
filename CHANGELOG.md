@@ -6,6 +6,14 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
+## [0.6.0] - 2018-01-21
+### Removed
+- component event handling
+
+### Changed
+- components no longer exposed. all factories (el, svg, list) return nodes
+- a node is a component if it has an updater function
+
 ## [0.5.0] - 2018-01-21
 ### Removed
 - `.find`, `.text`

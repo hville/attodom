@@ -1,7 +1,8 @@
 // @ts-check
 /* eslint-disable global-require */
 module.exports = {
-	co: require('./co'),
+	update: require('./update'),
+	updateChildren: require('./update-children'),
 	el: require('./el'),
 	svg: require('./svg'),
 	list: require('./list'),

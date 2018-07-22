@@ -69,5 +69,5 @@ function updateList(head, arr) {
 	}
 
 	list.kids = kids
-	return this
+	return list.tail
 }

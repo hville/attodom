@@ -11,8 +11,7 @@ module.exports = function(kin, val, key, obj) {
 	var spot = kin.firstChild
 	while (spot) {
 		var updt = core.updaters.get(spot)
-		if (updt) updt(spot, val, key, obj)
-		spot = spot.nextSibling
+		spot = (updt ? updt(spot, val, key, obj)||spot : spot).nextSibling
 	}
 	return kin
 }
