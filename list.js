@@ -59,7 +59,7 @@ function updateList(head, arr) {
 		kids[key] = kid
 
 		//place kid
-		if (kid === spot.nextSibling) kin.insertBefore(spot, list.tail)
+		if (kid === spot.nextSibling) kin.removeChild(spot)
 		else if (kid !== spot) kin.insertBefore(kid, spot)
 		spot = kid.nextSibling
 	}

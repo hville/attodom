@@ -31,10 +31,11 @@
 
 ## API
 
-### Elements (hyperscript)
+### Elements and Nodes (hyperscript)
 
 * `el(tagName [, attributes[, updater [,children]]] ): HTMLElement`
 * `svg(tagName [, attributes[, updater [,children]]] ): SVGElement`
+* `text(content [, properties[, updater]]] ): TextNode`
 
 where
 `attributes: {name: value}`

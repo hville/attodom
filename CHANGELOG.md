@@ -6,6 +6,13 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
+## [0.6.3] - 2018-08-26
+### Added
+- text for TextNodes
+
+### Fixed
+- updateChildren optimisation
+
 ## [0.6.0] - 2018-01-21
 ### Removed
 - component event handling
