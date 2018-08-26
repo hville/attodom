@@ -8,7 +8,7 @@ var core = require('./core')
 module.exports = function(make, getK) {
 	var kin = core.document.createComment('>')
 	//@ts-ignore
-	kin._$uK = updateList
+	kin.update = updateList
 	//@ts-ignore
 	kin._$lK = {
 		make: make,
@@ -29,12 +29,12 @@ function getKey(v,i) {
 }
 
 /**
- * @param {Node} head
  * @param {Array} arr
  * @return {Node}
  */
-function updateList(head, arr) {
-	var kin = head.parentNode,
+function updateList(arr) {
+	var head = this,
+			kin = head.parentNode,
 			kids = Object.create(null),
 			//@ts-ignore
 			list = head._$lK
@@ -51,10 +51,7 @@ function updateList(head, arr) {
 		var key = list.getK(arr[i], i, arr),
 				kid = list.kids[key]
 		//create or update kid
-		if (kid) {
-			var updt = kid._$uK
-			if (updt) updt(kid, arr[i], key, arr)
-		}
+		if (kid && kid.update) kid.update(arr[i], key, arr)
 		else kid = list.make(arr[i], i, arr)
 		kids[key] = kid
 

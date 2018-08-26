@@ -1,3 +1,4 @@
-module.exports = function(node, t) {
-	node.textContent = t
+module.exports = function(t) {
+	//@ts-ignore
+	this.textContent = t
 }

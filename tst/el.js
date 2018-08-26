@@ -1,6 +1,5 @@
 var ct = require('cotest'),
 		el = require('../').el,
-		update = require('../').update,
 		updateChildren = require('../').updateChildren,
 		root = require('../core'),
 		JSDOM = require('jsdom').JSDOM
@@ -43,15 +42,18 @@ ct('el - event', function() {
 })
 
 ct('element - update', function() {
-	var kin = el('span', 'b', function(n,v) { n.textContent = v.toUpperCase() })
+	var kin = el('span', 'b', {update: function(v) { this.textContent = v.toUpperCase() }})
 	ct('===', kin.textContent, 'b')
-	ct('===', update(kin, 'abc').textContent, 'ABC')
+	//@ts-ignore
+	kin.update('abc')
+	ct('===', kin.textContent, 'ABC')
 })
 
 ct('element - updateChildren', function() {
-	var kid = el('span', 'b', function(n,v) { n.textContent = v.toUpperCase() }),
-			kin = el('h0', ['a', kid, el('span', 'c')], updateChildren)
+	var kid = el('span', 'b', {update: function(v) { this.textContent = v.toUpperCase() }}),
+			kin = el('h0', ['a', kid, el('span', 'c')], {update: updateChildren})
 	ct('===', kin.textContent, 'abc')
-	ct('===', update(kin, 'abc').textContent, 'aABCc')
+	//@ts-ignore
+	ct('===', kin.update('abc').textContent, 'aABCc')
 })
 

@@ -1,5 +1,4 @@
 var ct = require('cotest'),
-		update = require('..').update,
 		root = require('../core'),
 		tx = require('../text'),
 		JSDOM = require('jsdom').JSDOM
@@ -11,7 +10,9 @@ ct('text - nodeType', function() {
 	ct('===', tx('div').nodeType, 3)
 })
 ct('text - update', function() {
-	var kin = tx('span', function(n,v) { n.data = v })
+	var kin = tx('span', {update: function(v) { this.data = v }})
 	ct('===', kin.textContent, 'span')
-	ct('===', update(kin, 'abc').textContent, 'abc')
+	//@ts-ignore
+	kin.update('abc')
+	ct('===', kin.textContent, 'abc')
 })

@@ -1,3 +1,4 @@
-module.exports = function(node, v) {
-	node.value = v
+module.exports = function(v) {
+	//@ts-ignore
+	this.value = v
 }

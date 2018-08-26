@@ -1,14 +1,14 @@
-var update = require('./update')
-
 /**
- * @param {Element} kin
+ * @this {Element}
  * @param {*} val
  * @param {String|Number} key
  * @param {*} obj
  * @return {Element}
  */
-module.exports = function(kin, val, key, obj) {
-	var spot = kin.firstChild
-	while ((spot = update(spot, val, key, obj).nextSibling));
-	return kin
+module.exports = function(val, key, obj) {
+	//@ts-ignore
+	var spot = this.firstChild
+	while (spot) spot = (spot.update && spot.update(val, key, obj) || spot).nextSibling
+	//@ts-ignore
+	return this
 }

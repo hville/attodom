@@ -5,6 +5,5 @@ module.exports = {
 	svg: require('./svg'),
 	text: require('./text'),
 	list: require('./list'),
-	update: require('./update'),
 	updateChildren: require('./update-children')
 }

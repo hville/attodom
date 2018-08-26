@@ -33,22 +33,19 @@
 
 ### Elements and Nodes (hyperscript)
 
-* `el(tagName [, attributes[, updater [,children]]] ): HTMLElement`
-* `svg(tagName [, attributes[, updater [,children]]] ): SVGElement`
-* `text(content [, properties[, updater]]] ): TextNode`
+* `el(tagName [, attributes[, decorator [,children]]] ): HTMLElement`
+* `svg(tagName [, attributes[, decorator [,children]]] ): SVGElement`
+* `text(content [, properties[, decorator]]] ): TextNode`
 
 where
-`attributes: {name: value}`
-`updater: function(Node, [*], [*], [*]):Node`
+`attributes: {name: value}` with `update` as a custom node method to be added
+`decorator: function(Node):Node`
 `children: {number|string|Node|Array<children>}`
 
 
 ### Helper Function
 
-`update: function(Node, [*], [*], [*]):Node`
-Updates a node with the provided updater defined on creation
-
-`updateChildren: function(ParentNode, [*], [*], [*]):ParentNode`
+`updateChildren: function(this:ParentNode, [*], [*], [*]):ParentNode`
 Updates all children nodes of a parenta node with the provided updater defined on creation
 
 

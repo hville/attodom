@@ -1,8 +1,8 @@
 var ct = require('cotest'),
 		el = require('../').el,
 		ls = require('../').list,
+		setText = require('../set-text'),
 		core = require('../core'),
-		update = require('../').update,
 		updateChildren = require('../').updateChildren,
 		JSDOM = require('jsdom').JSDOM
 
@@ -14,62 +14,73 @@ function toString(nodes) {
 	if (nodes) for (var i=0; i<nodes.length; ++i) if (nodes[i].nodeType!==8) str+=nodes[i].textContent
 	return str
 }
-function setText(n,t) {
-	n.textContent = t
-}
 function upperKid(t) {
-	return el('p', t.toUpperCase(), setText)
+	return el('p', t.toUpperCase(), {update: setText})
 }
 
 ct('list detached', function() {
 	var list = ls(upperKid)
-	update(list, ['a'])
+	//@ts-ignore
+	list.update(['a'])
 	ct('===', toString(list.parentNode.childNodes), 'A')
-	update(list, ['a', 'b'])
+	//@ts-ignore
+	list.update(['a', 'b'])
 	ct('===', toString(list.parentNode.childNodes), 'aB')
-	update(list, ['a'])
+	//@ts-ignore
+	list.update(['a'])
 	ct('===', toString(list.parentNode.childNodes), 'a')
 })
 ct('list mounted', function() {
 	var list = ls(upperKid),
-			kin = el('div', list, updateChildren)
+			kin = el('div', list, {update: updateChildren})
 	ct('===', toString(kin.childNodes), '')
-	update(kin, ['a'])
+	//@ts-ignore
+	kin.update(['a'])
 	ct('===', toString(kin.childNodes), 'A')
-	update(kin, ['a', 'b'])
+	//@ts-ignore
+	kin.update(['a', 'b'])
 	ct('===', toString(kin.childNodes), 'aB')
-	update(kin, ['a'])
+	//@ts-ignore
+	kin.update(['a'])
 	ct('===', toString(list.parentNode.childNodes), 'a')
 })
 ct('list mounted with next', function() {
 	var list = ls(upperKid),
-			kin = el('div', list, '$', updateChildren)
+			kin = el('div', list, '$', {update: updateChildren})
 	ct('===', toString(kin.childNodes), '$')
-	update(kin, ['a'])
+	//@ts-ignore
+	kin.update(['a'])
 	ct('===', toString(kin.childNodes), 'A$')
-	update(kin, ['a', 'b'])
+	//@ts-ignore
+	kin.update(['a', 'b'])
 	ct('===', toString(kin.childNodes), 'aB$')
-	update(kin, ['a'])
+	//@ts-ignore
+	kin.update(['a'])
 	ct('===', toString(list.parentNode.childNodes), 'a$')
 })
 ct('list keyed', function() {
 	var kin = el('h0', ls(
-		function(o) { return el('p', o.v, function(n,v) { n.textContent = v.v.toUpperCase() }) },
+		function(o) { return el('p', o.v, {update: function(v) { this.textContent = v.v.toUpperCase() }}) },
 		function(o) { return o.k }
-	), updateChildren)
+	), {update: updateChildren})
 	ct('===', toString(kin.childNodes), '')
-	update(kin, [{k: 'a', v:'a'}, {k: 'b', v:'b'}, {k: 'c', v:'c'}])
+	//@ts-ignore
+	kin.update([{k: 'a', v:'a'}, {k: 'b', v:'b'}, {k: 'c', v:'c'}])
 	ct('===', toString(kin.childNodes), 'abc')
-	update(kin, [{k: 'c', v:'c'}, {k: 'd', v:'d'}, {k: 'e', v:'e'}, ])
+	//@ts-ignore
+	kin.update([{k: 'c', v:'c'}, {k: 'd', v:'d'}, {k: 'e', v:'e'}, ])
 	ct('===', toString(kin.childNodes), 'Cde')
-	update(kin, [{k: 'a', v:'a'}, {k: 'b', v:'b'}, {k: 'c', v:'c'}])
+	//@ts-ignore
+	kin.update([{k: 'a', v:'a'}, {k: 'b', v:'b'}, {k: 'c', v:'c'}])
 	ct('===', toString(kin.childNodes), 'abC')
 })
 ct('list multiple', function() {
-	var kin = el('div', ls(upperKid), '$', ls(upperKid), ls(upperKid), updateChildren)
+	var kin = el('div', ls(upperKid), '$', ls(upperKid), ls(upperKid), {update: updateChildren})
 	ct('===', toString(kin.childNodes), '$')
-	update(kin, ['a'])
+	//@ts-ignore
+	kin.update(['a'])
 	ct('===', toString(kin.childNodes), 'A$AA')
-	update(kin, ['a', 'b'])
+	//@ts-ignore
+	kin.update(['a', 'b'])
 	ct('===', toString(kin.childNodes), 'aB$aBaB')
 })

@@ -6,6 +6,14 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
+## [0.7.0] - 2018-08-26
+### Removed
+- update function
+
+### changed
+- node.update to update a node
+- function arguments are now decorators
+
 ## [0.6.3] - 2018-08-26
 ### Added
 - text for TextNodes

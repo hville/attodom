@@ -10,8 +10,7 @@ module.exports = function(text) {
 		var arg = arguments[i]
 		if (arg != null) {
 			var typ = arg.constructor
-			//@ts-ignore
-			if (typ === Function) node._$uK = arg
+			if (typ === Function) arg(node)
 			else if (!typ || typ === Object)
 				for (var j=0, ks=Object.keys(arg); j<ks.length; ++j)
 					node[ks[j]] = arg[ks[j]]
