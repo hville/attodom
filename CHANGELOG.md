@@ -6,6 +6,13 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
+## [0.8.0] - 2018-08-26
+### Removed
+- decorators
+
+### changed
+- removed unused return values
+
 ## [0.7.0] - 2018-08-26
 ### Removed
 - update function

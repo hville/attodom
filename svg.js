@@ -1,15 +1,12 @@
 /* global document */
-/* global document */
 var mount = require('./mount')
-
-var svgURI = 'http://www.w3.org/2000/svg'
 
 /**
  * @param {string} tagName
  * @return {Element}
  */
 module.exports = function(tagName) {
-	var node = document.createElementNS(svgURI, tagName)
+	var node = document.createElementNS('http://www.w3.org/2000/svg', tagName)
 
 	for (var i=1; i<arguments.length; ++i) {
 		var arg = arguments[i]

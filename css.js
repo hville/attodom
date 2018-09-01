@@ -1,28 +1,13 @@
-var media = /^$|^all$/ //mediaTypes: all, print, screen, speach
-
 /**
  * @param {string} cssRuleText
  * @return {void}
  */
-module.exports = function css(cssRuleText) {
-	var sheet = getSheet()
+module.exports = function(cssRuleText) {
+	/**@type {CSSStyleSheet} */
 	//@ts-ignore
+	var sheet = document.styleSheets[0] || document.head.appendChild(document.createElement('style')).sheet
 	sheet.insertRule(
 		cssRuleText,
-		//@ts-ignore
 		sheet.cssRules.length
 	)
-}
-
-/**
- * @return {StyleSheet}
- */
-function getSheet() {
-	var sheets = document.styleSheets
-	// get existing sheet
-	for (var i=0; i<sheets.length; ++i) {
-		if (media.test(sheets[i].media.mediaText) && !sheets[i].disabled) return sheets[i]
-	}
-	// or create a new one
-	return document.head.appendChild(document.createElement('style')).sheet
 }

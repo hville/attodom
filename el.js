@@ -12,7 +12,7 @@ var htmlProps = {
 
 /**
  * @param {string} tagName
- * @return {Element}
+ * @return {HTMLElement}
  */
 module.exports = function(tagName) {
 	var node = document.createElement(tagName)

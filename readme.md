@@ -1,6 +1,6 @@
 # attodom
 
-*yet another experimental small DOM component library, <2kb*
+*yet another experimental small DOM component library, < 1kb*
 
 • [Why](#why) • [API](#api) • [License](#license)
 
@@ -16,9 +16,8 @@
 
 * multiple dynamic lists within the same parent
 * svg and namespace support
-* ability to inject a `document API` for server use and/or testing (e.g. `jsdom`)
 * no virtual DOM, all operations are done on actual nodes
-* less than 1kb gzip, no dependencies
+* < 1kb gzip, no dependencies
 * Designed for phones and/or older browsers:
   * very low memory requirement
   * no transpilation required
@@ -33,20 +32,20 @@
 
 ### Elements and Nodes (hyperscript)
 
-* `el(tagName [, attributes[, decorator [,children]]] ): HTMLElement`
-* `svg(tagName [, attributes[, decorator [,children]]] ): SVGElement`
-* `text(content [, properties[, decorator]]] ): TextNode`
+* `el(tagName [, attributes [,children ]] ): HTMLElement`
+* `svg(tagName [, attributes [,children ]] ): SVGElement`
+* `text(content [, properties ]] ): TextNode`
 
 where
-`attributes: {name: value}` with `update` as a custom node method to be added
-`decorator: function(Node):Node`
-`children: {number|string|Node|Array<children>}`
+* `attributes: {name: value, update: updateFunction}`
+* `children: {number|string|Node|Array<children>}`
+* `updateFunction: (this:Node, value:* [, key:* [, object:*]]): void`
 
 
 ### Helper Function
 
-`updateChildren: function(this:ParentNode, [*], [*], [*]):ParentNode`
-Updates all children nodes of a parenta node with the provided updater defined on creation
+* `updateChildren: function(this:ParentNode, value:* [, key:* [, object:*]]): void`
+Updates all children nodes of a parent node
 
 
 ### Lists
@@ -54,12 +53,20 @@ Updates all children nodes of a parenta node with the provided updater defined o
 * `list(nodeFactory [, getKey]): CommentNode`
 
 where
-`nodeFactory: function([*], [*], [*]): Node`
+* `nodeFactory: function(value:* [, key:* [, object:*]]): Node`
 `getKey: function([*], [number], [Array]): string`
 
-`list` creates a `Comment Node` that will be followed by a variable number of Nodes upon update with an array.
+`list` creates a `Comment Node` that will be followed by a variable number of Nodes upon update with an array. If `getKey` is not provided, the list is 'unkeyed' (ie the key is the index).
 A list can't contain another list
 
+```javascript
+var ol = el('ol',
+  list((v, i) => el('li', i + ':' + v)),
+  {update: updateChildren}
+)
+ol.update(['a', 'b'])
+//=> <ol><#comment><li>1:a</li><li>2:b</li><#comment></ol>
+```
 
 ## License
 
