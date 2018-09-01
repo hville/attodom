@@ -1,6 +1,6 @@
 {
   "name": "attodom",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "main": "./index.js",
   "description": "yet another small DOM component library",
   "keywords": [

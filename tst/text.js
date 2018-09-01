@@ -9,14 +9,7 @@ var ct = require('cotest'),
 ct('text - nodeType', function() {
 	ct('===', tx('div').nodeType, 3)
 })
-ct('text - update data', function() {
-	var kin = tx('span', {update: function(v) { this.data = v }})
-	ct('===', kin.textContent, 'span')
-	//@ts-ignore
-	kin.update('abc')
-	ct('===', kin.textContent, 'abc')
-})
-ct('text - update default', function() {
+ct('text - update', function() {
 	var kin = tx('span')
 	ct('===', kin.textContent, 'span')
 	//@ts-ignore
