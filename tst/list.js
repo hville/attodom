@@ -6,7 +6,7 @@ global.document = (new JSDOM).window.document
 var ct = require('cotest'),
 		el = require('../').el,
 		ls = require('../').list,
-		setText = require('../set-text'),
+		setText = require('../notes/set-text-content'),
 		updateChildren = require('../').updateChildren
 
 function toString(nodes) {

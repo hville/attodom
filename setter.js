@@ -1,5 +1,5 @@
-module.exports = function (nodeKey) {
-	return function(node, data) {
-		node[nodeKey] = data
+module.exports = function (key) {
+	return function(value) {
+		if (this[key] !== value) this[key] = value
 	}
 }

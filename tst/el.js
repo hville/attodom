@@ -55,6 +55,19 @@ ct('element - updateChildren', function() {
 			kin = el('h0', ['a', kid, el('span', 'c')], {update: updateChildren})
 	ct('===', kin.textContent, 'abc')
 	//@ts-ignore
-	ct('===', kin.update('abc').textContent, 'aABCc')
+	kin.update('abc')
+	ct('===', kin.textContent, 'aABCc')
 })
 
+ct('element - nested reference', function() {
+	var kid = el('span', 'b'),
+			kin = el('h0', el('h1', el('h2', el('h3', kid))), {
+				__kid: kid,
+				update: function(v) { this.__kid.textContent = v }
+			})
+
+	ct('===', kid.textContent, 'b')
+	//@ts-ignore
+	kin.update('B')
+	ct('===', kid.textContent, 'B')
+})

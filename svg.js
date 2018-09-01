@@ -14,15 +14,13 @@ module.exports = function(tagName) {
 	for (var i=1; i<arguments.length; ++i) {
 		var arg = arguments[i]
 		if (arg != null) {
-			var typ = arg.constructor
-			if (typ === Function) arg(node)
-			else if (typ && typ !== Object) mount(node, arg)
-			else for (var j=0, ks=Object.keys(arg); j<ks.length; ++j) {
+			if (!arg.constructor || arg.constructor === Object) for (var j=0, ks=Object.keys(arg); j<ks.length; ++j) {
 				var key = ks[j],
 						val = arg[key]
 				if (typeof val !== 'string') node[key] = val
 				else node.setAttribute(key, val)
 			}
+			else mount(node, arg)
 		}
 	}
 	return node
