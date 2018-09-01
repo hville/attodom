@@ -6,6 +6,7 @@ var core = require('./core')
  * @return {Node}
  */
 module.exports = function(make, getK) {
+	/**@property {Function} update */
 	var kin = core.document.createComment('>')
 	//@ts-ignore
 	kin.update = updateList
