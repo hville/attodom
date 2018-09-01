@@ -1,11 +1,11 @@
+/* global document */
+var JSDOM = require('jsdom').JSDOM
+//@ts-ignore
+global.document = (new JSDOM).window.document
+
 var ct = require('cotest'),
 		el = require('../el'),
-		find = require('../find'),
-		core = require('../core'),
-		JSDOM = require('jsdom').JSDOM
-
-var window = (new JSDOM).window
-core.document = window.document
+		find = require('../find')
 
 ct('find', function() {
 	var h01 = el('h2', 'H01'),

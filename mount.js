@@ -1,4 +1,4 @@
-var core = require('./core')
+/* global document */
 
 /**
  * @param {Element} kin
@@ -24,5 +24,5 @@ module.exports = function mount(kin, kid) {
 		//normal node
 		return kin.appendChild(kid)
 	}
-	return kin.appendChild(core.document.createTextNode(''+kid))
+	return kin.appendChild(document.createTextNode(kid))
 }

@@ -1,10 +1,10 @@
-var ct = require('cotest'),
-		root = require('../core'),
-		tx = require('../text'),
-		JSDOM = require('jsdom').JSDOM
+/* global document */
+var JSDOM = require('jsdom').JSDOM
+//@ts-ignore
+global.document = (new JSDOM).window.document
 
-var window = (new JSDOM).window
-root.document = window.document
+var ct = require('cotest'),
+		tx = require('../text')
 
 ct('text - nodeType', function() {
 	ct('===', tx('div').nodeType, 3)

@@ -1,4 +1,4 @@
-var core = require('./core')
+/* global document */
 
 /**
  * @param {!Function} make
@@ -7,7 +7,7 @@ var core = require('./core')
  */
 module.exports = function(make, getK) {
 	/**@property {Function} update */
-	var kin = core.document.createComment('>')
+	var kin = document.createComment('[')
 	//@ts-ignore
 	kin.update = updateList
 	//@ts-ignore
@@ -15,7 +15,7 @@ module.exports = function(make, getK) {
 		make: make,
 		getK: getK || getKey,
 		kids: Object.create(null),
-		tail: core.document.createComment('<')
+		tail: document.createComment(']')
 	}
 	return kin
 }
@@ -42,7 +42,7 @@ function updateList(arr) {
 
 	// find the parent or create one
 	if (!kin) {
-		kin = core.document.createDocumentFragment()
+		kin = document.createDocumentFragment()
 		kin.appendChild(head)
 		kin.appendChild(list.tail)
 	}

@@ -1,5 +1,4 @@
-var core = require('./core'),
-		mount = require('./mount')
+var mount = require('./mount')
 
 var htmlProps = {
 	id: true,
@@ -16,7 +15,7 @@ var htmlProps = {
  * @return {Element}
  */
 module.exports = function(tagName) {
-	var node = core.document.createElement(tagName)
+	var node = document.createElement(tagName)
 	for (var i=1; i<arguments.length; ++i) {
 		var arg = arguments[i]
 		if (arg != null) {

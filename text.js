@@ -1,11 +1,11 @@
-var core = require('./core')
+/* global document */
 
 /**
  * @param {string} text
  * @return {Node}
  */
 module.exports = function(text) {
-	var node = core.document.createTextNode(text)
+	var node = document.createTextNode(text)
 	for (var i=1; i<arguments.length; ++i) {
 		var arg = arguments[i]
 		if (arg != null) {

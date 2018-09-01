@@ -60,14 +60,6 @@ where
 `list` creates a `Comment Node` that will be followed by a variable number of Nodes upon update with an array.
 A list can't contain another list
 
-### Server use
-
-Document can be injected as follow:
-
-```javascript
-const core = require('attodom/core')
-core.document = myDocumentObject
-```
 
 ## License
 

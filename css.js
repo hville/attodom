@@ -1,5 +1,3 @@
-var core = require('./core')
-
 var media = /^$|^all$/ //mediaTypes: all, print, screen, speach
 
 /**
@@ -20,11 +18,11 @@ module.exports = function css(cssRuleText) {
  * @return {StyleSheet}
  */
 function getSheet() {
-	var sheets = core.document.styleSheets
+	var sheets = document.styleSheets
 	// get existing sheet
 	for (var i=0; i<sheets.length; ++i) {
 		if (media.test(sheets[i].media.mediaText) && !sheets[i].disabled) return sheets[i]
 	}
 	// or create a new one
-	return core.document.head.appendChild(core.document.createElement('style')).sheet
+	return document.head.appendChild(document.createElement('style')).sheet
 }

@@ -1,11 +1,12 @@
+/* global document */
+var JSDOM = require('jsdom').JSDOM
+var window = (new JSDOM).window
+//@ts-ignore
+global.document = window.document
+
 var ct = require('cotest'),
 		el = require('../').el,
-		updateChildren = require('../').updateChildren,
-		root = require('../core'),
-		JSDOM = require('jsdom').JSDOM
-
-var window = (new JSDOM).window
-root.document = window.document
+		updateChildren = require('../').updateChildren
 
 ct('element-nodeType', function() {
 	ct('===', el('div').nodeType, 1)

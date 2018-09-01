@@ -9,6 +9,7 @@
 ## [0.7.0] - 2018-08-26
 ### Removed
 - update function
+- core
 
 ### changed
 - node.update to update a node

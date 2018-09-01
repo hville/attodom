@@ -1,13 +1,13 @@
+/* global document */
+var JSDOM = require('jsdom').JSDOM
+//@ts-ignore
+global.document = (new JSDOM).window.document
+
 var ct = require('cotest'),
 		el = require('../').el,
 		ls = require('../').list,
 		setText = require('../set-text'),
-		core = require('../core'),
-		updateChildren = require('../').updateChildren,
-		JSDOM = require('jsdom').JSDOM
-
-var window = (new JSDOM).window
-core.document = window.document
+		updateChildren = require('../').updateChildren
 
 function toString(nodes) {
 	var str = ''
