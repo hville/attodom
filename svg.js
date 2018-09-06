@@ -1,4 +1,3 @@
-/* global document */
 var mount = require('./mount')
 
 /**

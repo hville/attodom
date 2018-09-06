@@ -16,6 +16,7 @@ var htmlProps = {
  */
 module.exports = function(tagName) {
 	var node = document.createElement(tagName)
+
 	for (var i=1; i<arguments.length; ++i) {
 		var arg = arguments[i]
 		if (arg != null) {

@@ -1,12 +1,9 @@
-/* global document */
-
 /**
  * @param {!Function} make
  * @param {Function} [getK]
  * @return {Node}
  */
 module.exports = function(make, getK) {
-	/**@property {Function} update */
 	var kin = document.createComment('[')
 	//@ts-ignore
 	kin.update = updateList

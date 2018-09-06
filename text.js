@@ -1,4 +1,3 @@
-/* global document */
 var setter = require('./setter')
 
 var setData = setter('data')

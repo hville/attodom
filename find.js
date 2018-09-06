@@ -1,4 +1,4 @@
-module.exports = function(start, test, until) { //find(test, head=body, foot=null)
+module.exports = function(start, test, until) {
 	var spot = start,
 			last = until || null
 	while(!test(spot)) {

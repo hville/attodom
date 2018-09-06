@@ -1,4 +1,3 @@
-/* global document */
 /**
  * @param {Element} kin
  * @param {*} kid
