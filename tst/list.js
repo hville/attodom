@@ -6,8 +6,10 @@ global.document = (new JSDOM).window.document
 var ct = require('cotest'),
 		el = require('../').el,
 		ls = require('../').list,
-		setText = require('../notes/set-text-content'),
-		updateChildren = require('../').updateChildren
+		updateChildren = require('../').updateChildren,
+		setter = require('../setter')
+
+var setText = setter('textContent')
 
 function toString(nodes) {
 	var str = ''
@@ -63,8 +65,8 @@ ct('list mounted with next', function() {
 
 ct('list function key getter', function() {
 	var kin = el('h0', ls(
-		function(o) { return el('p', o.v, {update: function(v) { this.textContent = v.v.toUpperCase() }}) },
-		function(o) { return o.k }
+		function(o) { return o.k },
+		function(o) { return el('p', o.v, {update: function(v) { this.textContent = v.v.toUpperCase() }}) }
 	), {update: updateChildren})
 	ct('===', toString(kin.childNodes), '')
 	//@ts-ignore
@@ -80,8 +82,8 @@ ct('list function key getter', function() {
 
 ct('list string key getter', function() {
 	var kin = el('h0', ls(
-		function(o) { return el('p', o.v, {update: function(v) { this.textContent = v.v.toUpperCase() }}) },
-		'k'
+		'k',
+		function(o) { return el('p', o.v, {update: function(v) { this.textContent = v.v.toUpperCase() }}) }
 	), {update: updateChildren})
 	ct('===', toString(kin.childNodes), '')
 	//@ts-ignore

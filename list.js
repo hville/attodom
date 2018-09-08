@@ -1,18 +1,17 @@
 /**
- * @param {!Function} make
- * @param {Function|string} [getK]
+ * @param {!Function|!string} key
+ * @param {Function} [factory]
  * @return {Node}
  */
-module.exports = function(make, getK) {
-	var kin = document.createComment('['),
-			isFunc = getK == null || getK.constructor === Function
+module.exports = function(key, factory) {
+	var kin = document.createComment('[')
 	//@ts-ignore
 	kin.update = updateList
 	//@ts-ignore
 	kin._$lK = {
-		make: make,
-		keyF: isFunc,
-		getK: isFunc ? getK || getKey : getK,
+		make: factory || key,
+		keyF: (factory ? key : getKey).constructor === Function,
+		getK: factory ? key : getKey,
 		kids: Object.create(null),
 		tail: document.createComment(']')
 	}

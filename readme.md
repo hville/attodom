@@ -50,16 +50,16 @@ Updates all children nodes of a parent node
 
 ### Lists
 
-* `list(nodeFactory [, getKey]): CommentNode`
+* `list([getKey, ]nodeFactory): CommentNode`
 
 where
-* `nodeFactory: function(value:* [, key:* [, object:*]]): Node`
 * `getKey: string | function([*], [number], [Array]): string`
+* `nodeFactory: function(value:* [, key:* [, object:*]]): Node`
 
 `list` creates a `Comment Node` that will be followed by a variable number of Nodes upon update with an array.
-* If `getKey` is not provided, the list is 'unkeyed' (ie the key is the index)
-* If `getKey` is a string, the key is `value[getKey]`
-* If `getKey` is a function, the key is `getKey(value, index, array)`
+* If `getKey` is not provided, the list is 'unkeyed' (ie the key is the index) (example: `list(factory)`)
+* If `getKey` is a string, the key is `value[getKey]` (example: `list('id', factory)`)
+* If `getKey` is a function, the key is `getKey(value, index, array)` (example: `list(v=>v.id, factory)`)
 
 A list can't contain another list
 
