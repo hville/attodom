@@ -30,6 +30,7 @@ ct('list detached', function() {
 	list.update(['a'])
 	ct('===', toString(list.parentNode.childNodes), 'a')
 })
+
 ct('list mounted', function() {
 	var list = ls(upperKid),
 			kin = el('div', list, {update: updateChildren})
@@ -44,6 +45,7 @@ ct('list mounted', function() {
 	kin.update(['a'])
 	ct('===', toString(list.parentNode.childNodes), 'a')
 })
+
 ct('list mounted with next', function() {
 	var list = ls(upperKid),
 			kin = el('div', list, '$', {update: updateChildren})
@@ -58,7 +60,8 @@ ct('list mounted with next', function() {
 	kin.update(['a'])
 	ct('===', toString(list.parentNode.childNodes), 'a$')
 })
-ct('list keyed', function() {
+
+ct('list function key getter', function() {
 	var kin = el('h0', ls(
 		function(o) { return el('p', o.v, {update: function(v) { this.textContent = v.v.toUpperCase() }}) },
 		function(o) { return o.k }
@@ -74,6 +77,24 @@ ct('list keyed', function() {
 	kin.update([{k: 'a', v:'a'}, {k: 'b', v:'b'}, {k: 'c', v:'c'}])
 	ct('===', toString(kin.childNodes), 'abC')
 })
+
+ct('list string key getter', function() {
+	var kin = el('h0', ls(
+		function(o) { return el('p', o.v, {update: function(v) { this.textContent = v.v.toUpperCase() }}) },
+		'k'
+	), {update: updateChildren})
+	ct('===', toString(kin.childNodes), '')
+	//@ts-ignore
+	kin.update([{k: 'a', v:'a'}, {k: 'b', v:'b'}, {k: 'c', v:'c'}])
+	ct('===', toString(kin.childNodes), 'abc')
+	//@ts-ignore
+	kin.update([{k: 'c', v:'c'}, {k: 'd', v:'d'}, {k: 'e', v:'e'}, ])
+	ct('===', toString(kin.childNodes), 'Cde')
+	//@ts-ignore
+	kin.update([{k: 'a', v:'a'}, {k: 'b', v:'b'}, {k: 'c', v:'c'}])
+	ct('===', toString(kin.childNodes), 'abC')
+})
+
 ct('list multiple', function() {
 	var kin = el('div', ls(upperKid), '$', ls(upperKid), ls(upperKid), {update: updateChildren})
 	ct('===', toString(kin.childNodes), '$')

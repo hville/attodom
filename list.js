@@ -1,16 +1,18 @@
 /**
  * @param {!Function} make
- * @param {Function} [getK]
+ * @param {Function|string} [getK]
  * @return {Node}
  */
 module.exports = function(make, getK) {
-	var kin = document.createComment('[')
+	var kin = document.createComment('['),
+			isFunc = getK == null || getK.constructor === Function
 	//@ts-ignore
 	kin.update = updateList
 	//@ts-ignore
 	kin._$lK = {
 		make: make,
-		getK: getK || getKey,
+		keyF: isFunc,
+		getK: isFunc ? getK || getKey : getK,
 		kids: Object.create(null),
 		tail: document.createComment(']')
 	}
@@ -46,7 +48,7 @@ function updateList(arr) {
 
 	var spot = head.nextSibling
 	for (var i = 0; i < arr.length; ++i) {
-		var key = list.getK(arr[i], i, arr),
+		var key = list.keyF ? list.getK(arr[i], i, arr) : arr[i][list.getK],
 				kid = list.kids[key]
 		//create or update kid
 		if (kid && kid.update) kid.update(arr[i], key, arr)

@@ -54,9 +54,13 @@ Updates all children nodes of a parent node
 
 where
 * `nodeFactory: function(value:* [, key:* [, object:*]]): Node`
-`getKey: function([*], [number], [Array]): string`
+* `getKey: string | function([*], [number], [Array]): string`
 
-`list` creates a `Comment Node` that will be followed by a variable number of Nodes upon update with an array. If `getKey` is not provided, the list is 'unkeyed' (ie the key is the index).
+`list` creates a `Comment Node` that will be followed by a variable number of Nodes upon update with an array.
+* If `getKey` is not provided, the list is 'unkeyed' (ie the key is the index)
+* If `getKey` is a string, the key is `value[getKey]`
+* If `getKey` is a function, the key is `getKey(value, index, array)`
+
 A list can't contain another list
 
 ```javascript

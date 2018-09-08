@@ -6,6 +6,10 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
+## [0.8.3] - 2018-09-07
+### Added
+- getKey as a string instead of Function only
+
 ## [0.8.0] - 2018-08-26
 ### Removed
 - decorators
