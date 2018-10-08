@@ -1,5 +1,5 @@
 var mount = require('./mount'),
-		EVENTS = require('./events')
+		EVENTS = require('./src/events')
 
 /**
  * @param {string} tagName

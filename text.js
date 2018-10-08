@@ -1,6 +1,6 @@
-var setter = require('./setter')
-
-var setData = setter('data')
+function setData(value) {
+	if (this.data !== value) this.data = value
+}
 
 /**
  * @param {string} text

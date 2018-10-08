@@ -17,6 +17,7 @@
 * multiple dynamic lists within the same parent
 * svg and namespace support
 * no virtual DOM, all operations are done on actual nodes
+* synthetic events available
 * < 1kb gzip, no dependencies
 * Designed for phones and/or older browsers:
   * very low memory requirement
@@ -46,6 +47,13 @@ where
 
 * `updateChildren: function(this:ParentNode, value:* [, key:* [, object:*]]): void`
 Updates all children nodes of a parent node
+
+
+### Synthetic Events
+
+Synthetic events are used when the first letter of the event name is capitalised
+* regular event: `el('h1', {onclick: handler}, 'click me')`
+* synthetic event: `el('h1', {onClick: handler}, 'click me')`
 
 
 ### Lists
