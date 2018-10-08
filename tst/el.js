@@ -37,9 +37,19 @@ ct('element - mixed children', function() {
 })
 
 ct('el - event', function() {
-	var kin = el('h0', {onclick: function(e) { e.target.textContent += 'a' }})
-	kin.dispatchEvent(new window.Event('click'))
-	ct('===', kin.textContent, 'a')
+	var kin = el('h1', {onclick: function(e) { this.textContent += e.target.tagName }})
+	kin.dispatchEvent(new window.Event('click', {bubbles:true}))
+	ct('===', kin.textContent, 'H1')
+})
+
+ct('el - synthetic event', function() {
+	var h2 = el('h2'),
+			h1 = el('h1', {onClick: function(e) { this.textContent = e.target.tagName }}, h2)
+	document.body.appendChild(h1)
+	h2.dispatchEvent(new window.Event('click', {bubbles:true}))
+	ct('===', h1.textContent, 'H2')
+	h1.dispatchEvent(new window.Event('click', {bubbles:true}))
+	ct('===', h1.textContent, 'H1')
 })
 
 ct('element - update', function() {
@@ -52,7 +62,7 @@ ct('element - update', function() {
 
 ct('element - updateChildren', function() {
 	var kid = el('span', 'b', {update: function(v) { this.textContent = v.toUpperCase() }}),
-			kin = el('h0', ['a', kid, el('span', 'c')], {update: updateChildren})
+			kin = el('h1', ['a', kid, el('span', 'c')], {update: updateChildren})
 	ct('===', kin.textContent, 'abc')
 	//@ts-ignore
 	kin.update('abc')
@@ -61,7 +71,7 @@ ct('element - updateChildren', function() {
 
 ct('element - nested reference', function() {
 	var kid = el('span', 'b'),
-			kin = el('h0', el('h1', el('h2', el('h3', kid))), {
+			kin = el('h1', el('h2', el('h3', el('h4', kid))), {
 				__kid: kid,
 				update: function(v) { this.__kid.textContent = v }
 			})

@@ -1,4 +1,5 @@
-var mount = require('./mount')
+var mount = require('./mount'),
+		EVENTS = require('./events')
 
 /**
  * @param {string} tagName
@@ -15,6 +16,17 @@ module.exports = function(tagName) {
 						val = arg[key]
 				if (typeof val !== 'string') node[key] = val
 				else node.setAttribute(key, val)
+
+				//set synthetic events for onUpperCaseName
+				if (key[0] === 'o' && key[1] === 'n' && key.charCodeAt(2) < 91 && key.charCodeAt(2) > 64 && !EVENTS[key]) {
+					document.addEventListener(key.slice(2).toLowerCase(), function(e) { //eslint-disable-line
+						var tgt = e.target
+						do if (tgt[key]) return tgt[key](e)
+						//@ts-ignore
+						while((tgt = tgt.parentNode))
+					})
+					EVENTS[key] = true
+				}
 			}
 			else mount(node, arg)
 		}
