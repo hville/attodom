@@ -1,21 +1,19 @@
 /**
- * @param {!Function|!string} key
- * @param {Function} [factory]
- * @return {Node}
+ * @param {Element} parent
+ * @param {Function} factory
+ * @param {Object} [options]
+ * @return {Object}
  */
-module.exports = function(key, factory) {
-	var kin = document.createComment('[')
-	//@ts-ignore
-	kin.update = updateList
-	//@ts-ignore
-	kin._$lK = {
-		make: factory || key,
-		keyF: (factory ? key : getKey).constructor === Function,
-		getK: factory ? key : getKey,
-		kids: Object.create(null),
-		tail: document.createComment(']')
+module.exports = function(parent, factory, options) {
+	return {
+		parent: parent,
+		factory: factory,
+		before: (options && options.before) || null,
+		after: (options && options.after) || null,
+		update: updateList,
+		key: (options && options.key) || getKey,
+		children: Object.create(null),
 	}
-	return kin
 }
 
 /**
@@ -32,40 +30,32 @@ function getKey(v,i) {
  * @return {Node}
  */
 function updateList(arr) {
-	var head = this,
-			kin = head.parentNode,
-			kids = Object.create(null),
-			//@ts-ignore
-			list = head._$lK
+	var	parent = this.parent,
+			spot = this.after ? this.after.nextSibling : parent.firstChild,
+			getK = this.key,
+			kids = Object.create(null)
 
-	// find the parent or create one
-	if (!kin) {
-		kin = document.createDocumentFragment()
-		kin.appendChild(head)
-		kin.appendChild(list.tail)
-	}
-
-	var spot = head.nextSibling
 	for (var i = 0; i < arr.length; ++i) {
-		var key = list.keyF ? list.getK(arr[i], i, arr) : arr[i][list.getK],
-				kid = list.kids[key]
+		var key = getK.constructor === Function ? getK(arr[i], i, arr) : arr[i][getK],
+				kid = this.children[key]
 		//create or update kid
-		if (kid && kid.update) kid.update(arr[i], key, arr)
-		else kid = list.make(arr[i], i, arr)
+		if (kid) kid.update && kid.update(arr[i], key, arr) //eslint-disable-line
+		else kid = this.factory(arr[i], i, arr)
 		kids[key] = kid
 
 		//place kid
-		if (kid === spot.nextSibling) kin.removeChild(spot)
-		else if (kid !== spot) kin.insertBefore(kid, spot)
+		if (!spot) parent.appendChild(kid)
+		else if (kid === spot.nextSibling) parent.removeChild(spot)
+		else if (kid !== spot) parent.insertBefore(kid, spot)
 		spot = kid.nextSibling
 	}
 	//delete remaining
-	while (spot !== list.tail) {
+	while (spot !== this.before) {
 		var next = spot.nextSibling
-		kin.removeChild(spot)
+		parent.removeChild(spot)
 		spot = next
 	}
 
-	list.kids = kids
-	return list.tail
+	this.children = kids
+	return this
 }

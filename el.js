@@ -1,5 +1,4 @@
-var mount = require('./mount'),
-		EVENTS = require('./src/events')
+var EVENTS = require('./src/events')
 
 var htmlProps = {
 	id: true,
@@ -39,7 +38,12 @@ module.exports = function(tagName) {
 					EVENTS[key] = true
 				}
 			}
-			else mount(node, arg)
+			else {
+				var kids = arg == null ? [] : Array.isArray(arg) ? arg : [arg]
+				for (var k=0; k<kids.length; ++k) node.appendChild(
+					kids[k].nodeType ? kids[k] : document.createTextNode(kids[k])
+				)
+			}
 		}
 	}
 	return node

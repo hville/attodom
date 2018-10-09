@@ -33,7 +33,7 @@ ct('element-attributes', function() {
 ct('element - mixed children', function() {
 	ct('===', el('p', [0, el('p'), el('p'), el('p')]).childNodes.length, 4)
 	ct('===', el('p', el('p'), [], el('p'), [el('p'), 0]).childNodes.length, 4)
-	ct('===', el('p', [el('p'), null, 0, [el('p'), el('p')]]).childNodes.length, 4)
+	ct('===', el('p', [el('p'), 0, [el('p'), el('p')]]).childNodes.length, 3)
 })
 
 ct('el - event', function() {
@@ -46,6 +46,8 @@ ct('el - synthetic event', function() {
 	var h2 = el('h2'),
 			h1 = el('h1', {onClick: function(e) { this.textContent = e.target.tagName }}, h2)
 	document.body.appendChild(h1)
+	h1.dispatchEvent(new window.Event('click', {bubbles:false}))
+	ct('===', h1.textContent, '')
 	h2.dispatchEvent(new window.Event('click', {bubbles:true}))
 	ct('===', h1.textContent, 'H2')
 	h1.dispatchEvent(new window.Event('click', {bubbles:true}))
@@ -58,15 +60,6 @@ ct('element - update', function() {
 	//@ts-ignore
 	kin.update('abc')
 	ct('===', kin.textContent, 'ABC')
-})
-
-ct('element - updateChildren', function() {
-	var kid = el('span', 'b', {update: function(v) { this.textContent = v.toUpperCase() }}),
-			kin = el('h1', ['a', kid, el('span', 'c')], {update: updateChildren})
-	ct('===', kin.textContent, 'abc')
-	//@ts-ignore
-	kin.update('abc')
-	ct('===', kin.textContent, 'aABCc')
 })
 
 ct('element - nested reference', function() {
