@@ -6,6 +6,19 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
+## [0.11.0]
+### Removed
+- text
+- updateChildren
+- mount
+
+## Changed
+- list is now an independ object instead of a comment node
+
+## [0.10.0]
+### Changed
+- synthetic events for capitalised handlers
+
 ## [0.9.0] - 2018-09-08
 ### Changed
 - list arguments changed (order and type)
