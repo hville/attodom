@@ -15,7 +15,7 @@
 ### Features
 
 * multiple dynamic lists within the same parent
-* svg and namespace support
+* svg support
 * no virtual DOM, all operations are done on actual nodes
 * synthetic events available
 * < 1kb gzip, no dependencies

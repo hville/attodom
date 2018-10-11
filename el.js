@@ -38,11 +38,11 @@ module.exports = function(tagName) {
 					EVENTS[key] = true
 				}
 			}
-			else {
-				var kids = arg == null ? [] : Array.isArray(arg) ? arg : [arg]
-				for (var k=0; k<kids.length; ++k) node.appendChild(
-					kids[k].nodeType ? kids[k] : document.createTextNode(kids[k])
+			else if (arg !== null) {
+				if (Array.isArray(arg)) for (var k=0; k<arg.length; ++k) node.appendChild(
+					arg[k].nodeType ? arg[k] : document.createTextNode(arg[k])
 				)
+				else node.appendChild(arg.nodeType ? arg : document.createTextNode(arg))
 			}
 		}
 	}
