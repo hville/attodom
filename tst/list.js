@@ -26,6 +26,9 @@ ct('list - empty parent', function() {
 	ct('===', toString(kin.childNodes), 'aB')
 	list.update(['a'])
 	ct('===', toString(kin.childNodes), 'a')
+	list.update([])
+	ct('===', kin.childNodes.length, 0)
+	ct('===', Object.keys(list.map).length, 0)
 })
 
 ct('list mounted with next', function() {

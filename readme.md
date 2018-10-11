@@ -50,14 +50,14 @@ Synthetic events are used when the first letter of the event name is capitalised
 
 
 ### Lists
-* `list(parent, factory, options): List`
+* `list(parent:Node, factory, options): List`
 
 where
 * `factory: function(value:* [, key:* [, object:*]]): Node`
 * `options.before: Node`
 * `options.after: Node`
 * `options.key: string | function([*], [number], [Array]): string`
-* `List: {parent, before, after, factory, key, children, update}`
+* `List: {parent, before, after, factory, key, map:{key:Node}, update}`
 * `list.update: function([*], [number], [Array]): List`
 
 `list` creates a `List` object with an update method that can update the parent children to match a data Array

@@ -12,7 +12,7 @@ module.exports = function(parent, factory, options) {
 		after: (options && options.after) || null,
 		update: updateList,
 		key: (options && options.key) || getKey,
-		children: Object.create(null),
+		map: Object.create(null),
 	}
 }
 
@@ -37,7 +37,7 @@ function updateList(arr) {
 
 	for (var i = 0; i < arr.length; ++i) {
 		var key = getK.constructor === Function ? getK(arr[i], i, arr) : arr[i][getK],
-				kid = this.children[key]
+				kid = this.map[key]
 		//create or update kid
 		if (kid) kid.update && kid.update(arr[i], key, arr) //eslint-disable-line
 		else kid = this.factory(arr[i], i, arr)
@@ -56,6 +56,6 @@ function updateList(arr) {
 		spot = next
 	}
 
-	this.children = kids
+	this.map = kids
 	return this
 }
