@@ -6,6 +6,10 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
+## [0.11.4]
+### Fix
+- redundant condition
+
 ## [0.11.0]
 ### Removed
 - text

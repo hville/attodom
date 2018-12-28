@@ -27,7 +27,7 @@ module.exports = function(tagName) {
 					EVENTS[key] = true
 				}
 			}
-			else if (arg !== null) {
+			else {
 				if (Array.isArray(arg)) for (var k=0; k<arg.length; ++k) node.appendChild(
 					arg[k].nodeType ? arg[k] : document.createTextNode(arg[k])
 				)
