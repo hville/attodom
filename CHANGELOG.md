@@ -6,9 +6,9 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
-## [0.11.4]
+## [0.11.5]
 ### Fix
-- redundant condition
+- removed redundant condition and minor optimisation
 
 ## [0.11.0]
 ### Removed

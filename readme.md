@@ -7,21 +7,19 @@
 
 ## Why
 
-* experimenting on different APIs to find the minimal helpers required for
-  * dynamic nodes, elements and lists
-  * one way data flow from root component to child nodes
+* experimenting on different APIs to find the minimal helpers required for dynamic nodes, elements and lists with one way data flow from root component to child nodes
 
 
 ### Features
 
+* no virtual DOM, all operations are done on actual nodes
 * multiple dynamic lists within the same parent
 * svg support
-* no virtual DOM, all operations are done on actual nodes
 * synthetic events available
 * < 1kb gzip, no dependencies
 * Designed for phones and/or older browsers:
   * very low memory requirement
-  * no transpilation required
+  * no transpilation required, all ES5
 
 
 ### Limitations
