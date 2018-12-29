@@ -6,9 +6,12 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
-## [0.11.5]
+## [0.12.0]
 ### Fix
 - removed redundant condition and minor optimisation
+### Changed
+- svg and el can use existing Elements istead of string tag
+
 
 ## [0.11.0]
 ### Removed

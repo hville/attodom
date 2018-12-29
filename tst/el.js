@@ -11,6 +11,7 @@ var ct = require('cotest'),
 ct('element-nodeType', function() {
 	ct('===', el('div').nodeType, 1)
 	ct('===', el('p').nodeType, 1)
+	ct('===', el(document.createElement('p')).nodeType, 1)
 })
 
 ct('element-properties', function() {

@@ -31,8 +31,8 @@
 
 ### Elements and Nodes (hyperscript)
 
-* `el(tagName [, attributes [,children ]] ): HTMLElement`
-* `svg(tagName [, attributes [,children ]] ): SVGElement`
+* `el(tagName|Element [, attributes [,children ]] ): HTMLElement`
+* `svg(tagName|Element [, attributes [,children ]] ): SVGElement`
 
 where
 * `attributes: {name: value, update: updateFunction}`

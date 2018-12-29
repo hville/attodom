@@ -11,11 +11,12 @@ var htmlProps = {
 }
 
 /**
- * @param {string} tagName
+ * @param {string|HTMLElement} tagName
  * @return {HTMLElement}
  */
 module.exports = function(tagName) {
-	var node = document.createElement(tagName)
+	//@ts-ignore
+	var node = tagName.nodeType === 1 ? tagName : document.createElement(tagName)
 
 	for (var i=1; i<arguments.length; ++i) {
 		var arg = arguments[i]

@@ -5,7 +5,8 @@ var EVENTS = require('./src/events')
  * @return {Element}
  */
 module.exports = function(tagName) {
-	var node = document.createElementNS('http://www.w3.org/2000/svg', tagName)
+	//@ts-ignore
+	var node = tagName.nodeType === 1 ? tagName : document.createElementNS('http://www.w3.org/2000/svg', tagName)
 
 	for (var i=1; i<arguments.length; ++i) {
 		var arg = arguments[i]
