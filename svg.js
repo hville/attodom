@@ -1,10 +1,10 @@
-var EVENTS = require('./src/events')
+import EVENTS from './src/events.js'
 
 /**
  * @param {string} tagName
  * @return {Element}
  */
-module.exports = function(tagName) {
+export default function(tagName) {
 	//@ts-ignore
 	var node = tagName.nodeType === 1 ? tagName : document.createElementNS('http://www.w3.org/2000/svg', tagName)
 

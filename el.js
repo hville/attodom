@@ -1,4 +1,4 @@
-var EVENTS = require('./src/events')
+import EVENTS from './src/events.js'
 
 var htmlProps = {
 	id: true,
@@ -14,7 +14,7 @@ var htmlProps = {
  * @param {string|HTMLElement} tagName
  * @return {HTMLElement}
  */
-module.exports = function(tagName) {
+export default function(tagName) {
 	//@ts-ignore
 	var node = tagName.nodeType === 1 ? tagName : document.createElement(tagName)
 

@@ -2,7 +2,7 @@
  * @param {string} cssRuleText
  * @return {void}
  */
-module.exports = function(cssRuleText) {
+export default function(cssRuleText) {
 	/**@type {CSSStyleSheet} */
 	//@ts-ignore
 	var sheet = document.styleSheets[0] || document.head.appendChild(document.createElement('style')).sheet

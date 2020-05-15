@@ -4,7 +4,7 @@
  * @param {Object} [options]
  * @return {Object}
  */
-module.exports = function(parent, factory, options) {
+export default function(parent, factory, options) {
 	return {
 		parent: parent,
 		factory: factory,

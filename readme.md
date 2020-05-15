@@ -1,14 +1,13 @@
+<!-- markdownlint-disable MD004 MD007 MD010 MD041 MD022 MD024 MD032 MD036 -->
 # attodom
 
-*yet another experimental small DOM component library, < 1kb*
+*yet another small DOM component library, < 1kb*
 
-• [Why](#why) • [API](#api) • [License](#license)
-
+• Why](#why) • [API](#api) • [License](#license)
 
 ## Why
 
 * experimenting on different APIs to find the minimal helpers required for dynamic nodes, elements and lists with one way data flow from root component to child nodes
-
 
 ### Features
 
@@ -21,11 +20,9 @@
   * very low memory requirement
   * no transpilation required, all ES5
 
-
 ### Limitations
 
 * strictly DOM element creation and manipulations (no router, no store)
-
 
 ## API
 
@@ -39,13 +36,11 @@ where
 * `children: {number|string|Node|Array<children>}`
 * `updateFunction: (this:Node, value:* [, key:* [, object:*]]): void`
 
-
 ### Synthetic Events
 
 Synthetic events are used when the first letter of the event name is capitalised
 * regular event: `el('h1', {onclick: handler}, 'click me')`
 * synthetic event: `el('h1', {onClick: handler}, 'click me')`
-
 
 ### Lists
 * `list(parent:Node, factory, options): List`
@@ -61,6 +56,7 @@ where
 `list` creates a `List` object with an update method that can update the parent children to match a data Array
 
 ```javascript
+import {el, svg, list} from 'attodom'
 var ol = el('ol'),
     bullets = list(ol, (v, i) => el('li', i + ':' + v))
 bullets.update(['a', 'b'])

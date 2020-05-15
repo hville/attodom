@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD004 MD007 MD010 MD041 MD022 MD024 MD031 MD032 MD036 -->
 # Change Log
 
 - based on [Keep a Changelog](http://keepachangelog.com/)
@@ -6,12 +7,15 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
+## [0.13.0]
+### Changed
+- cjs => esm
+
 ## [0.12.0]
 ### Fix
 - removed redundant condition and minor optimisation
 ### Changed
 - svg and el can use existing Elements istead of string tag
-
 
 ## [0.11.0]
 ### Removed

@@ -1,7 +1,9 @@
 {
   "name": "attodom",
-  "version": "0.12.0",
+  "version": "0.13.0",
+  "type": "module",
   "main": "./index.js",
+  "module": "./index.js",
   "description": "yet another small DOM component library",
   "keywords": [
     "component",
@@ -13,19 +15,13 @@
   "author": "Hugo Villeneuve",
   "dependencies": {},
   "devDependencies": {
-    "@hugov/cjs-to-iife": "^0.1.1",
     "@types/node": "^10.5.2",
-    "cotest": "^2.1.1"
+    "assert-op": "^0.5.1",
+    "jsdom": "^16.2.2"
   },
   "scripts": {
-    "test": "cotest tst",
-    "iife": "npm run node:iife -- ./index.js ./bld/iife.js",
-    "min": "google-closure-compiler-js --compilationLevel ADVANCED --languageIn ES5 --languageOut ES5 --useTypesForOptimization true ./bld/iife.js > ./bld/iife.min.js",
-    "gzip": "npm run node:gzip -- ./bld/iife.min.js ./bld/iife.gz",
-    "build": "npm run iife && npm run min && npm run gzip",
-    "prepublishOnly": "npm test",
-    "node:iife": "node -e \"require('@hugov/cjs-to-iife')(process.argv[1]).then(code => fs.writeFileSync(process.argv[2], code))\"",
-    "node:gzip": "node -e \"fs.writeFileSync(process.argv[2], zlib.gzipSync(fs.readFileSync(process.argv[1])))\""
+    "test": "node ./tst/el & node ./tst/svg & node ./tst/list & node ./tst/css & node ./tst/find",
+    "prepublishOnly": "npm test"
   },
   "repository": {
     "type": "git",

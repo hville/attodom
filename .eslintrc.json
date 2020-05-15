@@ -1,0 +1,10 @@
+{
+  "extends": "c:/seafile/eslint-common.json",
+  "parserOptions": {
+    "ecmaVersion": 7,
+    "sourceType": "module"
+  },
+	"env": {
+    "es2017": true
+	}
+}

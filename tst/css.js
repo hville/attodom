@@ -1,28 +1,27 @@
-/* global document */
-var JSDOM = require('jsdom').JSDOM
+import css from '../css.js'
+import jsdom from 'jsdom'
+import t from 'assert-op'
+
 //@ts-ignore
-global.document = (new JSDOM).window.document
+global.document = (new jsdom.JSDOM).window.document
 
-var ct = require('cotest'),
-		css = require('../css')
+//css - add rule
+var sheets = document.styleSheets,
+		sheet = null,
+		match = /myClass/,
+		found = false
 
-ct('css - add rule', function() {
-	var sheets = document.styleSheets,
-			sheet = null,
-			match = /myClass/,
-			found = false
+css('.myClass { color: white }')
 
-	css('.myClass { color: white }')
-
-	// get existing sheet
-	for (var i=0; i<sheets.length && !found; ++i) {
-		sheet = sheets[i]
+// get existing sheet
+for (var i=0; i<sheets.length && !found; ++i) {
+	sheet = sheets[i]
+	//@ts-ignore
+	for (var j=0; j<sheet.cssRules.length && !found; ++j) {
 		//@ts-ignore
-		for (var j=0; j<sheet.cssRules.length && !found; ++j) {
-			//@ts-ignore
-			found = match.test(sheet.cssRules[i].cssText)
-		}
+		found = match.test(sheet.cssRules[i].cssText)
 	}
+}
 
-	ct('!!', found)
-})
+t('!!', found)
+
