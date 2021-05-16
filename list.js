@@ -11,18 +11,9 @@ export default function(parent, factory, options) {
 		before: (options && options.before) || null,
 		after: (options && options.after) || null,
 		update: updateList,
-		key: (options && options.key) || getKey,
+		key: (options && options.key) || ( (v,i) => i ), //TODO simplify
 		map: Object.create(null),
 	}
-}
-
-/**
- * @param {*} v
- * @param {number} i
- * @return {number}
- */
-function getKey(v,i) {
-	return i
 }
 
 /**
@@ -38,7 +29,8 @@ function updateList(arr) {
 	if (!arr.length && !this.before && !this.after) parent.textContent = ''
 	else {
 		for (var i = 0; i < arr.length; ++i) {
-			var key = getK.constructor === Function ? getK(arr[i], i, arr) : arr[i][getK],
+			//TODO skip .constructor
+			var key = getK.constructor === Function ? getK(arr[i], i, arr) : arr[i][getK], //TODO simplify to functions only
 					kid = this.map[key]
 			//create or update kid
 			if (kid) kid.update && kid.update(arr[i], key, arr) //eslint-disable-line

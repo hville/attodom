@@ -1,7 +1,7 @@
 import el from '../el.js'
 import find from '../find.js'
 import jsdom from 'jsdom'
-import t from 'assert-op'
+import t from 'assert-op/assert.js'
 
 var JSDOM = jsdom.JSDOM
 var window = (new JSDOM).window

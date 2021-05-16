@@ -1,6 +1,6 @@
 import css from '../css.js'
 import jsdom from 'jsdom'
-import t from 'assert-op'
+import t from 'assert-op/assert.js'
 
 //@ts-ignore
 global.document = (new jsdom.JSDOM).window.document

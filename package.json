@@ -3,7 +3,7 @@
   "version": "0.13.0",
   "type": "module",
   "main": "./index.js",
-  "module": "./index.js",
+  "browser": "./index.js",
   "description": "yet another small DOM component library",
   "keywords": [
     "component",
@@ -13,11 +13,10 @@
     "namespace"
   ],
   "author": "Hugo Villeneuve",
-  "dependencies": {},
   "devDependencies": {
-    "@types/node": "^10.5.2",
-    "assert-op": "^0.5.1",
-    "jsdom": "^16.2.2"
+    "@types/node": "^15.3.0",
+    "assert-op": "^0.8.0",
+    "jsdom": "^16.5.3"
   },
   "scripts": {
     "test": "node ./tst/el & node ./tst/svg & node ./tst/list & node ./tst/css & node ./tst/find",
@@ -27,6 +26,5 @@
     "type": "git",
     "url": "https://github.com/hville/attodom.git"
   },
-  "private": false,
   "license": "MIT"
 }
