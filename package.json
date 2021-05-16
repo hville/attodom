@@ -1,6 +1,6 @@
 {
   "name": "attodom",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "type": "module",
   "main": "./index.js",
   "browser": "./index.js",
